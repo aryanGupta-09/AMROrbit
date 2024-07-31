@@ -2,6 +2,7 @@
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import Options from "@/components/home/Options";
+import Plots from "@/components/home/Plots";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
           <p>A dashboard for visualizing antibiotic resistance data.</p>
         </div>
         <Options />
+        <Plots />
       </Provider>
     </main>
   );
