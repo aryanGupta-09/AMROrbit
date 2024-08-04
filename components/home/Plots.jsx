@@ -3,15 +3,11 @@ import { optionsSelector } from "@/redux/reducers/optionsReducer";
 import { useEffect, useState } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.mjs',
-    import.meta.url,
-).toString();
-
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function Plots() {
     const options = useSelector(optionsSelector);
-    
+
     const [files, setFiles] = useState([]);
     useEffect(() => {
         const fetchFiles = async () => {
@@ -45,7 +41,7 @@ export default function Plots() {
             return 1.2;
         } else if (width >= 1485) {
             return 1.1;
-        // 1 element per row
+            // 1 element per row
         } else if (width >= 1024) {
             return 1.3; // lg
         } else if (width >= 768) {
@@ -57,17 +53,24 @@ export default function Plots() {
         }
     };
 
-    const [scale, setScale] = useState(getScale(window.innerWidth));
+    const [scale, setScale] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return getScale(window.innerWidth);
+        }
+        return 1; // Default scale if window is not defined
+    });
 
     useEffect(() => {
-        const updateScale = () => {
-            setScale(getScale(window.innerWidth));
-        };
+        if (typeof window !== 'undefined') {
+            const updateScale = () => {
+                setScale(getScale(window.innerWidth));
+            };
 
-        window.addEventListener('resize', updateScale);
-        return () => {
-            window.removeEventListener('resize', updateScale);
-        };
+            window.addEventListener('resize', updateScale);
+            return () => {
+                window.removeEventListener('resize', updateScale);
+            };
+        }
     }, []);
 
 

@@ -1,4 +1,5 @@
 "use client";
+import '../polyfills.js';
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import Options from "@/components/home/Options";
