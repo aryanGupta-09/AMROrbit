@@ -13,7 +13,7 @@ export default function Options() {
     };
 
     return (
-        <Box display="flex" justifyContent="space-between" width="80%" margin="0 auto" gap={2}>
+        <Box display="flex" justifyContent="space-between" gap={2} className="mb-4">
             <Select
                 placeholder = "Antibiotic"
                 indicator = {<ArrowDropDownIcon />}

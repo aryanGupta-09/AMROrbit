@@ -6,7 +6,7 @@ import Plots from "@/components/home/Plots";
 
 export default function Home() {
   return (
-    <main>
+    <main className="w-[90vw] mx-auto">
       <Provider store={store}>
         <div className="mt-4 mb-4 text-center">
           <h1 className="text-4xl">Vivli Dashboard</h1>
