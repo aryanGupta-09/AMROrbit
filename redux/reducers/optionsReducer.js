@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     antibiotic: null,
     organism: null,
+    sampleType: null,
+    country: null,
 };
 
 const optionsSlice = createSlice({
@@ -14,6 +16,12 @@ const optionsSlice = createSlice({
         },
         setOrganism: (state, action) => {
             state.organism = action.payload;
+        },
+        setSampleType: (state, action) => {
+            state.sampleType = action.payload;
+        },
+        setCountry: (state, action) => {
+            state.country = action.payload;
         },
     },
 });

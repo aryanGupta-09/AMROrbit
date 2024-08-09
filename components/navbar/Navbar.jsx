@@ -1,9 +1,9 @@
 "use client";
 import Image from 'next/image';
-import tavLabLogo from '../../public/tavlab.svg';
+import tavLabLogo from '@/public/images/tavlab.svg';
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import Options from '@/components/navbar/Options';
+import OptionsBar from '@/components/navbar/OptionsBar';
 
 export default function Navbar() {
     return (
@@ -22,7 +22,7 @@ export default function Navbar() {
                 </div>
             </div>
             <Provider store={store}>
-                <Options />
+                <OptionsBar />
             </Provider>
         </div>
     );
