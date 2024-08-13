@@ -4,6 +4,7 @@
 
 body {
     @apply select-none;
+    @apply bg-[#e3e4fe];
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

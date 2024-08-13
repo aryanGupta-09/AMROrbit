@@ -8,7 +8,7 @@ import countryLogo from '@/public/images/country.svg';
 
 import { useDispatch } from 'react-redux';
 import { actions } from '@/redux/reducers/optionsReducer';
-import CustomSelect from '@/components/navbar/CustomSelect';
+import CustomSelect from './CustomSelect';
 
 export default function Options() {
     const dispatch = useDispatch();
@@ -86,7 +86,7 @@ export default function Options() {
                         src={countryLogo}
                         alt="country-logo"
                         className="h-[30px] w-auto filter invert-[100%]"
-                        style={{ marginTop: '0.3rem', marginBottom: '0.3rem' }}
+                        style={{ marginTop: '0.29rem', marginBottom: '0.29rem' }}
                     />
                 }
                 handleChange={handleChange}

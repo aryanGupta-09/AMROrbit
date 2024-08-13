@@ -5,7 +5,7 @@ import Plots from "@/components/home/Plots";
 
 export default function Home() {
   return (
-    <main className="mx-auto mt-4">
+    <main className="mx-auto pt-4">
       <Provider store={store}>
         <Plots />
       </Provider>

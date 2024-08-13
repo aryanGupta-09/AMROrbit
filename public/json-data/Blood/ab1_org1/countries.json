@@ -1,0 +1,40 @@
+[
+    {
+        "country": "Argentina",
+        "years": [
+            {
+                "year": 2010,
+                "median_slope": 0,
+                "median_intercept": 0,
+                "x": 0,
+                "y": 0
+            },
+            {
+                "year": 2015,
+                "median_slope": 0,
+                "median_intercept": 0,
+                "x": 0,
+                "y": 0
+            }
+        ]
+    },
+    {
+        "country": "Brazil",
+        "years": [
+            {
+                "year": 2010,
+                "median_slope": 0,
+                "median_intercept": 0,
+                "x": 0,
+                "y": 0
+            },
+            {
+                "year": 2015,
+                "slope": 0,
+                "intercept": 0,
+                "x": 0,
+                "y": 0
+            }
+        ]
+    }
+]

@@ -1,0 +1,163 @@
+[
+    {
+        "year": 2014,
+        "median_slope": 1.5,
+        "median_intercept": 1,
+        "countries": [
+            {
+                "name": "Argentina",
+                "x": 3.2,
+                "y": 1.2
+            },
+            {
+                "name": "Brazil",
+                "x": 0.5,
+                "y": 3
+            }
+        ]
+    },
+    {
+        "year": 2015,
+        "median_slope": 1.5,
+        "median_intercept": 1,
+        "countries": [
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            },
+            {
+                "name": "Argentina",
+                "x": 0.2,
+                "y": 0.5
+            },
+            {
+                "name": "Brazil",
+                "x": 4,
+                "y": 1
+            }
+        ]
+    },
+    {
+        "year": 2016,
+        "median_slope": 1.5,
+        "median_intercept": 1,
+        "countries": [
+            {
+                "name": "Argentina",
+                "x": 3.2,
+                "y": 1.2
+            },
+            {
+                "name": "Brazil",
+                "x": 0.5,
+                "y": 3
+            }
+        ]
+    }
+]

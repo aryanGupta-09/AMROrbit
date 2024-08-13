@@ -3,7 +3,7 @@ import Image from 'next/image';
 import tavLabLogo from '@/public/images/tavlab.svg';
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import OptionsBar from '@/components/navbar/OptionsBar';
+import OptionsBar from "./OptionsBar";
 
 export default function Navbar() {
     return (
