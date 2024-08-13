@@ -91,7 +91,7 @@ export default function Options() {
                 }
                 handleChange={handleChange}
                 action={actions.setCountry}
-                items={["India", "Argentina", "USA", "UK"]}
+                items={["All", "India", "Argentina", "USA", "UK"]}
             />
         </Box>
     );
