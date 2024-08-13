@@ -11,7 +11,7 @@ export default function Navbar() {
             <div className="flex items-center justify-between pt-4 pb-4">
                 <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
                     <h1 className="text-4xl">Vivli Dashboard</h1>
-                    <p className="text-black opacity-70">A dashboard for visualizing antibiotic resistance data.</p>
+                    <p className="text-lg opacity-70">A dashboard for visualizing antibiotic resistance data.</p>
                 </div>
                 <div className="ml-auto pr-5">
                     <Image

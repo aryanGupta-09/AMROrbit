@@ -3,6 +3,7 @@ import { optionsSelector } from "@/redux/reducers/optionsReducer";
 import { useEffect, useState, useCallback } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, Cell, ReferenceLine, LabelList } from 'recharts';
 import Legend from "./Legend";
+import StartVisualization from "./StartVisualization";
 
 import { DotButton, useDotButton } from './EmblaCarouselDotButton'
 import {
@@ -42,7 +43,7 @@ export default function Plots() {
         onNextButtonClick
     } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
-    const [files, setFiles] = useState({ years: [], countries: [] });
+    const [files, setFiles] = useState({ years: null, countries: null });
     useEffect(() => {
         const fetchFiles = async () => {
             try {
@@ -72,8 +73,11 @@ export default function Plots() {
         fetchFiles();
     }, [options]);
 
-    if (files.years.length === 0 || files.countries.length === 0) {
-        return <div>No data found...</div>;
+    if (files.years === null || files.countries === null) {
+        return <StartVisualization text='Select "Antibiotics", "Organisms", and "Sample" to start year-wise analysis. Optionally, select "Country" to observe country-specific trends.' />;
+    }
+    else if (files.years.length === 0 || files.countries.length === 0) {
+        return <StartVisualization text='Sorry, no data was found. Please try another combination.' />;
     }
 
     const CustomTooltip = ({ active, payload, label, data, selectedIndex }) => {
