@@ -14,11 +14,13 @@ export default function Navbar() {
                     <p className="text-lg opacity-70">A dashboard for visualizing antibiotic resistance data.</p>
                 </div>
                 <div className="ml-auto pr-5">
-                    <Image
-                        src={tavLabLogo}
-                        alt="TavLab logo"
-                        className="h-[60px] w-auto"
-                    />
+                    <a href="https://tavlab.iiitd.edu.in/" target="_blank" rel="noopener noreferrer">
+                        <Image
+                            src={tavLabLogo}
+                            alt="TavLab logo"
+                            className="h-[60px] w-auto"
+                        />
+                    </a>
                 </div>
             </div>
             <Provider store={store}>

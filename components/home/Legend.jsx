@@ -2,8 +2,9 @@ import CircleIcon from '@mui/icons-material/Circle';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useState, useRef, useEffect } from 'react';
+import colors from '@/public/colors.json';
 
-export default function Legend({ data, colors }) {
+export default function Legend({ data, onHover }) {
     const [hasScrolled, setHasScrolled] = useState(false);
     const [hasOverflow, setHasOverflow] = useState(false);
     const legendRef = useRef(null);
@@ -17,9 +18,25 @@ export default function Legend({ data, colors }) {
         }
     }, [data]);
 
+    const handleMouseEnter = (entry, index) => {
+        // Find the corresponding data point's position
+        const pointElement = document.querySelector(`.cell-${index}`);
+
+        if (pointElement) {
+            const cx = pointElement.getAttribute('cx');
+            const cy = pointElement.getAttribute('cy');
+
+            const x_pos = parseFloat(cx) + window.scrollX;
+            const y_pos = parseFloat(cy) + window.scrollY;
+
+            // Pass this position to onHover
+            onHover({ ...entry, x_pos, y_pos });
+        }
+    };
+
     return (
         <div
-            className="bg-[#F8F9FF] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide"
+            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide"
             ref={legendRef}
             onScroll={(e) => {
                 const legend = e.target;
@@ -41,7 +58,7 @@ export default function Legend({ data, colors }) {
             }}
         >
             <div
-                className="flex justify-center items-center sticky top-0 left-0 w-full bg-[#F8F9FF]"
+                className="flex justify-center items-center sticky top-0 left-0 w-full bg-[#f1f2f7]"
                 ref={topArrowRef}
                 onMouseEnter={() => {
                     const legend = legendRef.current;
@@ -60,7 +77,12 @@ export default function Legend({ data, colors }) {
             </div>
 
             {data.map((entry, index) => (
-                <div key={index} className="flex items-start gap-x-2 pt-1">
+                <div
+                    key={index}
+                    className="flex items-start gap-x-2 pt-1"
+                    onMouseEnter={() => handleMouseEnter(entry, index)}
+                    onMouseLeave={() => onHover(null)}
+                >
                     <CircleIcon className="pt-1" fontSize="small" style={{ color: colors[index % colors.length] }} />
                     <p style={{ color: colors[index % colors.length] }}>{entry.label}</p>
                 </div>
@@ -68,7 +90,7 @@ export default function Legend({ data, colors }) {
 
             {hasOverflow && (
                 <div
-                    className="flex justify-center items-center sticky bottom-0 left-0 w-full bg-[#F8F9FF]"
+                    className="flex justify-center items-center sticky bottom-0 left-0 w-full bg-[#f1f2f7]"
                     ref={bottomArrowRef}
                     onMouseEnter={() => {
                         const legend = legendRef.current;
