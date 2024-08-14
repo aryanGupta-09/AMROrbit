@@ -53,7 +53,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
     }, [isOpen]);
 
     return (
-        <div className="relative" style={{ flex: 0.22 }}>
+        <div className="relative" style={{ flex: 0.3 }}>
             <div className="flex flex-col cursor-pointer shadow-lg rounded-t-sm rounded-b-md" onClick={toggleDropdown}>
                 <div className="bg-[#4F55C3] flex items-center justify-between py-1 rounded-t-sm">
                     <div className="pl-6 text-white text-lg">{selectedItem ? selectedItem : placeholder}</div>

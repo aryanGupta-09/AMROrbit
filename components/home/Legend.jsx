@@ -4,7 +4,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useState, useRef, useEffect } from 'react';
 import colors from '@/public/colors.json';
 
-export default function Legend({ data, onHover }) {
+export default function Legend({ data, onHover, onClick }) {
     const [hasScrolled, setHasScrolled] = useState(false);
     const [hasOverflow, setHasOverflow] = useState(false);
     const legendRef = useRef(null);
@@ -79,9 +79,10 @@ export default function Legend({ data, onHover }) {
             {data.map((entry, index) => (
                 <div
                     key={index}
-                    className="flex items-start gap-x-2 pt-1"
+                    className="flex items-start gap-x-2 mt-2 cursor-pointer" // Add cursor-pointer class
                     onMouseEnter={() => handleMouseEnter(entry, index)}
                     onMouseLeave={() => onHover(null)}
+                    onClick={() => onClick(entry.label)} // Add onClick handler
                 >
                     <CircleIcon className="pt-1" fontSize="small" style={{ color: colors[index % colors.length] }} />
                     <p style={{ color: colors[index % colors.length] }}>{entry.label}</p>

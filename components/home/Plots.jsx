@@ -16,8 +16,16 @@ import useEmblaCarousel from 'embla-carousel-react'
 
 import colors from '@/public/colors.json';
 
+import { useDispatch } from 'react-redux';
+import { actions } from '@/redux/reducers/optionsReducer';
+
 export default function Plots() {
+    const dispatch = useDispatch();
+    const handleCountryClick = (newValue) => {
+        dispatch(actions.setCountry(newValue));
+    };
     const options = useSelector(optionsSelector);
+
     const [hoveredEntry, setHoveredEntry] = useState(null);
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay({ delay: 2000, stopOnMouseEnter: true, stopOnInteraction: false, jump: true })])
@@ -80,7 +88,7 @@ export default function Plots() {
     }, [options]);
 
     if (firstRender) {
-        return <VisualizationBox heading='Start Visualization' text='Select "Antibiotics", "Organisms", and "Sample" to start year-wise analysis. Optionally, select "Country" to observe country-specific trends.' />;
+        return <VisualizationBox heading='Start Visualization' text='Select "Antibiotic", "Organism", and "Sample Type" to begin year-wise analysis.' />;
     }
     else if ((files.years && files.years.length === 0) && (files.countries && files.countries.length === 0)) {
         return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
@@ -164,7 +172,7 @@ export default function Plots() {
                                                 --&nbsp;Median Slope
                                             </div>
                                         </div>
-                                        <Legend data={data} onHover={setHoveredEntry} />
+                                        <Legend data={data} onHover={setHoveredEntry} onClick={handleCountryClick} />
                                     </div>
                                 </div>
                             );
@@ -184,7 +192,10 @@ export default function Plots() {
                                     {selectedCountry.years.map((year, index) => {
                                         const data = { x: year.x, y: year.y, label: year.year };
                                         return (
-                                            <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center" key={index}>
+                                            <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center relative" key={index}>
+                                                <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
+                                                    &nbsp;&nbsp;{selectedCountry.name}&nbsp;&nbsp;
+                                                </div>
                                                 <ResponsiveContainer width="100%" height="100%">
                                                     <ScatterChart
                                                         margin={{
@@ -239,13 +250,16 @@ export default function Plots() {
                                 </div>
                             </div>
                         </section>
-                        <div style={{ width: "15%", minWidth: "15%" }} className="bg-[#f1f2f7] rounded-xl shadow-lg p-2 h-fit">
-                            <div className="flex pt-1" style={{ color: 'green' }}>
-                                --&nbsp;Median Intercept
+                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3">
+                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2 h-fit">
+                                <div className="flex pt-1" style={{ color: 'green' }}>
+                                    --&nbsp;Median Intercept
+                                </div>
+                                <div className="flex pt-1" style={{ color: 'red' }}>
+                                    --&nbsp;Median Slope
+                                </div>
                             </div>
-                            <div className="flex pt-1" style={{ color: 'red' }}>
-                                --&nbsp;Median Slope
-                            </div>
+                            <div className="bg-[#A2A2A2] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer" onClick={() => handleCountryClick("All")}>Back to all countries</div>
                         </div>
                     </div>
                 );

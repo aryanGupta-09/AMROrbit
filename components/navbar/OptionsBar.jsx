@@ -4,7 +4,6 @@ import Image from 'next/image';
 import antibioticLogo from '@/public/images/antibiotic.svg';
 import organismLogo from '@/public/images/organism.svg';
 import sampleTypeLogo from '@/public/images/sample.svg';
-import countryLogo from '@/public/images/country.svg';
 
 import { useDispatch } from 'react-redux';
 import { actions } from '@/redux/reducers/optionsReducer';
@@ -60,21 +59,6 @@ export default function Options() {
                 handleChange={handleChange}
                 action={actions.setSampleType}
                 items={["Blood", "Urine"]}
-            />
-
-            <CustomSelect
-                placeholder="Country"
-                icon={
-                    <Image
-                        src={countryLogo}
-                        alt="country-logo"
-                        className="h-[30px] w-auto filter invert-[100%]"
-                        style={{ marginTop: '0.29rem', marginBottom: '0.29rem' }}
-                    />
-                }
-                handleChange={handleChange}
-                action={actions.setCountry}
-                items={['All', 'Global', 'Argentina', 'Australia', 'Belgium', 'Brazil', 'Chile', 'China', 'Colombia', 'Czech Republic', 'Denmark', 'France', 'Germany', 'Greece', 'Hungary', 'Israel', 'Japan', 'Korea, South', 'Kuwait', 'Mexico', 'Netherlands', 'Philippines', 'Poland', 'Portugal', 'South Africa', 'Spain', 'Turkey', 'United Kingdom', 'Venezuela']}
             />
         </Box>
     );
