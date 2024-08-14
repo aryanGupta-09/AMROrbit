@@ -156,6 +156,7 @@ export default function Plots() {
                                                                 stroke={hoveredEntry && hoveredEntry.label === entry.label ? 'black' : 'none'}
                                                                 strokeWidth={hoveredEntry && hoveredEntry.label === entry.label ? 1 : 0}
                                                                 style={{ opacity: hoveredEntry && hoveredEntry.label !== entry.label ? 0.3 : 1 }}
+                                                                onClick={() => handleCountryClick(entry.label)}
                                                             />
                                                         ))}
                                                     </Scatter>
@@ -189,41 +190,43 @@ export default function Plots() {
                         <section style={{ height: "70vh" }} className="embla flex-grow">
                             <div className="embla__viewport" ref={emblaRef}>
                                 <div className="embla__container">
-                                    {selectedCountry.years.map((year, index) => {
-                                        const data = { x: year.x, y: year.y, label: year.year };
-                                        return (
-                                            <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center relative" key={index}>
-                                                <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
-                                                    &nbsp;&nbsp;{selectedCountry.name}&nbsp;&nbsp;
+                                    {selectedCountry.years
+                                        .sort((a, b) => a.year - b.year)
+                                        .map((year, index) => {
+                                            const data = { x: year.x, y: year.y, label: year.year };
+                                            return (
+                                                <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center relative" key={index}>
+                                                    <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
+                                                        &nbsp;&nbsp;{selectedCountry.name}&nbsp;&nbsp;
+                                                    </div>
+                                                    <ResponsiveContainer width="100%" height="100%">
+                                                        <ScatterChart
+                                                            margin={{
+                                                                top: 20,
+                                                                right: 30,
+                                                                bottom: 25,
+                                                                left: 10,
+                                                            }}
+                                                        >
+                                                            <CartesianGrid />
+                                                            <XAxis type="number" dataKey="x" name="Log Intercept" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
+                                                                <Label value="Log Intercept" offset={-5} position="bottom" />
+                                                            </XAxis>
+                                                            <YAxis type="number" dataKey="y" name="Log Slope" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
+                                                                <Label value="Log Slope" offset={-17} angle={-90} position="left" />
+                                                            </YAxis>
+                                                            <Tooltip content={<CustomTooltip data={data} selectedIndex={selectedCountryIndex} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
+                                                            <ReferenceLine x={year.median_intercept} stroke="green" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
+                                                            <ReferenceLine y={year.median_slope} stroke="red" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
+                                                            <Scatter data={[data]} fill="#8884d8">
+                                                                <Cell key={`cell-${selectedCountryIndex}`} fill={colors[selectedCountryIndex % colors.length]} />
+                                                                <LabelList dataKey="label" position="right" />
+                                                            </Scatter>
+                                                        </ScatterChart>
+                                                    </ResponsiveContainer>
                                                 </div>
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <ScatterChart
-                                                        margin={{
-                                                            top: 20,
-                                                            right: 30,
-                                                            bottom: 25,
-                                                            left: 10,
-                                                        }}
-                                                    >
-                                                        <CartesianGrid />
-                                                        <XAxis type="number" dataKey="x" name="Log Intercept" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
-                                                            <Label value="Log Intercept" offset={-5} position="bottom" />
-                                                        </XAxis>
-                                                        <YAxis type="number" dataKey="y" name="Log Slope" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
-                                                            <Label value="Log Slope" offset={-17} angle={-90} position="left" />
-                                                        </YAxis>
-                                                        <Tooltip content={<CustomTooltip data={data} selectedIndex={selectedCountryIndex} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
-                                                        <ReferenceLine x={year.median_intercept} stroke="green" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
-                                                        <ReferenceLine y={year.median_slope} stroke="red" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
-                                                        <Scatter data={[data]} fill="#8884d8">
-                                                            <Cell key={`cell-${selectedCountryIndex}`} fill={colors[selectedCountryIndex % colors.length]} />
-                                                            <LabelList dataKey="label" position="right" />
-                                                        </Scatter>
-                                                    </ScatterChart>
-                                                </ResponsiveContainer>
-                                            </div>
-                                        );
-                                    })}
+                                            );
+                                        })}
                                 </div>
                             </div>
                             <div className="embla__controls px-5">
