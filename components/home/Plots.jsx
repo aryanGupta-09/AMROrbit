@@ -114,7 +114,7 @@ export default function Plots() {
                             ));
 
                             return (
-                                <div style={{ width: "90%", height: "70vh" }} className="flex flex-row gap-3 h-" key={index}>
+                                <div style={{ width: "90%", height: "70vh" }} className="flex flex-row gap-3" key={index}>
                                     <div className="bg-[#f1f2f7] rounded-xl shadow-lg flex-grow">
                                         <div className="relative" style={{ height: "70vh" }}>
                                             <div className="absolute top-3 right-3 z-10 p-2 bg-[#A2A2A2] rounded-lg text-white text-lg">
