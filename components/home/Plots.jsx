@@ -114,9 +114,9 @@ export default function Plots() {
                             ));
 
                             return (
-                                <div style={{ width: "90%", height: "500px" }} className="flex flex-row gap-3" key={index}>
+                                <div style={{ width: "90%", height: "70vh" }} className="flex flex-row gap-3 h-" key={index}>
                                     <div className="bg-[#f1f2f7] rounded-xl shadow-lg flex-grow">
-                                        <div className="relative" style={{ height: "500px" }}>
+                                        <div className="relative" style={{ height: "70vh" }}>
                                             <div className="absolute top-3 right-3 z-10 p-2 bg-[#A2A2A2] rounded-lg text-white text-lg">
                                                 &nbsp;&nbsp;{year.year}&nbsp;&nbsp;
                                             </div>
@@ -174,18 +174,18 @@ export default function Plots() {
             () => {
                 const selectedCountryIndex = files.countries.findIndex(country => country.name === options.country);
                 const selectedCountry = files.countries[selectedCountryIndex];
-                if (!selectedCountry) return <StartVisualization text='Sorry, no data was found. Please try another combination.' />;
+                if (!selectedCountry) return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
 
                 return (
                     <div style={{ width: "90%" }} className="flex flex-row justify-around gap-x-3 mx-auto">
-                        <section style={{ height: "500px" }} className="embla flex-grow">
+                        <section style={{ height: "70vh" }} className="embla flex-grow">
                             <div className="embla__viewport" ref={emblaRef}>
                                 <div className="embla__container">
                                     {selectedCountry.years.map((year, index) => {
                                         const data = { x: year.x, y: year.y, label: year.year };
                                         return (
-                                            <div className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center" key={index}>
-                                                <ResponsiveContainer width="100%" height={500}>
+                                            <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center" key={index}>
+                                                <ResponsiveContainer width="100%" height="100%">
                                                     <ScatterChart
                                                         margin={{
                                                             top: 20,
