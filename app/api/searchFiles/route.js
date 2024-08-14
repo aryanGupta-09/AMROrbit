@@ -14,15 +14,36 @@ export async function GET(req) {
     const publicFolderPath = path.join(process.cwd(), 'public', 'json-data', sampleType, `${antibiotic}_${organism}`);
 
     try {
+        if (!fs.existsSync(publicFolderPath)) {
+            console.error('Folder does not exist:', publicFolderPath);
+            return new Response(JSON.stringify({ error: 'Folder not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+        }
+
         const yearsFilePath = path.join(publicFolderPath, 'years.json');
         const countriesFilePath = path.join(publicFolderPath, 'countries.json');
 
-        if (!fs.existsSync(yearsFilePath) || !fs.existsSync(countriesFilePath)) {
-            return new Response(JSON.stringify({ error: 'Files not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+        let years = [];
+        let countries = [];
+
+        if (fs.existsSync(yearsFilePath)) {
+            try {
+                years = JSON.parse(fs.readFileSync(yearsFilePath, 'utf-8'));
+            } catch (error) {
+                console.error('Error parsing years.json:', error);
+            }
         }
 
-        const years = JSON.parse(fs.readFileSync(yearsFilePath, 'utf-8'));
-        const countries = JSON.parse(fs.readFileSync(countriesFilePath, 'utf-8'));
+        if (fs.existsSync(countriesFilePath)) {
+            try {
+                countries = JSON.parse(fs.readFileSync(countriesFilePath, 'utf-8'));
+            } catch (error) {
+                console.error('Error parsing countries.json:', error);
+            }
+        }
+
+        if (years.length === 0 && countries.length === 0) {
+            return new Response(JSON.stringify({ error: 'Files not found or invalid' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+        }
 
         return new Response(JSON.stringify({ years, countries }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     } catch (error) {

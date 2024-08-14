@@ -29,24 +29,7 @@ export default function Options() {
                 }
                 handleChange={handleChange}
                 action={actions.setAntibiotic}
-                items={[
-                    "Amoxicillin",
-                    "ab1",
-                    "Ciprofloxacin",
-                    "Doxycycline",
-                    "Azithromycin",
-                    "Clindamycin",
-                    "Ceftriaxone",
-                    "Metronidazole",
-                    "Levofloxacin",
-                    "Vancomycin",
-                    "Erythromycin",
-                    "Gentamicin",
-                    "Tetracycline",
-                    "Penicillin",
-                    "Cephalexin",
-                    "Trimethoprim"
-                ]}
+                items={["Imipenem", "Meropenem", "Colistin"]}
             />
 
             <CustomSelect
@@ -61,7 +44,7 @@ export default function Options() {
                 }
                 handleChange={handleChange}
                 action={actions.setOrganism}
-                items={["org1", "org2", "org3"]}
+                items={["Klebsiella pneumoniae", "Escherichia coli"]}
             />
 
             <CustomSelect
@@ -91,7 +74,7 @@ export default function Options() {
                 }
                 handleChange={handleChange}
                 action={actions.setCountry}
-                items={["All", "India", "Argentina", "USA", "UK"]}
+                items={['All', 'Global', 'Argentina', 'Australia', 'Belgium', 'Brazil', 'Chile', 'China', 'Colombia', 'Czech Republic', 'Denmark', 'France', 'Germany', 'Greece', 'Hungary', 'Israel', 'Japan', 'Korea, South', 'Kuwait', 'Mexico', 'Netherlands', 'Philippines', 'Poland', 'Portugal', 'South Africa', 'Spain', 'Turkey', 'United Kingdom', 'Venezuela']}
             />
         </Box>
     );

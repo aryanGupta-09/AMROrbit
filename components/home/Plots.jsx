@@ -82,7 +82,7 @@ export default function Plots() {
     if (firstRender) {
         return <VisualizationBox heading='Start Visualization' text='Select "Antibiotics", "Organisms", and "Sample" to start year-wise analysis. Optionally, select "Country" to observe country-specific trends.' />;
     }
-    else if (files.years.length === 0 || files.countries.length === 0) {
+    else if ((files.years && files.years.length === 0) && (files.countries && files.countries.length === 0)) {
         return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
     }
 
