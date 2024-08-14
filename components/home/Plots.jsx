@@ -46,7 +46,9 @@ export default function Plots() {
         onNextButtonClick
     } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
-    const [files, setFiles] = useState({ years: null, countries: null });
+    const [files, setFiles] = useState({ years: [], countries: [] });
+    const [firstRender, setFirstRender] = useState(true);
+
     useEffect(() => {
         const fetchFiles = async () => {
             try {
@@ -68,6 +70,7 @@ export default function Plots() {
 
                 const { years, countries } = await fetchJson();
                 setFiles({ years, countries });
+                setFirstRender(false);
             } catch (error) {
                 setFiles({ years: [], countries: [] });
             }
@@ -76,7 +79,7 @@ export default function Plots() {
         fetchFiles();
     }, [options]);
 
-    if (files.years === null || files.countries === null) {
+    if (firstRender) {
         return <StartVisualization text='Select "Antibiotics", "Organisms", and "Sample" to start year-wise analysis. Optionally, select "Country" to observe country-specific trends.' />;
     }
     else if (files.years.length === 0 || files.countries.length === 0) {
