@@ -3,7 +3,7 @@ import { optionsSelector } from "@/redux/reducers/optionsReducer";
 import { useEffect, useState, useCallback } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, Cell, ReferenceLine, LabelList } from 'recharts';
 import Legend from "./Legend";
-import StartVisualization from "./StartVisualization";
+import VisualizationBox from "./VisualizationBox";
 
 import { DotButton, useDotButton } from './EmblaCarouselDotButton'
 import {
@@ -80,10 +80,10 @@ export default function Plots() {
     }, [options]);
 
     if (firstRender) {
-        return <StartVisualization text='Select "Antibiotics", "Organisms", and "Sample" to start year-wise analysis. Optionally, select "Country" to observe country-specific trends.' />;
+        return <VisualizationBox heading='Start Visualization' text='Select "Antibiotics", "Organisms", and "Sample" to start year-wise analysis. Optionally, select "Country" to observe country-specific trends.' />;
     }
     else if (files.years.length === 0 || files.countries.length === 0) {
-        return <StartVisualization text='Sorry, no data was found. Please try another combination.' />;
+        return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
     }
 
     const CustomTooltip = ({ active, payload, label, data, selectedIndex }) => {
