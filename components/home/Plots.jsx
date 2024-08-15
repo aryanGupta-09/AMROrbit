@@ -102,8 +102,8 @@ export default function Plots() {
             return (
                 <div className="bg-white bg-opacity-70 border p-1 z-20">
                     {selectedIndex === undefined && <p style={{ color }}>{dataLabel}</p>}
-                    <p className="text-sm">{`Log Intercept: ${x}`}</p>
-                    <p className="text-sm">{`Log Slope: ${y}`}</p>
+                    <p className="text-sm">{`Intercept: ${x}`}</p>
+                    <p className="text-sm">{`Slope: ${y}`}</p>
                 </div>
             );
         }
@@ -138,11 +138,11 @@ export default function Plots() {
                                                     }}
                                                 >
                                                     <CartesianGrid />
-                                                    <XAxis type="number" dataKey="x" name="Log Intercept" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
-                                                        <Label value="Log Intercept" offset={-5} position="bottom" />
+                                                    <XAxis type="number" dataKey="x" name="Intercept" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
+                                                        <Label value="Intercept" offset={-5} position="bottom" />
                                                     </XAxis>
-                                                    <YAxis type="number" dataKey="y" name="Log Slope" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
-                                                        <Label value="Log Slope" offset={-17} angle={-90} position="left" />
+                                                    <YAxis type="number" dataKey="y" name="Slope" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
+                                                        <Label value="Slope" offset={-17} angle={-90} position="left" />
                                                     </YAxis>
                                                     <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
                                                     <ReferenceLine x={year.median_intercept} stroke="green" strokeDasharray="7 7" strokeWidth={1.5} />
@@ -209,11 +209,11 @@ export default function Plots() {
                                                             }}
                                                         >
                                                             <CartesianGrid />
-                                                            <XAxis type="number" dataKey="x" name="Log Intercept" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
-                                                                <Label value="Log Intercept" offset={-5} position="bottom" />
+                                                            <XAxis type="number" dataKey="x" name="Intercept" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
+                                                                <Label value="Intercept" offset={-5} position="bottom" />
                                                             </XAxis>
-                                                            <YAxis type="number" dataKey="y" name="Log Slope" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
-                                                                <Label value="Log Slope" offset={-17} angle={-90} position="left" />
+                                                            <YAxis type="number" dataKey="y" name="Slope" domain={[dataMin => (Math.round(dataMin) - 3), dataMax => (Math.round(dataMax) + 3)]} allowDecimals={false}>
+                                                                <Label value="Slope" offset={-17} angle={-90} position="left" />
                                                             </YAxis>
                                                             <Tooltip content={<CustomTooltip data={data} selectedIndex={selectedCountryIndex} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
                                                             <ReferenceLine x={year.median_intercept} stroke="green" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
