@@ -19,6 +19,9 @@ import colors from '@/public/colors.json';
 import { useDispatch } from 'react-redux';
 import { actions } from '@/redux/reducers/optionsReducer';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 export default function Plots() {
     const dispatch = useDispatch();
     const handleCountryClick = (newValue) => {
@@ -27,6 +30,7 @@ export default function Plots() {
     const options = useSelector(optionsSelector);
 
     const [hoveredEntry, setHoveredEntry] = useState(null);
+    const [refTip, setRefTip] = useState({ x: 0, y: 0, text: '', visible: false, color: '' });
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay({ delay: 2000, stopOnMouseEnter: true, stopOnInteraction: false, jump: true })])
 
@@ -110,6 +114,29 @@ export default function Plots() {
         return null;
     };
 
+    const handleShowRefTip = (e, text, color) => {
+        setRefTip({ visible: true, x: e.clientX + window.scrollX, y: e.clientY + window.scrollY, text, color });
+    };
+
+    const handleHideRefTip = () => {
+        setRefTip({ visible: false, x: 0, y: 0, text: '' });
+    };
+
+    const RefTipComponent = () => (
+        refTip.visible && (
+            <div
+                className="absolute bg-white bg-opacity-70 p-1 z-20 text-sm"
+                style={{
+                    left: refTip.x + 10,
+                    top: refTip.y + 10,
+                    color: refTip.color,
+                }}
+            >
+                {refTip.text}
+            </div>
+        )
+    );
+
     return (
         (options.country === null || options.country === "All") ? (
             <div className="flex flex-wrap justify-around gap-y-7">
@@ -128,6 +155,7 @@ export default function Plots() {
                                             <div className="absolute top-3 right-3 z-10 p-2 bg-[#A2A2A2] rounded-lg text-white text-lg">
                                                 &nbsp;&nbsp;{year.year}&nbsp;&nbsp;
                                             </div>
+                                            {ReactDOM.createPortal(<RefTipComponent />, document.body)}
                                             <ResponsiveContainer width="100%" height="100%">
                                                 <ScatterChart
                                                     margin={{
@@ -145,8 +173,38 @@ export default function Plots() {
                                                         <Label value="Slope" offset={-17} angle={-90} position="left" />
                                                     </YAxis>
                                                     <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
-                                                    <ReferenceLine x={year.median_intercept} stroke="green" strokeDasharray="7 7" strokeWidth={1.5} />
-                                                    <ReferenceLine y={year.median_slope} stroke="red" strokeDasharray="7 7" strokeWidth={1.5} />
+                                                    <ReferenceLine
+                                                        x={year.median_intercept}
+                                                        stroke="green"
+                                                        strokeDasharray="7 7"
+                                                        strokeWidth={1.5}
+                                                        ifOverflow="extendDomain"
+                                                    />
+                                                    <ReferenceLine
+                                                        x={year.median_intercept}
+                                                        stroke="transparent"
+                                                        strokeWidth={10}
+                                                        strokeOpacity={0}
+                                                        ifOverflow="extendDomain"
+                                                        onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept}`, 'green')}
+                                                        onMouseLeave={handleHideRefTip}
+                                                    />
+                                                    <ReferenceLine
+                                                        y={year.median_slope}
+                                                        stroke="red"
+                                                        strokeDasharray="7 7"
+                                                        strokeWidth={1.5}
+                                                        ifOverflow="extendDomain"
+                                                    />
+                                                    <ReferenceLine
+                                                        y={year.median_slope}
+                                                        stroke="transparent"
+                                                        strokeWidth={10}
+                                                        strokeOpacity={0}
+                                                        ifOverflow="extendDomain"
+                                                        onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope}`, 'red')}
+                                                        onMouseLeave={handleHideRefTip}
+                                                    />
                                                     <Scatter data={data} fill="#8884d8">
                                                         {data.map((entry, index) => (
                                                             <Cell
@@ -199,6 +257,7 @@ export default function Plots() {
                                                     <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
                                                         &nbsp;&nbsp;{selectedCountry.name}&nbsp;&nbsp;
                                                     </div>
+                                                    {ReactDOM.createPortal(<RefTipComponent />, document.body)}
                                                     <ResponsiveContainer width="100%" height="100%">
                                                         <ScatterChart
                                                             margin={{
@@ -216,8 +275,38 @@ export default function Plots() {
                                                                 <Label value="Slope" offset={-17} angle={-90} position="left" />
                                                             </YAxis>
                                                             <Tooltip content={<CustomTooltip data={data} selectedIndex={selectedCountryIndex} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
-                                                            <ReferenceLine x={year.median_intercept} stroke="green" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
-                                                            <ReferenceLine y={year.median_slope} stroke="red" strokeDasharray="7 7" strokeWidth={1.5} ifOverflow="extendDomain" />
+                                                            <ReferenceLine
+                                                                x={year.median_intercept}
+                                                                stroke="green"
+                                                                strokeDasharray="7 7"
+                                                                strokeWidth={1.5}
+                                                                ifOverflow="extendDomain"
+                                                            />
+                                                            <ReferenceLine
+                                                                x={year.median_intercept}
+                                                                stroke="transparent"
+                                                                strokeWidth={10}
+                                                                strokeOpacity={0}
+                                                                ifOverflow="extendDomain"
+                                                                onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept}`, 'green')}
+                                                                onMouseLeave={handleHideRefTip}
+                                                            />
+                                                            <ReferenceLine
+                                                                y={year.median_slope}
+                                                                stroke="red"
+                                                                strokeDasharray="7 7"
+                                                                strokeWidth={1.5}
+                                                                ifOverflow="extendDomain"
+                                                            />
+                                                            <ReferenceLine
+                                                                y={year.median_slope}
+                                                                stroke="transparent"
+                                                                strokeWidth={10}
+                                                                strokeOpacity={0}
+                                                                ifOverflow="extendDomain"
+                                                                onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope}`, 'red')}
+                                                                onMouseLeave={handleHideRefTip}
+                                                            />
                                                             <Scatter data={[data]} fill="#8884d8">
                                                                 <Cell key={`cell-${selectedCountryIndex}`} fill={colors[selectedCountryIndex % colors.length]} />
                                                                 <LabelList dataKey="label" position="right" />
