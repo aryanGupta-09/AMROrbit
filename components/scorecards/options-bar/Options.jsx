@@ -16,7 +16,7 @@ export default function Options() {
     };
 
     return (
-        <Box display="flex" justifyContent="space-between" className="pb-4" px={15}>
+        <Box display="flex" justifyContent="space-between" className="mb-6" px={15}>
             <CustomSelect
                 placeholder="Antibiotic"
                 icon={

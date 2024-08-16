@@ -1,0 +1,45 @@
+"use client";
+import Link from 'next/link';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import tavLabLogo from '@/public/images/tavlab.svg';
+
+export default function Navbar() {
+    const [hoveredLink, setHoveredLink] = useState(null);
+
+    return (
+        <div className="bg-[#191D23] sticky top-0 z-50 text-white flex justify-between items-center py-2">
+            <Link href="/">
+                <h1 className="text-2xl pl-8">AMROrbit</h1>
+            </Link>
+            <div className="flex flex-row gap-x-8 items-center pr-5">
+                {['Home', 'Trends', 'Scorecards', 'Surrogate Indicators', 'Genomic Models'].map((link) => (
+                    <Link href={link === 'Home' ? '/' : `/${link.toLowerCase()}`} key={link}>
+                        <h2
+                            className="text-lg relative"
+                            onMouseEnter={() => setHoveredLink(link)}
+                            onMouseLeave={() => setHoveredLink(null)}
+                        >
+                            {link}
+                            <motion.div
+                                className="absolute bottom-[-4px] left-0 w-full h-[1.5px] bg-white"
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: hoveredLink === link ? 1 : 0 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                style={{ originX: 0 }}
+                            />
+                        </h2>
+                    </Link>
+                ))}
+                <a href="https://tavlab.iiitd.edu.in/" target="_blank" rel="noopener noreferrer">
+                    <Image
+                        src={tavLabLogo}
+                        alt="TavLab logo"
+                        className="h-[55px] w-auto bg-white"
+                    />
+                </a>
+            </div>
+        </div>
+    );
+}

@@ -55,19 +55,19 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
     return (
         <div className="relative" style={{ flex: 0.3 }}>
             <div className="flex flex-col cursor-pointer shadow-lg rounded-t-sm rounded-b-md" onClick={toggleDropdown}>
-                <div className="bg-[#4F55C3] flex items-center justify-between py-1 rounded-t-sm">
+                <div className="bg-[#384559] flex items-center justify-between py-1 rounded-t-sm">
                     <div className="pl-6 text-white text-lg">{selectedItem ? selectedItem : placeholder}</div>
                     <div className="pr-3">{icon}</div>
                 </div>
-                <div className={`flex justify-center items-center rounded-b-md ${isOpen ? 'transition-bg bg-[#C3C8F5]' : 'bg-[#757BD4]'}`}>
+                <div className={`flex justify-center items-center rounded-b-md ${isOpen ? 'transition-bg bg-[#2A2F36]' : 'bg-[#4F6077]'}`}>
                     <ArrowDropDownIcon className="text-white" sx={{ marginY: -0.9 }} />
                 </div>
             </div>
             {isOpen && (
                 <div
                     ref={dropdownRef}
-                    className={`dropdown-menu shadow-lg text-white bg-[#757BD4] rounded-b-md absolute w-full z-10 overflow-y-auto scrollbar-hide fade-in-out`}
-                    style={{ maxHeight: '12rem', marginTop: -9 }}
+                    className={`dropdown-menu shadow-lg text-white bg-[#4F6077] rounded-b-md absolute w-full z-10 overflow-y-auto scrollbar-hide fade-in-out`}
+                    style={{ maxHeight: '12rem', marginTop: -8 }}
                     onScroll={(e) => {
                         const dropdown = e.target;
                         const topArrow = document.querySelector('.scroll-arrow-top');
@@ -87,7 +87,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
                 >
                     {items.length * 2.5 > 12 && (
                         <div
-                            className="scroll-arrow-top flex justify-center items-center sticky top-0 left-0 w-full bg-[#757BD4]"
+                            className="scroll-arrow-top flex justify-center items-center sticky top-0 left-0 w-full bg-[#4F6077]"
                             onMouseEnter={() => {
                                 const dropdown = document.querySelector('.dropdown-menu');
                                 if (dropdown) {
@@ -107,7 +107,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
                     {items.map((item, index) => (
                         <div
                             key={item}
-                            className={`px-4 hover:bg-[#4F55C3] ${index === items.length - 1 ? 'rounded-b-md' : ''}`}
+                            className={`px-4 hover:bg-[#384559] ${index === items.length - 1 ? 'rounded-b-md' : ''}`}
                             style={{ paddingTop: '0.15rem', paddingBottom: '0.4rem' }}
                             onClick={() => handleItemClick(item)}
                         >
@@ -116,7 +116,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
                     ))}
                     {items.length * 2.5 > 12 && (
                         <div
-                            className="scroll-arrow-bottom flex justify-center items-center sticky bottom-0 left-0 w-full bg-[#757BD4]"
+                            className="scroll-arrow-bottom flex justify-center items-center sticky bottom-0 left-0 w-full bg-[#4F6077]"
                             onMouseEnter={() => {
                                 const dropdown = document.querySelector('.dropdown-menu');
                                 if (dropdown) {

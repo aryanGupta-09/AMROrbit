@@ -15,8 +15,8 @@ export default function VisualizationBox({ heading, text }) {
                         />
                     </div>
                     <div className="flex flex-col gap-y-3 text-center w-2/3">
-                        <h1 className="text-3xl font-semibold text-[#6369C1]">{heading}</h1>
-                        <p className="text-lg font-medium leading-9 text-[#757BD3]">{text}</p>
+                        <h1 className="text-3xl font-semibold text-[#E9E9E9]">{heading}</h1>
+                        <p className="text-lg font-medium leading-9 text-[#E9E9E9]">{text}</p>
                     </div>
                 </div>
             </motion.div>
