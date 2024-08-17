@@ -332,7 +332,7 @@ export default function Plots() {
                 );
 
                 return (
-                    <div style={{ width: "90%" }} className="flex flex-row justify-around gap-x-3 mx-auto">
+                    <div style={{ width: "90%" }} className="flex flex-row justify-around gap-x-3 mx-auto mt-7">
                         <section style={{ height: "70vh" }} className="embla flex-grow">
                             <div className="embla__viewport" ref={emblaRef}>
                                 <div className="embla__container">
@@ -427,29 +427,6 @@ export default function Plots() {
                                                 </div>
                                             );
                                         })}
-                                </div>
-                            </div>
-                            <div className="embla__controls px-5">
-                                <div className="embla__buttons">
-                                    <PrevButton
-                                        onClick={onPrevButtonClick}
-                                        disabled={prevBtnDisabled}
-                                    />
-                                    <NextButton
-                                        onClick={onNextButtonClick}
-                                        disabled={nextBtnDisabled}
-                                    />
-                                </div>
-                                <div className="embla__dots">
-                                    {scrollSnaps.map((_, index) => (
-                                        <DotButton
-                                            key={index}
-                                            onClick={() => onDotButtonClick(index)}
-                                            className={'embla__dot'.concat(
-                                                index === selectedIndex ? ' embla__dot--selected' : '',
-                                            )}
-                                        />
-                                    ))}
                                 </div>
                             </div>
                         </section>
