@@ -22,6 +22,9 @@ import { actions } from '@/redux/reducers/scorecardOptionsReducer';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { Tabs, Tab } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 export default function Plots() {
     const dispatch = useDispatch();
     const handleCountryClick = (newValue) => {
@@ -60,6 +63,21 @@ export default function Plots() {
 
     const [files, setFiles] = useState({ years: [], countries: [] });
     const [firstRender, setFirstRender] = useState(true);
+
+    const [years, setYears] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(years[0]);
+
+    const handleYearChange = (event, newValue) => {
+        setSelectedYear(newValue);
+    };
+
+    useEffect(() => {
+        const sortedYears = files.years
+            .map(file => Number(file.year)) // Extract and convert year to number
+            .sort((a, b) => a - b); // Sort the years in ascending order
+        setYears(sortedYears);
+        setSelectedYear(sortedYears[0]);
+    }, [files]);
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -137,6 +155,14 @@ export default function Plots() {
         )
     );
 
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#ffffff',
+            },
+        },
+    });
+
     return (
         (options.country === null || options.country === "All") ? (() => {
             const { maxX, maxY, minX, minY } = files.years.reduce((acc, year) => {
@@ -150,11 +176,31 @@ export default function Plots() {
             }, { maxX: -Infinity, maxY: -Infinity, minX: Infinity, minY: Infinity });
 
             return (
-                <div className="flex flex-wrap justify-around gap-y-7">
-                    {
-                        files.years
-                            .sort((a, b) => a.year - b.year)
-                            .map((year, index) => {
+                <div>
+                    <ThemeProvider theme={theme}>
+                        <Tabs className="mb-4" value={selectedYear} onChange={handleYearChange} centered indicatorColor="primary">
+                            {years.map((year) => (
+                                <Tab
+                                    key={year}
+                                    label={year}
+                                    value={year}
+                                    sx={{
+                                        fontSize: '1.2rem',
+                                        color: 'white',
+                                        '&.Mui-selected': {
+                                            color: 'white',
+                                        },
+                                    }}
+                                />
+                            ))}
+                        </Tabs>
+                    </ThemeProvider>
+                    <div className="flex flex-wrap justify-around gap-y-7">
+                        {
+                            (() => {
+                                const year = files.years.find(year => Number(year.year) === selectedYear);
+                                if (!year) return null;
+
                                 const data = year.countries.map(country => (
                                     {
                                         x: parseFloat(country.x.toFixed(2)),
@@ -164,95 +210,90 @@ export default function Plots() {
                                 ));
 
                                 return (
-                                    <div style={{ width: "90%", height: "70vh" }} className="flex flex-row gap-3" key={index}>
-                                        <div className="bg-[#f1f2f7] rounded-xl shadow-lg flex-grow">
-                                            <div className="relative" style={{ height: "70vh" }}>
-                                                <div className="absolute top-3 right-3 z-10 p-2 bg-[#4F6077] rounded-lg text-white text-lg">
-                                                    &nbsp;&nbsp;{year.year}&nbsp;&nbsp;
-                                                </div>
-                                                {ReactDOM.createPortal(<RefTipComponent />, document.body)}
-                                                <ResponsiveContainer width="100%" height="100%">
-                                                    <ScatterChart
-                                                        margin={{
-                                                            top: 20,
-                                                            right: 30,
-                                                            bottom: 25,
-                                                            left: 10,
-                                                        }}
+                                    <div style={{ width: "90%", height: "70vh" }} className="flex flex-row gap-3">
+                                        <div className="bg-[#f1f2f7] rounded-xl shadow-lg flex-grow" style={{ height: "70vh" }}>
+                                            {ReactDOM.createPortal(<RefTipComponent />, document.body)}
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <ScatterChart
+                                                    margin={{
+                                                        top: 20,
+                                                        right: 30,
+                                                        bottom: 25,
+                                                        left: 10,
+                                                    }}
+                                                >
+                                                    <CartesianGrid />
+                                                    <XAxis
+                                                        type="number"
+                                                        dataKey="x"
+                                                        name="Intercept"
+                                                        domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 1]}
+                                                        allowDecimals={false}
+                                                        tickFormatter={(tick) => Math.round(tick)}
                                                     >
-                                                        <CartesianGrid />
-                                                        <XAxis
-                                                            type="number"
-                                                            dataKey="x"
-                                                            name="Intercept"
-                                                            domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 3]}
-                                                            allowDecimals={false}
-                                                            tickFormatter={(tick) => Math.round(tick)}
-                                                        >
-                                                            <Label value="Intercept" offset={-5} position="bottom" />
-                                                        </XAxis>
-                                                        <YAxis
-                                                            type="number"
-                                                            dataKey="y"
-                                                            name="Slope"
-                                                            domain={[Math.round(minY), Math.round(maxY) + 3]}
-                                                            allowDecimals={false}
-                                                            tickFormatter={(tick) => Math.round(tick)}
-                                                        >
-                                                            <Label value="Slope" offset={-17} angle={-90} position="left" />
-                                                        </YAxis>
-                                                        <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
-                                                        <ReferenceLine
-                                                            x={parseFloat(year.median_intercept.toFixed(2))}
-                                                            stroke="green"
-                                                            strokeDasharray="7 7"
-                                                            strokeWidth={1.5}
-                                                            ifOverflow="extendDomain"
-                                                        />
-                                                        <ReferenceLine
-                                                            x={parseFloat(year.median_intercept.toFixed(2))}
-                                                            stroke="transparent"
-                                                            strokeWidth={10}
-                                                            strokeOpacity={0}
-                                                            ifOverflow="extendDomain"
-                                                            onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept.toFixed(2)}`, 'green')}
-                                                            onMouseLeave={handleHideRefTip}
-                                                        />
-                                                        <ReferenceLine
-                                                            y={parseFloat(year.median_slope.toFixed(2))}
-                                                            stroke="red"
-                                                            strokeDasharray="7 7"
-                                                            strokeWidth={1.5}
-                                                            ifOverflow="extendDomain"
-                                                        />
-                                                        <ReferenceLine
-                                                            y={parseFloat(year.median_slope.toFixed(2))}
-                                                            stroke="transparent"
-                                                            strokeWidth={10}
-                                                            strokeOpacity={0}
-                                                            ifOverflow="extendDomain"
-                                                            onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope.toFixed(2)}`, 'red')}
-                                                            onMouseLeave={handleHideRefTip}
-                                                        />
-                                                        <Scatter data={data} fill="#8884d8">
-                                                            {data.map((entry, index) => {
-                                                                const modifiedEntry = { ...entry, x: entry.x < 0 ? 0 : entry.x };
-                                                                return (
-                                                                    <Cell
-                                                                        key={`cell-${index}`}
-                                                                        fill={colors[index % colors.length]}
-                                                                        className={`cell-${index}`}
-                                                                        stroke={hoveredEntry && hoveredEntry.label === modifiedEntry.label ? 'black' : 'none'}
-                                                                        strokeWidth={hoveredEntry && hoveredEntry.label === modifiedEntry.label ? 1 : 0}
-                                                                        style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.3 : 1 }}
-                                                                        onClick={() => handleCountryClick(modifiedEntry.label)}
-                                                                    />
-                                                                );
-                                                            })}
-                                                        </Scatter>
-                                                    </ScatterChart>
-                                                </ResponsiveContainer>
-                                            </div>
+                                                        <Label value="Intercept" offset={-5} position="bottom" />
+                                                    </XAxis>
+                                                    <YAxis
+                                                        type="number"
+                                                        dataKey="y"
+                                                        name="Slope"
+                                                        domain={[Math.round(minY), Math.round(maxY) + 1]}
+                                                        allowDecimals={false}
+                                                        tickFormatter={(tick) => Math.round(tick)}
+                                                    >
+                                                        <Label value="Slope" offset={-17} angle={-90} position="left" />
+                                                    </YAxis>
+                                                    <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
+                                                    <ReferenceLine
+                                                        x={parseFloat(year.median_intercept.toFixed(2))}
+                                                        stroke="green"
+                                                        strokeDasharray="7 7"
+                                                        strokeWidth={1.5}
+                                                        ifOverflow="extendDomain"
+                                                    />
+                                                    <ReferenceLine
+                                                        x={parseFloat(year.median_intercept.toFixed(2))}
+                                                        stroke="transparent"
+                                                        strokeWidth={10}
+                                                        strokeOpacity={0}
+                                                        ifOverflow="extendDomain"
+                                                        onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept.toFixed(2)}`, 'green')}
+                                                        onMouseLeave={handleHideRefTip}
+                                                    />
+                                                    <ReferenceLine
+                                                        y={parseFloat(year.median_slope.toFixed(2))}
+                                                        stroke="red"
+                                                        strokeDasharray="7 7"
+                                                        strokeWidth={1.5}
+                                                        ifOverflow="extendDomain"
+                                                    />
+                                                    <ReferenceLine
+                                                        y={parseFloat(year.median_slope.toFixed(2))}
+                                                        stroke="transparent"
+                                                        strokeWidth={10}
+                                                        strokeOpacity={0}
+                                                        ifOverflow="extendDomain"
+                                                        onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope.toFixed(2)}`, 'red')}
+                                                        onMouseLeave={handleHideRefTip}
+                                                    />
+                                                    <Scatter data={data} fill="#8884d8">
+                                                        {data.map((entry, index) => {
+                                                            const modifiedEntry = { ...entry, x: entry.x < 0 ? 0 : entry.x };
+                                                            return (
+                                                                <Cell
+                                                                    key={`cell-${index}`}
+                                                                    fill={colors[index % colors.length]}
+                                                                    className={`cell-${index}`}
+                                                                    stroke={hoveredEntry && hoveredEntry.label === modifiedEntry.label ? 'black' : 'none'}
+                                                                    strokeWidth={hoveredEntry && hoveredEntry.label === modifiedEntry.label ? 1 : 0}
+                                                                    style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.3 : 1 }}
+                                                                    onClick={() => handleCountryClick(modifiedEntry.label)}
+                                                                />
+                                                            );
+                                                        })}
+                                                    </Scatter>
+                                                </ScatterChart>
+                                            </ResponsiveContainer>
                                         </div>
                                         <div style={{ width: "15%" }} className="flex flex-col gap-y-3">
                                             <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2">
@@ -267,7 +308,9 @@ export default function Plots() {
                                         </div>
                                     </div>
                                 );
-                            })}
+                            })()
+                        }
+                    </div>
                 </div>
             );
         }
@@ -321,7 +364,7 @@ export default function Plots() {
                                                                 type="number"
                                                                 dataKey="x"
                                                                 name="Intercept"
-                                                                domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 3]}
+                                                                domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 1]}
                                                                 allowDecimals={false}
                                                                 tickFormatter={(tick) => Math.round(tick)}
                                                             >
@@ -331,7 +374,7 @@ export default function Plots() {
                                                                 type="number"
                                                                 dataKey="y"
                                                                 name="Slope"
-                                                                domain={[Math.round(minY), Math.round(maxY) + 3]}
+                                                                domain={[Math.round(minY), Math.round(maxY) + 1]}
                                                                 allowDecimals={false}
                                                                 tickFormatter={(tick) => Math.round(tick)}
                                                             >
@@ -371,7 +414,12 @@ export default function Plots() {
                                                                 onMouseLeave={handleHideRefTip}
                                                             />
                                                             <Scatter data={[data]} fill="#8884d8">
-                                                                <Cell key={`cell-${selectedCountryIndex}`} fill={colors[selectedCountryIndex % colors.length]} />
+                                                                <Cell
+                                                                    key={`cell-${selectedCountryIndex}`}
+                                                                    fill={colors[selectedCountryIndex % colors.length]}
+                                                                    stroke="black"
+                                                                    strokeWidth={1}
+                                                                />
                                                                 <LabelList dataKey="label" position="right" />
                                                             </Scatter>
                                                         </ScatterChart>
