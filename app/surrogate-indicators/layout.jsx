@@ -1,5 +1,5 @@
 export const metadata = {
-    title: ' | AMROrbit',
+    title: 'Surrogate Indicators | AMROrbit',
   };
   
   export default function Layout({ children }) {
