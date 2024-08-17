@@ -11,7 +11,7 @@ export async function GET(req) {
         return new Response(JSON.stringify({ error: 'Missing query parameters' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    const publicFolderPath = path.join(process.cwd(), 'public', 'json-data', sampleType, `${antibiotic}_${organism}`);
+    const publicFolderPath = path.join(process.cwd(), 'public', 'scorecards', sampleType, `${antibiotic}_${organism}`);
 
     try {
         if (!fs.existsSync(publicFolderPath)) {

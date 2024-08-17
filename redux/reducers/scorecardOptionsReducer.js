@@ -7,7 +7,7 @@ const initialState = {
     country: null,
 };
 
-const optionsSlice = createSlice({
+const scorecardOptionsSlice = createSlice({
     name: 'options',
     initialState,
     reducers: {
@@ -26,8 +26,8 @@ const optionsSlice = createSlice({
     },
 });
 
-export const optionsReducer = optionsSlice.reducer;
+export const scorecardOptionsReducer = scorecardOptionsSlice.reducer;
 
-export const actions = optionsSlice.actions;
+export const actions = scorecardOptionsSlice.actions;
 
-export const optionsSelector = (state) => state.optionsReducer;
+export const scorecardOptionsSelector = (state) => state.scorecardOptionsReducer;

@@ -6,6 +6,13 @@ import Image from 'next/image';
 import tavLabLogo from '@/public/images/tavlab.svg';
 
 export default function Navbar() {
+    const links = {
+        'Home': '/',
+        'Trends': '/trends',
+        'Scorecards': '/scorecards',
+        'Surrogate Indicators': '/surrogate-indicators',
+        'Genomic Models': '/genomic-models'
+    };
     const [hoveredLink, setHoveredLink] = useState(null);
 
     return (
@@ -14,18 +21,18 @@ export default function Navbar() {
                 <h1 className="text-2xl pl-8">AMROrbit</h1>
             </Link>
             <div className="flex flex-row gap-x-8 items-center pr-5">
-                {['Home', 'Trends', 'Scorecards', 'Surrogate Indicators', 'Genomic Models'].map((link) => (
-                    <Link href={link === 'Home' ? '/' : `/${link.toLowerCase()}`} key={link}>
+                {Object.entries(links).map(([linkName, linkHref]) => (
+                    <Link href={linkHref} key={linkName}>
                         <h2
                             className="text-lg relative"
-                            onMouseEnter={() => setHoveredLink(link)}
+                            onMouseEnter={() => setHoveredLink(linkName)}
                             onMouseLeave={() => setHoveredLink(null)}
                         >
-                            {link}
+                            {linkName}
                             <motion.div
                                 className="absolute bottom-[-4px] left-0 w-full h-[1.5px] bg-white"
                                 initial={{ scaleX: 0 }}
-                                animate={{ scaleX: hoveredLink === link ? 1 : 0 }}
+                                animate={{ scaleX: hoveredLink === linkName ? 1 : 0 }}
                                 transition={{ duration: 0.3, ease: "easeInOut" }}
                                 style={{ originX: 0 }}
                             />

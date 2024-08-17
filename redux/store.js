@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { optionsReducer } from "./reducers/optionsReducer";
+import { scorecardOptionsReducer } from "./reducers/scorecardOptionsReducer";
+import { leadLagOptionsReducer } from "./reducers/leadLagOptionsReducer";
 
 export const store = configureStore({
     reducer: {
-        optionsReducer,
+        scorecardOptionsReducer,
+        leadLagOptionsReducer,
     },
 });

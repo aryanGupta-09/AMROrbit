@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import { optionsSelector } from "@/redux/reducers/optionsReducer";
+import { scorecardOptionsSelector } from "@/redux/reducers/scorecardOptionsReducer";
 import { useEffect, useState, useCallback } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, Cell, ReferenceLine, LabelList } from 'recharts';
 import Legend from "./Legend";
-import VisualizationBox from "./VisualizationBox";
+import VisualizationBox from "../../common/VisualizationBox";
 
 import { DotButton, useDotButton } from './EmblaCarouselDotButton'
 import {
@@ -17,7 +17,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import colors from '@/public/colors.json';
 
 import { useDispatch } from 'react-redux';
-import { actions } from '@/redux/reducers/optionsReducer';
+import { actions } from '@/redux/reducers/scorecardOptionsReducer';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -27,7 +27,7 @@ export default function Plots() {
     const handleCountryClick = (newValue) => {
         dispatch(actions.setCountry(newValue));
     };
-    const options = useSelector(optionsSelector);
+    const options = useSelector(scorecardOptionsSelector);
 
     const [hoveredEntry, setHoveredEntry] = useState(null);
     const [refTip, setRefTip] = useState({ x: 0, y: 0, text: '', visible: false, color: '' });
@@ -65,7 +65,7 @@ export default function Plots() {
         const fetchFiles = async () => {
             try {
                 const { antibiotic, organism, sampleType } = options;
-                const basePath = `/api/searchFiles?antibiotic=${antibiotic}&organism=${organism}&sampleType=${sampleType}`;
+                const basePath = `/api/searchScorecards?antibiotic=${antibiotic}&organism=${organism}&sampleType=${sampleType}`;
 
                 const fetchJson = async () => {
                     const response = await fetch(basePath);

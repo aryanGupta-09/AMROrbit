@@ -2,7 +2,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { useState, useEffect, useRef } from 'react';
 
-export default function CustomSelect({ placeholder, icon, handleChange, action, items }) {
+export default function CustomSelect({ placeholder, icon, handleChange, action, items, flex }) {
     const [isOpen, setIsOpen] = useState(false);
     const [hasScrolled, setHasScrolled] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -53,7 +53,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
     }, [isOpen]);
 
     return (
-        <div className="relative" style={{ flex: 0.3 }}>
+        <div className="relative" style={{ flex }}>
             <div className="flex flex-col cursor-pointer shadow-lg rounded-t-sm rounded-b-md" onClick={toggleDropdown}>
                 <div className="bg-[#384559] flex items-center justify-between py-1 rounded-t-sm">
                     <div className="pl-6 text-white text-lg">{selectedItem ? selectedItem : placeholder}</div>

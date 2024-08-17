@@ -1,38 +1,27 @@
 import Box from '@mui/joy/Box';
 
 import Image from 'next/image';
-import antibioticLogo from '@/public/images/antibiotic.svg';
 import organismLogo from '@/public/images/organism.svg';
 import sampleTypeLogo from '@/public/images/sample.svg';
 
+import { useSelector } from "react-redux";
+import { scorecardOptionsSelector } from "@/redux/reducers/scorecardOptionsReducer";
 import { useDispatch } from 'react-redux';
-import { actions } from '@/redux/reducers/optionsReducer';
-import CustomSelect from './CustomSelect';
+import { actions } from '@/redux/reducers/leadLagOptionsReducer';
+import CustomSelect from '../common/CustomSelect';
 
 export default function Options() {
+    const options = useSelector(scorecardOptionsSelector);
+
     const dispatch = useDispatch();
     const handleChange = (newValue, action) => {
         dispatch(action(newValue));
     };
 
     return (
-        <Box display="flex" justifyContent="space-between" className="mb-6" px={15}>
+        <Box display="flex" justifyContent="space-around" className="mb-6" px={15}>
             <CustomSelect
-                placeholder="Antibiotic"
-                icon={
-                    <Image
-                        src={antibioticLogo}
-                        alt="antibiotic-logo"
-                        className="h-[40px] w-auto filter invert-[100%] transform rotate-180"
-                    />
-                }
-                handleChange={handleChange}
-                action={actions.setAntibiotic}
-                items={["Imipenem", "Meropenem", "Colistin"]}
-            />
-
-            <CustomSelect
-                placeholder="Organism"
+                placeholder={options.organism || "Organism"}
                 icon={
                     <Image
                         src={organismLogo}
@@ -44,10 +33,11 @@ export default function Options() {
                 handleChange={handleChange}
                 action={actions.setOrganism}
                 items={["Klebsiella pneumoniae", "Escherichia coli"]}
+                flex={0.4}
             />
 
             <CustomSelect
-                placeholder="Sample Type"
+                placeholder={options.sampleType || "Sample Type"}
                 icon={
                     <Image
                         src={sampleTypeLogo}
@@ -59,6 +49,7 @@ export default function Options() {
                 handleChange={handleChange}
                 action={actions.setSampleType}
                 items={["Blood", "Urine"]}
+                flex={0.4}
             />
         </Box>
     );
