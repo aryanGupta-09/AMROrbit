@@ -8,7 +8,6 @@ import tavLabLogo from '@/public/images/tavlab.svg';
 export default function Navbar() {
     const links = {
         'Home': '/',
-        'Trends': '/trends',
         'Scorecards': '/scorecards',
         'Surrogate Indicators': '/surrogate-indicators',
         'Genomic Models': '/genomic-models'

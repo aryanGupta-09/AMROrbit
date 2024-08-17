@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { scorecardOptionsSelector } from "@/redux/reducers/scorecardOptionsReducer";
 import { useEffect, useState, useCallback } from 'react';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, Cell, ReferenceLine, LabelList } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, Cell, ReferenceLine } from 'recharts';
 import Legend from "./Legend";
 import VisualizationBox from "../../common/VisualizationBox";
 
@@ -27,12 +27,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function Plots() {
     const dispatch = useDispatch();
+
+    const [hoveredEntry, setHoveredEntry] = useState(null);
+
     const handleCountryClick = (newValue) => {
+        setHoveredEntry(null);
         dispatch(actions.setCountry(newValue));
     };
     const options = useSelector(scorecardOptionsSelector);
 
-    const [hoveredEntry, setHoveredEntry] = useState(null);
     const [refTip, setRefTip] = useState({ x: 0, y: 0, text: '', visible: false, color: '' });
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay({ delay: 500, stopOnMouseEnter: false, stopOnInteraction: false, jump: true })])
@@ -66,8 +69,10 @@ export default function Plots() {
 
     const [years, setYears] = useState([]);
     const [selectedYear, setSelectedYear] = useState(years[0]);
+    const [isYearSet, setIsYearSet] = useState(false);
 
     const handleYearChange = (event, newValue) => {
+        setIsYearSet(true);
         setSelectedYear(newValue);
     };
 
@@ -76,7 +81,6 @@ export default function Plots() {
             .map(file => Number(file.year)) // Extract and convert year to number
             .sort((a, b) => a - b); // Sort the years in ascending order
         setYears(sortedYears);
-        setSelectedYear(sortedYears[0]);
     }, [files]);
 
     useEffect(() => {
@@ -101,6 +105,7 @@ export default function Plots() {
                 const { years, countries } = await fetchJson();
                 setFiles({ years, countries });
                 setFirstRender(false);
+                setIsYearSet(false);
             } catch (error) {
                 setFiles({ years: [], countries: [] });
             }
@@ -108,6 +113,18 @@ export default function Plots() {
 
         fetchFiles();
     }, [options]);
+
+    useEffect(() => {
+        if (!isYearSet) { // Only start the loop if it's not manually changed
+            let currentIndex = 0;
+            const interval = setInterval(() => {
+                setSelectedYear(years[currentIndex]);
+                currentIndex = (currentIndex + 1) % years.length;
+            }, 500);
+
+            return () => clearInterval(interval); // Cleanup interval on component unmount
+        }
+    }, [isYearSet, years]);
 
     if (firstRender) {
         return <VisualizationBox heading='Start Visualization' text='Select "Antibiotic", "Organism", and "Sample Type" to begin year-wise analysis.' />;
@@ -167,10 +184,11 @@ export default function Plots() {
         (options.country === null || options.country === "All") ? (() => {
             const { maxX, maxY, minX, minY } = files.years.reduce((acc, year) => {
                 year.countries.forEach(country => {
-                    if (country.x > acc.maxX) acc.maxX = country.x;
-                    if (country.y > acc.maxY) acc.maxY = country.y;
-                    if (country.x < acc.minX) acc.minX = country.x;
-                    if (country.y < acc.minY) acc.minY = country.y;
+                    const x = Math.max(0, country.x); // Ensure x is never negative
+                    acc.maxX = Math.max(acc.maxX, x);
+                    acc.maxY = Math.max(acc.maxY, country.y);
+                    acc.minX = Math.min(acc.minX, x);
+                    acc.minY = Math.min(acc.minY, country.y);
                 });
                 return acc;
             }, { maxX: -Infinity, maxY: -Infinity, minX: Infinity, minY: Infinity });
@@ -203,7 +221,7 @@ export default function Plots() {
 
                                 const data = year.countries.map(country => (
                                     {
-                                        x: parseFloat(country.x.toFixed(2)),
+                                        x: Math.max(0, parseFloat(country.x.toFixed(2))),
                                         y: parseFloat(country.y.toFixed(2)),
                                         label: country.name
                                     }
@@ -322,8 +340,9 @@ export default function Plots() {
 
                 const { minX, maxX, minY, maxY } = selectedCountry.years.reduce(
                     (acc, year) => {
-                        acc.minX = Math.min(acc.minX, year.x);
-                        acc.maxX = Math.max(acc.maxX, year.x);
+                        const x = Math.max(0, year.x); // Ensure x is never negative
+                        acc.minX = Math.min(acc.minX, x);
+                        acc.maxX = Math.max(acc.maxX, x);
                         acc.minY = Math.min(acc.minY, year.y);
                         acc.maxY = Math.max(acc.maxY, year.y);
                         return acc;
@@ -340,9 +359,8 @@ export default function Plots() {
                                         .sort((a, b) => a.year - b.year)
                                         .map((year, index) => {
                                             const data = {
-                                                x: parseFloat(year.x.toFixed(2)),
+                                                x: Math.max(0, parseFloat(year.x.toFixed(2))),
                                                 y: parseFloat(year.y.toFixed(2)),
-                                                label: year.year
                                             };
                                             return (
                                                 <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center relative" key={index}>
@@ -420,7 +438,6 @@ export default function Plots() {
                                                                     stroke="black"
                                                                     strokeWidth={1}
                                                                 />
-                                                                <LabelList dataKey="label" position="right" />
                                                             </Scatter>
                                                         </ScatterChart>
                                                     </ResponsiveContainer>
