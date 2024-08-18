@@ -1,75 +1,154 @@
-import { useSelector } from "react-redux";
-import { leadLagOptionsSelector } from "@/redux/reducers/leadLagOptionsReducer";
-import { useState, useEffect } from 'react';
+"use client";
+import { useState, useCallback } from 'react';
+import { Tabs, Tab } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { DotButton, useDotButton } from '../common/EmblaCarouselDotButton'
+import {
+    PrevButton,
+    NextButton,
+    usePrevNextButtons
+} from '../common/EmblaCarouselArrowButtons'
+import Autoplay from 'embla-carousel-autoplay'
+import useEmblaCarousel from 'embla-carousel-react'
 import { pdfjs, Document, Page } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-import VisualizationBox from "@/components/common/VisualizationBox";
-
 export default function LeadLagPlots() {
-    const options = useSelector(leadLagOptionsSelector);
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#ffffff',
+            },
+        },
+    });
 
-    const [fileUrl, setFileUrl] = useState(null);
-    const [numPages, setNumPages] = useState(null);
-    const [firstRender, setFirstRender] = useState(true);
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 1500, stopOnMouseEnter: false, stopOnInteraction: true })]);
 
-    useEffect(() => {
-        const fetchFile = async () => {
-            try {
-                const response = await fetch(`/api/searchLeadLags?organism=${encodeURIComponent(options.organism)}&sampleType=${encodeURIComponent(options.sampleType)}`);
-                console.log('Response:', response); // Log the response
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const contentType = response.headers.get("content-type");
-                console.log('Content-Type:', contentType); // Log the content type
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    const data = await response.json();
-                    console.log('Data:', data); // Log the data
-                    if (data.fileUrl) {
-                        setFileUrl(data.fileUrl);
-                        setFirstRender(false);
-                    } else {
-                        throw new Error("File URL not found in response");
-                    }
-                } else {
-                    throw new Error("Response is not JSON");
-                }
-            } catch (error) {
-                console.error('Error fetching files:', error);
-            }
-        };
-        fetchFile();
-    }, [options]);
+    const onNavButtonClick = useCallback((emblaApi) => {
+        const autoplay = emblaApi?.plugins()?.autoplay
+        if (!autoplay) return
 
-    const onDocumentLoadSuccess = ({ numPages }) => {
-        setNumPages(numPages);
+        const resetOrStop =
+            autoplay.options.stopOnInteraction === false
+                ? autoplay.reset
+                : autoplay.stop
+
+        resetOrStop()
+    }, []);
+
+    const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(
+        emblaApi,
+        onNavButtonClick
+    );
+
+    const {
+        prevBtnDisabled,
+        nextBtnDisabled,
+        onPrevButtonClick,
+        onNextButtonClick
+    } = usePrevNextButtons(emblaApi, onNavButtonClick);
+
+    const [antibiotic, setAntibiotic] = useState('Imipenem');
+
+    const handleTabChange = (event, newValue) => {
+        setAntibiotic(newValue);
     };
 
-    if (firstRender) {
-        return <VisualizationBox heading='Start Visualization' text='Select "Organism" and "Sample Type" to begin analysis.' />;
-    }
-    else if (!fileUrl) {
-        return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
-    }
+    const antibioticDocuments = {
+        Imipenem: [
+            { fileUrl: '/lead-lags/Klebsiella pneumoniae_Urine.pdf', pages: [6, 10] },
+        ],
+        Meropenem: [
+            { fileUrl: '/lead-lags/Escherichia coli_Blood.pdf', pages: [3, 6, 8, 10] },
+            { fileUrl: '/lead-lags/Klebsiella pneumoniae_Blood.pdf', pages: [4, 5, 6] },
+            { fileUrl: '/lead-lags/Klebsiella pneumoniae_Urine.pdf', pages: [7] }
+        ],
+    };
 
     return (
-        <div className="flex flex-wrap justify-around">
-            <Document file={fileUrl} onLoadSuccess={onDocumentLoadSuccess}>
-                {Array.from(new Array(numPages), (el, index) => (
-                    <div key={`page_${index + 1}`} style={{ marginBottom: '20px', padding: '10px' }}>
-                        <div className="rounded-xl shadow-lg overflow-hidden">
-                            <Page
-                                pageNumber={index + 1}
-                                renderTextLayer={false}
-                                renderAnnotationLayer={false}
-                                scale={1.5}
-                            />
-                        </div>
+        <div>
+            <ThemeProvider theme={theme}>
+                <Tabs
+                    className="mb-4"
+                    value={antibiotic}
+                    onChange={handleTabChange}
+                    centered
+                    indicatorColor="primary"
+                >
+                    <Tab
+                        label="Imipenem"
+                        value="Imipenem"
+                        sx={{
+                            fontSize: '1.2rem',
+                            color: 'white',
+                            textTransform: 'none',
+                            marginRight: '20px',
+                            '&.Mui-selected': {
+                                color: 'white',
+                            },
+                        }}
+                    />
+                    <Tab
+                        label="Meropenem"
+                        value="Meropenem"
+                        sx={{
+                            fontSize: '1.2rem',
+                            color: 'white',
+                            textTransform: 'none',
+                            marginLeft: '20px',
+                            '&.Mui-selected': {
+                                color: 'white',
+                            },
+                        }}
+                    />
+                </Tabs>
+            </ThemeProvider>
+            <section style={{ width: "80%" }} className="embla flex flex-col">
+                <div className="embla__viewport" ref={emblaRef}>
+                    <div className="embla__container">
+                        {antibioticDocuments[antibiotic].map((doc, docIndex) => (
+                            doc.pages.map((pageNumber) => (
+                                <div className="embla__slide flex justify-center items-center" key={`page_${docIndex}_${pageNumber}`}>
+                                    <div className="rounded-xl shadow-lg overflow-hidden">
+                                        <Document file={doc.fileUrl}>
+                                            <Page
+                                                pageNumber={pageNumber}
+                                                renderTextLayer={false}
+                                                renderAnnotationLayer={false}
+                                                scale={1.8}
+                                            />
+                                        </Document>
+                                    </div>
+                                </div>
+                            ))
+                        ))}
                     </div>
-                ))}
-            </Document>
+                </div>
+                <div className="flex flex-row justify-between mt-3 px-24">
+                    <div className="embla__buttons">
+                        <PrevButton
+                            onClick={onPrevButtonClick}
+                            disabled={prevBtnDisabled}
+                        />
+                        <NextButton
+                            onClick={onNextButtonClick}
+                            disabled={nextBtnDisabled}
+                        />
+                    </div>
+                    <div className="embla__dots">
+                        {scrollSnaps.map((_, index) => (
+                            <DotButton
+                                key={index}
+                                onClick={() => onDotButtonClick(index)}
+                                className={'embla__dot'.concat(
+                                    index === selectedIndex ? ' embla__dot--selected' : '',
+                                )}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

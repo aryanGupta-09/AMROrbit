@@ -5,12 +5,12 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Responsive
 import Legend from "./Legend";
 import VisualizationBox from "../../common/VisualizationBox";
 
-import { DotButton, useDotButton } from './EmblaCarouselDotButton'
+import { DotButton, useDotButton } from '../../common/EmblaCarouselDotButton'
 import {
     PrevButton,
     NextButton,
     usePrevNextButtons
-} from './EmblaCarouselArrowButtons'
+} from '../../common/EmblaCarouselArrowButtons'
 import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
 
@@ -38,7 +38,7 @@ export default function Plots() {
 
     const [refTip, setRefTip] = useState({ x: 0, y: 0, text: '', visible: false, color: '' });
 
-    const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay({ delay: 500, stopOnMouseEnter: false, stopOnInteraction: false, jump: true })])
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 500, stopOnMouseEnter: false, stopOnInteraction: false, jump: true })]);
 
     const onNavButtonClick = useCallback((emblaApi) => {
         const autoplay = emblaApi?.plugins()?.autoplay
