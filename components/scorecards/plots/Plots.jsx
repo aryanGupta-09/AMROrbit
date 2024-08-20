@@ -22,7 +22,7 @@ import { actions } from '@/redux/reducers/scorecardOptionsReducer';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Tabs, Tab } from '@mui/material';
+import { Tabs, Tab, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function Plots() {
@@ -74,6 +74,15 @@ export default function Plots() {
     const handleYearChange = (event, newValue) => {
         setIsYearSet(true);
         setSelectedYear(newValue);
+    };
+
+    const is2xl = useMediaQuery('(min-width: 2560px)');
+    const is3xl = useMediaQuery('(min-width: 3200px)');
+
+    const getStrokeWidth = () => {
+        if (is3xl) return 14; // Stroke width for 3xl screens
+        if (is2xl) return 12;  // Stroke width for 2xl screens
+        return 2;            // Default stroke width
     };
 
     useEffect(() => {
@@ -173,6 +182,17 @@ export default function Plots() {
     );
 
     const theme = createTheme({
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 600,
+                md: 960,
+                lg: 1280,
+                xl: 1920,
+                '2xl': 2560, // Custom breakpoint
+                '3xl': 3200, // Custom breakpoint
+            },
+        },
         palette: {
             primary: {
                 main: '#ffffff',
@@ -203,11 +223,24 @@ export default function Plots() {
                                     label={year}
                                     value={year}
                                     sx={{
-                                        fontSize: '1.2rem',
+                                        fontSize: {
+                                            xs: '1rem', // Default font size
+                                            // sm: '1.1rem', // Font size for small screens and up
+                                            md: '1.2rem', // Font size for medium screens and up
+                                            // lg: '1.3rem', // Font size for large screens and up
+                                            "xl": '1.4rem', // Font size for extra-large screens and up
+                                            "2xl": '1.7rem',
+                                            "3xl": '2rem',
+                                        },
                                         color: 'white',
                                         '&.Mui-selected': {
                                             color: 'white',
                                         },
+                                        mr: {
+                                            xl: '1rem',
+                                            "2xl": '2rem',
+                                            "3xl": '4rem',
+                                        }
                                     }}
                                 />
                             ))}
@@ -261,7 +294,7 @@ export default function Plots() {
                                                     >
                                                         <Label value="Slope" offset={-17} angle={-90} position="left" />
                                                     </YAxis>
-                                                    <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />
+                                                    {isYearSet && <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />}
                                                     <ReferenceLine
                                                         x={parseFloat(year.median_intercept.toFixed(2))}
                                                         stroke="green"
@@ -269,15 +302,17 @@ export default function Plots() {
                                                         strokeWidth={1.5}
                                                         ifOverflow="extendDomain"
                                                     />
-                                                    <ReferenceLine
-                                                        x={parseFloat(year.median_intercept.toFixed(2))}
-                                                        stroke="transparent"
-                                                        strokeWidth={10}
-                                                        strokeOpacity={0}
-                                                        ifOverflow="extendDomain"
-                                                        onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept.toFixed(2)}`, 'green')}
-                                                        onMouseLeave={handleHideRefTip}
-                                                    />
+                                                    {isYearSet &&
+                                                        <ReferenceLine
+                                                            x={parseFloat(year.median_intercept.toFixed(2))}
+                                                            stroke="transparent"
+                                                            strokeWidth={10}
+                                                            strokeOpacity={0}
+                                                            ifOverflow="extendDomain"
+                                                            onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept.toFixed(2)}`, 'green')}
+                                                            onMouseLeave={handleHideRefTip}
+                                                        />
+                                                    }
                                                     <ReferenceLine
                                                         y={parseFloat(year.median_slope.toFixed(2))}
                                                         stroke="red"
@@ -285,15 +320,17 @@ export default function Plots() {
                                                         strokeWidth={1.5}
                                                         ifOverflow="extendDomain"
                                                     />
-                                                    <ReferenceLine
-                                                        y={parseFloat(year.median_slope.toFixed(2))}
-                                                        stroke="transparent"
-                                                        strokeWidth={10}
-                                                        strokeOpacity={0}
-                                                        ifOverflow="extendDomain"
-                                                        onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope.toFixed(2)}`, 'red')}
-                                                        onMouseLeave={handleHideRefTip}
-                                                    />
+                                                    {isYearSet &&
+                                                        <ReferenceLine
+                                                            y={parseFloat(year.median_slope.toFixed(2))}
+                                                            stroke="transparent"
+                                                            strokeWidth={10}
+                                                            strokeOpacity={0}
+                                                            ifOverflow="extendDomain"
+                                                            onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope.toFixed(2)}`, 'red')}
+                                                            onMouseLeave={handleHideRefTip}
+                                                        />
+                                                    }
                                                     <Scatter data={data} fill="#8884d8">
                                                         {data.map((entry, index) => {
                                                             const modifiedEntry = { ...entry, x: entry.x < 0 ? 0 : entry.x };
@@ -302,9 +339,9 @@ export default function Plots() {
                                                                     key={`cell-${index}`}
                                                                     fill={colors[index % colors.length]}
                                                                     className={`cell-${index}`}
-                                                                    stroke={hoveredEntry && hoveredEntry.label === modifiedEntry.label ? 'black' : 'none'}
-                                                                    strokeWidth={hoveredEntry && hoveredEntry.label === modifiedEntry.label ? 1 : 0}
-                                                                    style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.3 : 1 }}
+                                                                    stroke={colors[index % colors.length]}
+                                                                    strokeWidth={getStrokeWidth()}
+                                                                    style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.1 : 1 }}
                                                                     onClick={() => handleCountryClick(modifiedEntry.label)}
                                                                 />
                                                             );
@@ -313,7 +350,7 @@ export default function Plots() {
                                                 </ScatterChart>
                                             </ResponsiveContainer>
                                         </div>
-                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3">
+                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3 2xl:text-lg">
                                             <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2">
                                                 <div className="flex pt-1" style={{ color: 'green' }}>
                                                     --&nbsp;Median Intercept
@@ -364,7 +401,7 @@ export default function Plots() {
                                             };
                                             return (
                                                 <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center relative" key={index}>
-                                                    <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
+                                                    <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg 2xl:text-xl`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
                                                         &nbsp;&nbsp;{selectedCountry.name}&nbsp;&nbsp;
                                                     </div>
                                                     {ReactDOM.createPortal(<RefTipComponent />, document.body)}
@@ -447,7 +484,7 @@ export default function Plots() {
                                 </div>
                             </div>
                         </section>
-                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3">
+                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3 2xl:text-lg 3xl:text-xl">
                             <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2 h-fit">
                                 <div className="flex pt-1" style={{ color: 'green' }}>
                                     --&nbsp;Median Intercept
@@ -456,7 +493,7 @@ export default function Plots() {
                                     --&nbsp;Median Slope
                                 </div>
                             </div>
-                            <div className="bg-[#4F6077] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer" onClick={() => handleCountryClick("All")}>Back to all countries</div>
+                            <div className="bg-[#4F6077] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer 2xl:text-lg 3xl:text-xl" onClick={() => handleCountryClick("All")}>Back to all countries</div>
                         </div>
                     </div>
                 );

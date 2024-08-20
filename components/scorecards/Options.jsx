@@ -27,7 +27,7 @@ export default function Options() {
                     <Image
                         src={antibioticLogo}
                         alt="antibiotic-logo"
-                        className="h-[40px] w-auto filter invert-[100%] transform rotate-180"
+                        className="h-10 2xl:h-14 w-auto filter invert-[100%] transform rotate-180"
                     />
                 }
                 handleChange={handleChange}
@@ -42,7 +42,7 @@ export default function Options() {
                     <Image
                         src={organismLogo}
                         alt="organism-logo"
-                        className="h-[35px] w-auto filter invert-[100%] transform scale-x-[-1]"
+                        className="h-9 2xl:h-[52px] w-auto filter invert-[100%] transform scale-x-[-1]"
                         style={{ marginTop: '0.15rem', marginBottom: '0.15rem' }}
                     />
                 }
@@ -58,7 +58,7 @@ export default function Options() {
                     <Image
                         src={sampleTypeLogo}
                         alt="sample-type-logo"
-                        className="h-[35px] w-auto filter invert-[100%]"
+                        className="h-9 2xl:h-[52px] w-auto filter invert-[100%]"
                         style={{ marginTop: '0.15rem', marginBottom: '0.15rem' }}
                     />
                 }

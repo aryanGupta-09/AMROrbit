@@ -36,7 +36,7 @@ export default function Legend({ data, onHover, onClick }) {
 
     return (
         <div
-            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide"
+            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide 2xl:text-lg 3xl:text-xl"
             ref={legendRef}
             onScroll={(e) => {
                 const legend = e.target;

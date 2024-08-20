@@ -56,7 +56,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
         <div className="relative z-20" style={{ flex }}>
             <div className="flex flex-col cursor-pointer shadow-lg rounded-t-sm rounded-b-md" onClick={toggleDropdown}>
                 <div className="bg-[#384559] flex items-center justify-between py-1 rounded-t-sm">
-                    <div className="pl-6 text-white text-lg">{selectedItem ? selectedItem : placeholder}</div>
+                    <div className="pl-6 text-white text-lg 2xl:text-2xl 3xl:text-3xl">{selectedItem ? selectedItem : placeholder}</div>
                     <div className="pr-3">{icon}</div>
                 </div>
                 <div className={`flex justify-center items-center rounded-b-md ${isOpen ? 'transition-bg bg-[#2A2F36]' : 'bg-[#4F6077]'}`}>
@@ -66,8 +66,8 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
             {isOpen && (
                 <div
                     ref={dropdownRef}
-                    className={`dropdown-menu shadow-lg text-white bg-[#4F6077] rounded-b-md absolute w-full z-10 overflow-y-auto scrollbar-hide fade-in-out`}
-                    style={{ maxHeight: '12rem', marginTop: -8 }}
+                    className={`dropdown-menu max-h-48 2xl:max-h-60 3xl:max-h-72 shadow-lg text-white bg-[#4F6077] 2xl:text-xl 3xl:text-2xl rounded-b-md absolute w-full z-10 overflow-y-auto scrollbar-hide fade-in-out`}
+                    style={{ marginTop: -8 }}
                     onScroll={(e) => {
                         const dropdown = e.target;
                         const topArrow = document.querySelector('.scroll-arrow-top');
@@ -107,8 +107,7 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
                     {items.map((item, index) => (
                         <div
                             key={item}
-                            className={`px-4 hover:bg-[#384559] ${index === items.length - 1 ? 'rounded-b-md' : ''}`}
-                            style={{ paddingTop: '0.15rem', paddingBottom: '0.4rem' }}
+                            className={`px-4 py-2 2xl:py-3 3xl:py-4 hover:bg-[#384559] ${index === items.length - 1 ? 'rounded-b-md' : ''}`}
                             onClick={() => handleItemClick(item)}
                         >
                             {item}

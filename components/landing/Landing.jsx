@@ -1,6 +1,9 @@
 "use client";
-import Image from 'next/image';
-import landingAnimation from '@/public/images/landingAnimation.gif';
+import { useState, useEffect, useRef } from 'react';
+import { useMediaQuery } from '@mui/material';
+import { ScatterChart, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceLine, Scatter, Cell, Label, ResponsiveContainer } from 'recharts';
+import years from '@/public/scorecards/Blood/Imipenem_Klebsiella pneumoniae/years.json';
+import colors from '@/public/colors.json'
 import { motion } from 'framer-motion';
 
 const textVariants = {
@@ -9,34 +12,127 @@ const textVariants = {
 };
 
 export default function Landing() {
+    const sortedYears = years
+        .map(file => Number(file.year)) // Extract and convert year to number
+        .sort((a, b) => a - b); // Sort the years in ascending order
+
+    const [selectedYear, setSelectedYear] = useState(sortedYears[0]);
+
+    const is2xl = useMediaQuery('(min-width: 2560px)');
+    const is3xl = useMediaQuery('(min-width: 3200px)');
+
+    const getStrokeWidth = () => {
+        if (is3xl) return 14; // Stroke width for 3xl screens
+        if (is2xl) return 12;  // Stroke width for 2xl screens
+        return 2;            // Default stroke width
+    };
+
+    const currentIndexRef = useRef(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSelectedYear(sortedYears[currentIndexRef.current]);
+            currentIndexRef.current = (currentIndexRef.current + 1) % sortedYears.length;
+        }, 500);
+
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, [sortedYears]);
+
+    const { maxX, maxY, minX, minY } = years.reduce((acc, year) => {
+        year.countries.forEach(country => {
+            const x = Math.max(0, country.x); // Ensure x is never negative
+            acc.maxX = Math.max(acc.maxX, x);
+            acc.maxY = Math.max(acc.maxY, country.y);
+            acc.minX = Math.min(acc.minX, x);
+            acc.minY = Math.min(acc.minY, country.y);
+        });
+        return acc;
+    }, { maxX: -Infinity, maxY: -Infinity, minX: Infinity, minY: Infinity });
+
+    const year = years.find(year => Number(year.year) === selectedYear);
+    if (!year) return null;
+
+    const data = year.countries.map(country => (
+        {
+            x: Math.max(0, parseFloat(country.x.toFixed(2))),
+            y: parseFloat(country.y.toFixed(2)),
+            label: country.name
+        }
+    ));
+
     return (
-        <div className="flex justify-center items-center">
-            <div className="flex flex-row gap-x-6 items-center justify-center mx-auto mt-20" style={{ width: "70%" }}>
-                <div className="flex-shrink-0">
-                    <Image
-                        src={landingAnimation}
-                        alt="Landing Animation"
-                        width={400}
-                        height={400}
-                        className='rounded-xl shadow-lg'
-                    />
-                </div>
-                <div className="text-gray-400 text-xl flex flex-col items-start justify-center gap-y-7 flex-grow">
-                    <div>
-                        <h1 className="font-bold text-gray-100" style={{ fontSize: '40px' }}>Our World in AMR</h1>
-                    </div>
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={textVariants}
+        <div className="flex flex-col gap-y-5 2xl:gap-y-6 3xl:gap-y-7 justify-center items-center my-6 mx-auto w-10/12">
+            <h1 className="text-5xl 3xl:text-6xl font-bold text-gray-100">Our World in <span className="text-[#BAC0DF]">AMR</span></h1>
+            <ResponsiveContainer className="bg-[#f1f2f7] rounded-xl shadow-lg" width="100%" height={is3xl ? 2000 : is2xl ? 1400 : 500}>
+                <ScatterChart
+                    margin={{
+                        top: 20,
+                        right: 30,
+                        bottom: 25,
+                        left: 10,
+                    }}
+                >
+                    <CartesianGrid />
+                    <XAxis
+                        type="number"
+                        dataKey="x"
+                        name="Intercept"
+                        domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 1]}
+                        allowDecimals={false}
+                        tickFormatter={(tick) => Math.round(tick)}
                     >
-                        <p>
-                            AMROrbit Scorecard is an actionable tool that can be used by governments to monitor the effectiveness
-                            of surveillance and stewardship efforts in countries to contain AMR.
-                        </p>
-                    </motion.div>
-                </div>
-            </div>
+                        <Label value="Intercept" offset={-5} position="bottom" />
+                    </XAxis>
+                    <YAxis
+                        type="number"
+                        dataKey="y"
+                        name="Slope"
+                        domain={[Math.round(minY), Math.round(maxY) + 1]}
+                        allowDecimals={false}
+                        tickFormatter={(tick) => Math.round(tick)}
+                    >
+                        <Label value="Slope" offset={-17} angle={-90} position="left" />
+                    </YAxis>
+                    <ReferenceLine
+                        x={parseFloat(year.median_intercept.toFixed(2))}
+                        stroke="green"
+                        strokeDasharray="7 7"
+                        strokeWidth={1.5}
+                        ifOverflow="extendDomain"
+                    />
+                    <ReferenceLine
+                        y={parseFloat(year.median_slope.toFixed(2))}
+                        stroke="red"
+                        strokeDasharray="7 7"
+                        strokeWidth={1.5}
+                        ifOverflow="extendDomain"
+                    />
+                    <Scatter data={data} fill="#8884d8">
+                        {data.map((entry, index) => {
+                            const modifiedEntry = { ...entry, x: entry.x < 0 ? 0 : entry.x };
+                            return (
+                                <Cell
+                                    key={`cell-${index}`}
+                                    fill={colors[index % colors.length]}
+                                    className={`cell-${index}`}
+                                    stroke={colors[index % colors.length]}
+                                    strokeWidth={getStrokeWidth()}
+                                />
+                            );
+                        })}
+                    </Scatter>
+                </ScatterChart>
+            </ResponsiveContainer>
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={textVariants}
+            >
+                <p className="text-gray-400 text-xl 2xl:text-2xl 3xl:text-3xl text-center">
+                    "AMROrbit Scorecard is an actionable tool that can be used by governments to monitor the effectiveness
+                    of surveillance and stewardship efforts in countries to contain AMR."
+                </p>
+            </motion.div>
         </div>
     );
 }
