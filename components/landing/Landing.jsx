@@ -129,8 +129,8 @@ export default function Landing() {
                 variants={textVariants}
             >
                 <p className="text-gray-400 text-xl 2xl:text-2xl 3xl:text-3xl text-center">
-                    "AMROrbit Scorecard is an actionable tool that can be used by governments to monitor the effectiveness
-                    of surveillance and stewardship efforts in countries to contain AMR."
+                    &quot;AMROrbit Scorecard is an actionable tool that can be used by governments to monitor the effectiveness
+                    of surveillance and stewardship efforts in countries to contain AMR.&quot;
                 </p>
             </motion.div>
         </div>
