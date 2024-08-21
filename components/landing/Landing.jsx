@@ -117,6 +117,7 @@ export default function Landing() {
                                     className={`cell-${index}`}
                                     stroke={colors[index % colors.length]}
                                     strokeWidth={getStrokeWidth()}
+                                    opacity={modifiedEntry.label === "Thailand" ? 1 : 0.3}
                                 />
                             );
                         })}
