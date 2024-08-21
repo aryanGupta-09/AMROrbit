@@ -2,8 +2,8 @@ import GenomicCard from "./GenomicCard";
 import Image from "next/image";
 import Ecoli_BSI from "@/public/bayesian-networks/E.coli_BSI.png";
 import Ecoli_UTI from "@/public/bayesian-networks/E.coli_UTI.png";
-import Klebsiella_Pneumoniae_BSI from "@/public/bayesian-networks/Klebsiella_pneumoniae_BSI.png";
-import Klebsiella_Pneumoniae_UTI from "@/public/bayesian-networks/Klebsiella_pneumoniae_UTI.png";
+import Klebsiella_Pneumoniae_BSI from "@/public/bayesian-networks/Klebsiella_Pneumoniae_BSI.png";
+import Klebsiella_Pneumoniae_UTI from "@/public/bayesian-networks/Klebsiella_Pneumoniae_UTI.png";
 
 export default function BayesianNetworkPlots() {
     return (
