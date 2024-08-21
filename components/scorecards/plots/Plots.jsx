@@ -341,7 +341,7 @@ export default function Plots() {
                                                                     className={`cell-${index}`}
                                                                     stroke={colors[index % colors.length]}
                                                                     strokeWidth={getStrokeWidth()}
-                                                                    style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.1 : 1 }}
+                                                                    style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.2 : 1 }}
                                                                     onClick={() => handleCountryClick(modifiedEntry.label)}
                                                                 />
                                                             );
