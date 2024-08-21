@@ -11,6 +11,7 @@ import {
 import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
 import { pdfjs, Document, Page } from 'react-pdf';
+import { ThreeDots } from 'react-loader-spinner';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -111,7 +112,23 @@ export default function LeadLagPlots() {
                             doc.pages.map((pageNumber) => (
                                 <div className="embla__slide flex justify-center items-center" key={`page_${docIndex}_${pageNumber}`}>
                                     <div className="rounded-xl shadow-lg overflow-hidden">
-                                        <Document file={doc.fileUrl}>
+                                        <Document
+                                            file={doc.fileUrl}
+                                            loading={
+                                                <div className="flex justify-center items-center">
+                                                    <ThreeDots
+                                                        visible={true}
+                                                        height="80"
+                                                        width="80"
+                                                        color="#4F6077"
+                                                        radius="9"
+                                                        ariaLabel="three-dots-loading"
+                                                        wrapperStyle={{}}
+                                                        wrapperClass=""
+                                                    />
+                                                </div>
+                                            }
+                                        >
                                             <Page
                                                 pageNumber={pageNumber}
                                                 renderTextLayer={false}
