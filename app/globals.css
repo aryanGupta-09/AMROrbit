@@ -103,6 +103,22 @@ body {
     height: 18px;
 }
 
+/* Above 1536px */
+@media (min-width: 1536px) {
+    .embla__button__svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Above 1920px */
+@media (min-width: 1920px) {
+    .embla__button__svg {
+        width: 27px;
+        height: 27px;
+    }
+}
+
 .embla__dots {
     display: flex;
     flex-wrap: wrap;
@@ -138,6 +154,26 @@ body {
     display: flex;
     align-items: center;
     content: '';
+}
+
+/* Above 1536px */
+@media (min-width: 1536px) {
+
+    .embla__dot,
+    .embla__dot:after {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Above 1920px */
+@media (min-width: 1920px) {
+
+    .embla__dot,
+    .embla__dot:after {
+        width: 25px;
+        height: 25px;
+    }
 }
 
 .embla__dot--selected:after {

@@ -36,7 +36,7 @@ export default function Legend({ data, onHover, onClick }) {
 
     return (
         <div
-            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl"
+            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl"
             ref={legendRef}
             onScroll={(e) => {
                 const legend = e.target;
@@ -79,7 +79,7 @@ export default function Legend({ data, onHover, onClick }) {
             {data.map((entry, index) => (
                 <div
                     key={index}
-                    className="flex items-start gap-x-2 mt-2 cursor-pointer" // Add cursor-pointer class
+                    className="flex items-start gap-x-2 mt-2 2xl:mt-4 cursor-pointer" // Add cursor-pointer class
                     onMouseEnter={() => handleMouseEnter(entry, index)}
                     onMouseLeave={() => onHover(null)}
                     onClick={() => onClick(entry.label)} // Add onClick handler

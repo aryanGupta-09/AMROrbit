@@ -22,6 +22,12 @@ export default function LeadLagPlots() {
                 main: '#ffffff',
             },
         },
+        breakpoints: {
+            values: {
+                "2xl": 1536,
+                "3xl": 1920,
+            },
+        },
     });
 
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 1500, stopOnMouseEnter: false, stopOnInteraction: true })]);
@@ -75,7 +81,9 @@ export default function LeadLagPlots() {
         if (width <= 880) return 0.8;
         if (width <= 1024) return 1.2;
         if (width <= 1280) return 1.4;
-        return 1.8;
+        if (width <= 1536) return 1.6;
+        if (width <= 1920) return 1.8;
+        return 2.4;
     };
 
     const [scale, setScale] = useState(() => {
@@ -115,12 +123,18 @@ export default function LeadLagPlots() {
                             fontSize: {
                                 sm: '1.1rem',
                                 md: '1.2rem',
+                                xl: '1.4rem',
+                                "2xl": "1.6rem",
+                                "3xl": "2rem",
                             },
                             color: 'white',
                             textTransform: 'none',
                             marginRight: {
                                 sm: '15px',
                                 md: '20px',
+                                xl: '25px',
+                                "2xl": "30px",
+                                "3xl": "40px",
                             },
                             '&.Mui-selected': {
                                 color: 'white',
@@ -134,12 +148,18 @@ export default function LeadLagPlots() {
                             fontSize: {
                                 sm: '1.1rem',
                                 md: '1.2rem',
+                                xl: '1.4rem',
+                                "2xl": "1.6rem",
+                                "3xl": "2rem",
                             },
                             color: 'white',
                             textTransform: 'none',
                             marginLeft: {
                                 sm: '15px',
                                 md: '20px',
+                                xl: '25px',
+                                "2xl": "30px",
+                                "3xl": "40px",
                             },
                             '&.Mui-selected': {
                                 color: 'white',
@@ -149,7 +169,7 @@ export default function LeadLagPlots() {
                 </Tabs>
             </ThemeProvider>
             <section style={{ width: "80%" }} className="embla flex flex-col">
-                <div className="embla__viewport" ref={emblaRef}>
+                <div className="embla__viewport 2xl:my-3" ref={emblaRef}>
                     <div className="embla__container">
                         {antibioticDocuments[antibiotic].map((doc, docIndex) => (
                             doc.pages.map((pageNumber) => (

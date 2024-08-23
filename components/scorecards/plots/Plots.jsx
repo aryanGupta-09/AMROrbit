@@ -322,8 +322,8 @@ export default function Plots() {
                                                 </ScatterChart>
                                             </ResponsiveContainer>
                                         </div>
-                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl">
-                                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2">
+                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl">
+                                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg py-1 pl-[0.1rem] sm:p-2">
                                                 <div className="flex pt-1" style={{ color: 'green' }}>
                                                     --&nbsp;Median Intercept
                                                 </div>
@@ -373,7 +373,7 @@ export default function Plots() {
                                             };
                                             return (
                                                 <div style={{ height: "70vh" }} className="embla__slide bg-[#f1f2f7] rounded-xl shadow-lg flex justify-center items-center relative" key={index}>
-                                                    <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg 2xl:text-xl`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
+                                                    <div className={`absolute top-3 right-3 z-10 p-2 rounded-lg text-white text-lg 2xl:text-xl 3xl:text-2xl`} style={{ backgroundColor: colors[selectedCountryIndex % colors.length] }}>
                                                         &nbsp;&nbsp;{selectedCountry.name}&nbsp;&nbsp;
                                                     </div>
                                                     {ReactDOM.createPortal(<RefTipComponent />, document.body)}
@@ -456,8 +456,8 @@ export default function Plots() {
                                 </div>
                             </div>
                         </section>
-                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl">
-                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2 h-fit">
+                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl">
+                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2 h-fit py-1 pl-[0.1rem] sm:p-2">
                                 <div className="flex pt-1" style={{ color: 'green' }}>
                                     --&nbsp;Median Intercept
                                 </div>
@@ -465,7 +465,7 @@ export default function Plots() {
                                     --&nbsp;Median Slope
                                 </div>
                             </div>
-                            <div className="bg-[#4F6077] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl" onClick={() => handleCountryClick("All")}>Back to all countries</div>
+                            <div className="bg-[#4F6077] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl" onClick={() => handleCountryClick("All")}>Back to all <span className="hidden xs:inline">countries</span></div>
                         </div>
                     </div>
                 );
