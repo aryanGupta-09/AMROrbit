@@ -20,7 +20,7 @@ export default function Options() {
     };
 
     return (
-        <Box display="flex" justifyContent="space-between" className="mb-4" px={15}>
+        <Box display="flex" justifyContent="space-evenly" className="mb-4">
             <CustomSelect
                 placeholder={options.antibiotic || "Antibiotic"}
                 icon={

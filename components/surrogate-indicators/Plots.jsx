@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Tabs, Tab } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DotButton, useDotButton } from '../common/EmblaCarouselDotButton'
@@ -67,6 +67,37 @@ export default function LeadLagPlots() {
         ],
     };
 
+    const getScale = (width) => {
+        if (width <= 500) return 0.6;
+        if (width <= 600) return 0.65;
+        if (width <= 725) return 0.73;
+        if (width <= 800) return 0.77;
+        if (width <= 880) return 0.8;
+        if (width <= 1024) return 1.2;
+        if (width <= 1280) return 1.4;
+        return 1.8;
+    };
+
+    const [scale, setScale] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return getScale(window.innerWidth);
+        }
+        return 1; // Default scale if window is not defined
+    });
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const updateScale = () => {
+                setScale(getScale(window.innerWidth));
+            };
+
+            window.addEventListener('resize', updateScale);
+            return () => {
+                window.removeEventListener('resize', updateScale);
+            };
+        }
+    }, []);
+
     return (
         <div>
             <ThemeProvider theme={theme}>
@@ -81,10 +112,16 @@ export default function LeadLagPlots() {
                         label="Imipenem"
                         value="Imipenem"
                         sx={{
-                            fontSize: '1.2rem',
+                            fontSize: {
+                                sm: '1.1rem',
+                                md: '1.2rem',
+                            },
                             color: 'white',
                             textTransform: 'none',
-                            marginRight: '20px',
+                            marginRight: {
+                                sm: '15px',
+                                md: '20px',
+                            },
                             '&.Mui-selected': {
                                 color: 'white',
                             },
@@ -94,10 +131,16 @@ export default function LeadLagPlots() {
                         label="Meropenem"
                         value="Meropenem"
                         sx={{
-                            fontSize: '1.2rem',
+                            fontSize: {
+                                sm: '1.1rem',
+                                md: '1.2rem',
+                            },
                             color: 'white',
                             textTransform: 'none',
-                            marginLeft: '20px',
+                            marginLeft: {
+                                sm: '15px',
+                                md: '20px',
+                            },
                             '&.Mui-selected': {
                                 color: 'white',
                             },
@@ -133,7 +176,7 @@ export default function LeadLagPlots() {
                                                 pageNumber={pageNumber}
                                                 renderTextLayer={false}
                                                 renderAnnotationLayer={false}
-                                                scale={1.8}
+                                                scale={scale}
                                             />
                                         </Document>
                                     </div>
@@ -142,7 +185,7 @@ export default function LeadLagPlots() {
                         ))}
                     </div>
                 </div>
-                <div className="flex flex-row justify-between mt-3 px-24">
+                <div className="flex flex-row justify-around mt-3">
                     <div className="embla__buttons">
                         <PrevButton
                             onClick={onPrevButtonClick}

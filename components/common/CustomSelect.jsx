@@ -55,9 +55,9 @@ export default function CustomSelect({ placeholder, icon, handleChange, action, 
     return (
         <div className="relative z-20" style={{ flex }}>
             <div className="flex flex-col cursor-pointer shadow-lg rounded-t-sm rounded-b-md" onClick={toggleDropdown}>
-                <div className="bg-[#384559] flex items-center justify-between py-1 rounded-t-sm">
-                    <div className="pl-6 text-white text-lg 2xl:text-2xl 3xl:text-3xl">{selectedItem ? selectedItem : placeholder}</div>
-                    <div className="pr-3">{icon}</div>
+                <div className="bg-[#384559] flex items-center justify-center md:justify-between py-2 md:py-1 rounded-t-sm">
+                    <div className="md:pl-6 text-white text-base md:text-lg 2xl:text-2xl 3xl:text-3xl">{selectedItem ? selectedItem : placeholder}</div>
+                    <div className="hidden md:block pr-3">{icon}</div>
                 </div>
                 <div className={`flex justify-center items-center rounded-b-md ${isOpen ? 'transition-bg bg-[#2A2F36]' : 'bg-[#4F6077]'}`}>
                     <ArrowDropDownIcon className="text-white" sx={{ marginY: -0.9 }} />

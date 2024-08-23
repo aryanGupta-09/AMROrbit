@@ -62,7 +62,7 @@ export default function Landing() {
 
     return (
         <div className="flex flex-col gap-y-5 2xl:gap-y-6 3xl:gap-y-7 justify-center items-center my-6 mb-14 mx-auto w-10/12">
-            <h1 className="text-5xl 3xl:text-6xl font-bold text-gray-100">Our World in <span className="text-[#BAC0DF]">AMR</span></h1>
+            <h1 className="text-4xl lg:text-5xl 3xl:text-6xl font-bold text-gray-100 text-center">Our World in <span className="text-[#BAC0DF]">AMR</span></h1>
             <ResponsiveContainer className="bg-[#f1f2f7] rounded-xl shadow-lg" width="100%" height={is3xl ? 2000 : is2xl ? 1400 : 500}>
                 <ScatterChart
                     margin={{
@@ -129,7 +129,7 @@ export default function Landing() {
                 animate="visible"
                 variants={textVariants}
             >
-                <p className="text-gray-300 text-xl 2xl:text-2xl 3xl:text-3xl text-center">
+                <p className="text-gray-300 text-lg lg:text-xl 2xl:text-2xl 3xl:text-3xl text-center">
                     &quot;AMROrbit Scorecard is an actionable tool that can be used by governments to monitor the effectiveness
                     of surveillance and stewardship efforts in countries to contain AMR.&quot;
                 </p>
