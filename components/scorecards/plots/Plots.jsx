@@ -5,12 +5,6 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Responsive
 import Legend from "./Legend";
 import VisualizationBox from "../../common/VisualizationBox";
 
-import { DotButton, useDotButton } from '../../common/EmblaCarouselDotButton'
-import {
-    PrevButton,
-    NextButton,
-    usePrevNextButtons
-} from '../../common/EmblaCarouselArrowButtons'
 import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
 
@@ -19,7 +13,6 @@ import colors from '@/public/colors.json';
 import { useDispatch } from 'react-redux';
 import { actions } from '@/redux/reducers/scorecardOptionsReducer';
 
-import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Tabs, Tab, useMediaQuery } from '@mui/material';
@@ -34,35 +27,16 @@ export default function Plots() {
         setHoveredEntry(null);
         dispatch(actions.setCountry(newValue));
     };
-    const options = useSelector(scorecardOptionsSelector);
 
-    const [refTip, setRefTip] = useState({ x: 0, y: 0, text: '', visible: false, color: '' });
+    const handleContinueClick = () => {
+        dispatch(actions.setCountry("All"));
+    };
+
+    const options = useSelector(scorecardOptionsSelector);
 
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 500, stopOnMouseEnter: false, stopOnInteraction: false, jump: true })]);
 
-    const onNavButtonClick = useCallback((emblaApi) => {
-        const autoplay = emblaApi?.plugins()?.autoplay
-        if (!autoplay) return
-
-        const resetOrStop =
-            autoplay.options.stopOnInteraction === false
-                ? autoplay.reset
-                : autoplay.stop
-
-        resetOrStop()
-    }, []);
-
-    const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(
-        emblaApi,
-        onNavButtonClick
-    );
-
-    const {
-        prevBtnDisabled,
-        nextBtnDisabled,
-        onPrevButtonClick,
-        onNextButtonClick
-    } = usePrevNextButtons(emblaApi, onNavButtonClick);
+    const [refTip, setRefTip] = useState({ x: 0, y: 0, text: '', visible: false, color: '' });
 
     const [files, setFiles] = useState({ years: [], countries: [] });
     const [firstRender, setFirstRender] = useState(true);
@@ -135,11 +109,8 @@ export default function Plots() {
         }
     }, [isYearSet, years]);
 
-    if (firstRender) {
-        return <VisualizationBox heading='Start Visualization' text='Select "Antibiotic", "Organism", and "Sample Type" to begin year-wise analysis.' />;
-    }
-    else if ((files.years && files.years.length === 0) && (files.countries && files.countries.length === 0)) {
-        return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
+    if (!firstRender && (files.years && files.years.length === 0) && (files.countries && files.countries.length === 0)) {
+        return <VisualizationBox heading='Continue Visualization' text='Sorry, no data is available for this drug-bug combination in this country.' handleClick={handleContinueClick} />;
     }
 
     const CustomTooltip = ({ active, payload, label, data, selectedIndex }) => {
@@ -237,6 +208,7 @@ export default function Plots() {
                                             color: 'white',
                                         },
                                         mr: {
+                                            xs: '-0.5rem',
                                             xl: '1rem',
                                             "2xl": '2rem',
                                             "3xl": '4rem',
@@ -350,7 +322,7 @@ export default function Plots() {
                                                 </ScatterChart>
                                             </ResponsiveContainer>
                                         </div>
-                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3 2xl:text-lg">
+                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl">
                                             <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2">
                                                 <div className="flex pt-1" style={{ color: 'green' }}>
                                                     --&nbsp;Median Intercept
@@ -373,7 +345,7 @@ export default function Plots() {
             () => {
                 const selectedCountryIndex = files.countries.findIndex(country => country.name === options.country);
                 const selectedCountry = files.countries[selectedCountryIndex];
-                if (!selectedCountry) return <VisualizationBox heading='Continue Visualization' text='Sorry, no data was found. Please try another combination.' />;
+                if (!selectedCountry) return <VisualizationBox heading='Continue Visualization' text='Sorry, no data is available for this drug-bug combination in this country.' handleClick={handleContinueClick} />;
 
                 const { minX, maxX, minY, maxY } = selectedCountry.years.reduce(
                     (acc, year) => {
@@ -472,8 +444,8 @@ export default function Plots() {
                                                                 <Cell
                                                                     key={`cell-${selectedCountryIndex}`}
                                                                     fill={colors[selectedCountryIndex % colors.length]}
-                                                                    stroke="black"
-                                                                    strokeWidth={1}
+                                                                    stroke={colors[selectedCountryIndex % colors.length]}
+                                                                    strokeWidth={getStrokeWidth()}
                                                                 />
                                                             </Scatter>
                                                         </ScatterChart>
@@ -484,7 +456,7 @@ export default function Plots() {
                                 </div>
                             </div>
                         </section>
-                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3 2xl:text-lg 3xl:text-xl">
+                        <div style={{ width: "15%", minWidth: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl">
                             <div className="bg-[#f1f2f7] rounded-xl shadow-lg p-2 h-fit">
                                 <div className="flex pt-1" style={{ color: 'green' }}>
                                     --&nbsp;Median Intercept
@@ -493,7 +465,7 @@ export default function Plots() {
                                     --&nbsp;Median Slope
                                 </div>
                             </div>
-                            <div className="bg-[#4F6077] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer 2xl:text-lg 3xl:text-xl" onClick={() => handleCountryClick("All")}>Back to all countries</div>
+                            <div className="bg-[#4F6077] text-white text-center rounded-xl shadow-lg p-2 h-fit cursor-pointer text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl" onClick={() => handleCountryClick("All")}>Back to all countries</div>
                         </div>
                     </div>
                 );

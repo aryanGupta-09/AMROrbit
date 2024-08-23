@@ -36,7 +36,7 @@ export default function Legend({ data, onHover, onClick }) {
 
     return (
         <div
-            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide 2xl:text-lg 3xl:text-xl"
+            className="bg-[#f1f2f7] rounded-xl shadow-lg px-2 overflow-y-auto scrollbar-hide text-xs sm:text-sm lg:text-base 2xl:text-lg 3xl:text-xl"
             ref={legendRef}
             onScroll={(e) => {
                 const legend = e.target;
@@ -84,7 +84,7 @@ export default function Legend({ data, onHover, onClick }) {
                     onMouseLeave={() => onHover(null)}
                     onClick={() => onClick(entry.label)} // Add onClick handler
                 >
-                    <CircleIcon className="pt-1" fontSize="small" style={{ color: colors[index % colors.length] }} />
+                    <CircleIcon className="pt-1 size-4 lg:size-5 2xl:size-7" style={{ color: colors[index % colors.length] }} />
                     <p style={{ color: colors[index % colors.length] }}>{entry.label}</p>
                 </div>
             ))}

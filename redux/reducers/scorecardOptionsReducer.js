@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    antibiotic: null,
-    organism: null,
-    sampleType: null,
-    country: null,
+    antibiotic: "Imipenem",
+    organism: "Klebsiella pneumoniae",
+    sampleType: "Blood",
+    country: "All",
 };
 
 const scorecardOptionsSlice = createSlice({
