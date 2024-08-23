@@ -187,36 +187,45 @@ export default function Plots() {
             return (
                 <div>
                     <ThemeProvider theme={theme}>
-                        <Tabs className="mb-4" value={selectedYear} onChange={handleYearChange} centered indicatorColor="primary">
-                            {years.map((year) => (
-                                <Tab
-                                    key={year}
-                                    label={year}
-                                    value={year}
-                                    sx={{
-                                        fontSize: {
-                                            xs: '1rem', // Default font size
-                                            // sm: '1.1rem', // Font size for small screens and up
-                                            md: '1.2rem', // Font size for medium screens and up
-                                            // lg: '1.3rem', // Font size for large screens and up
-                                            "xl": '1.4rem', // Font size for extra-large screens and up
-                                            "2xl": '1.7rem',
-                                            "3xl": '2rem',
-                                        },
-                                        color: 'white',
-                                        '&.Mui-selected': {
+                        <div className="flex justify-center overflow-auto mb-4">
+                            <Tabs
+                                value={selectedYear}
+                                onChange={handleYearChange}
+                                centered={false} // Disable centered to allow flexbox centering
+                                variant="scrollable"
+                                scrollButtons="false"
+                                sx={{
+                                    overflow: 'auto',
+                                }}
+                            >
+                                {years.map((year) => (
+                                    <Tab
+                                        key={year}
+                                        label={year}
+                                        value={year}
+                                        sx={{
+                                            fontSize: {
+                                                xs: '1rem', // Default font size
+                                                md: '1.2rem', // Font size for medium screens and up
+                                                xl: '1.4rem', // Font size for extra-large screens and up
+                                                '2xl': '1.7rem',
+                                                '3xl': '2rem',
+                                            },
                                             color: 'white',
-                                        },
-                                        mr: {
-                                            xs: '-0.5rem',
-                                            xl: '1rem',
-                                            "2xl": '2rem',
-                                            "3xl": '4rem',
-                                        }
-                                    }}
-                                />
-                            ))}
-                        </Tabs>
+                                            '&.Mui-selected': {
+                                                color: 'white',
+                                            },
+                                            mr: {
+                                                xs: '-0.5rem',
+                                                xl: '1rem',
+                                                '2xl': '2rem',
+                                                '3xl': '4rem',
+                                            },
+                                        }}
+                                    />
+                                ))}
+                            </Tabs>
+                        </div>
                     </ThemeProvider>
                     <div className="flex flex-wrap justify-around gap-y-7">
                         {
