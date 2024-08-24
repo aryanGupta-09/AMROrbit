@@ -201,7 +201,7 @@ export default function Plots() {
                                 {years.map((year) => (
                                     <Tab
                                         key={year}
-                                        label={year}
+                                        label={`${year}-${(year + 3).toString().slice(-2)}`}
                                         value={year}
                                         sx={{
                                             fontSize: {
@@ -216,10 +216,11 @@ export default function Plots() {
                                                 color: 'white',
                                             },
                                             mr: {
-                                                xs: '-0.5rem',
-                                                xl: '1rem',
-                                                '2xl': '2rem',
-                                                '3xl': '4rem',
+                                                xs: '-0.3rem',
+                                                md: '0.5rem',
+                                                xl: '1.3rem',
+                                                '2xl': '2.4rem',
+                                                '3xl': '4.5rem',
                                             },
                                         }}
                                     />

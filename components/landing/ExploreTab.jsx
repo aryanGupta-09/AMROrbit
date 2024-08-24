@@ -8,13 +8,13 @@ export default function ExploreTab({ title, img, description, link }) {
             <div className="hidden lg:block w-5/12 xl:w-1/4 h-full">
                 {img}
             </div>
-            <div className="w-11/12 lg:w-7/12 xl:w-3/4 flex flex-col justify-between h-full xs:py-2">
+            <div className="w-11/12 lg:w-7/12 xl:w-3/4 flex flex-col justify-between h-full py-2">
                 <div className="flex flex-col gap-y-4">
-                    <h1 className="xs:text-lg lg:text-xl 2xl:text-2xl 3xl:text-4xl 4xl:text-5xl text-white">{title}</h1>
-                    <h2 className="xs:text-sm lg:text-base 2xl:text-lg 3xl:text-2xl 4xl:text-3xl text-gray-300">{description}</h2>
+                    <h1 className="text-base xs:text-lg lg:text-xl 2xl:text-2xl 3xl:text-4xl 4xl:text-5xl text-white">{title}</h1>
+                    <h2 className="text-sm xs:text-sm lg:text-base 2xl:text-lg 3xl:text-2xl 4xl:text-3xl text-gray-300">{description}</h2>
                 </div>
                 <Link href={link}>
-                    <Button className="w-fit 2xl:text-lg 3xl:text-2xl 4xl:text-3xl mt-4 2xl:mt-7" sx={{
+                    <Button className="w-fit text-sm 2xl:text-lg 3xl:text-2xl 4xl:text-3xl mt-4 2xl:mt-7" sx={{
                         color: "white",
                         backgroundColor: "#4F6077",
                         '&:hover': {
