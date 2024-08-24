@@ -130,9 +130,8 @@ export default function Landing() {
                 animate="visible"
                 variants={textVariants}
             >
-                <p className="text-gray-300 text-lg lg:text-xl 2xl:text-2xl 3xl:text-3xl 4xl:text-4xl text-center">
-                    &quot;AMROrbit Scorecard is an actionable tool that can be used by governments to monitor the effectiveness
-                    of surveillance and stewardship efforts in countries to contain AMR.&quot;
+                <p className="text-gray-300 text-base md:text-lg xl:text-xl 2xl:text-2xl 3xl:text-4xl text-center">
+                    The AMROrbit Scorecard is a pivotal tool designed to empower governments globally in the rigorous monitoring and management of antimicrobial resistance (AMR). It provides visual insights that identify areas requiring immediate intervention and evaluates the effectiveness of stewardship and surveillance strategies, aiming to significantly curb the spread of AMR.
                 </p>
             </motion.div>
         </div>

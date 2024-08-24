@@ -74,6 +74,7 @@ export default function LeadLagPlots() {
     };
 
     const getScale = (width) => {
+        if (width <= 400) return 0.5;
         if (width <= 500) return 0.6;
         if (width <= 600) return 0.65;
         if (width <= 725) return 0.73;
@@ -123,7 +124,7 @@ export default function LeadLagPlots() {
                             fontSize: {
                                 sm: '1.1rem',
                                 md: '1.2rem',
-                                xl: '1.4rem',
+                                lg: '1.4rem',
                                 "2xl": "1.6rem",
                                 "3xl": "2rem",
                             },
@@ -148,7 +149,7 @@ export default function LeadLagPlots() {
                             fontSize: {
                                 sm: '1.1rem',
                                 md: '1.2rem',
-                                xl: '1.4rem',
+                                lg: '1.4rem',
                                 "2xl": "1.6rem",
                                 "3xl": "2rem",
                             },
