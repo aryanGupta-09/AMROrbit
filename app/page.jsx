@@ -13,7 +13,7 @@ export default function Home() {
         <ExploreTab
           title="Scorecards"
           img={<Image src={landingScorecard} alt="Scorecard" className="rounded-l-xl" />}
-          description="The Scorecard presents a phase-space plot with resistance levels on the x-axis and the rate of change on the y-axis. Countries in the bottom-left quadrant display favorable AMR profiles, characterized by low initial resistance and a slow increase over time. The remaining quadrants identify countries where targeted interventions are needed due to rising resistance, high baseline resistance, or both."
+          description="The AMROrbit Scorecard is a pivotal tool designed to empower governments globally in the rigorous monitoring and management of antimicrobial resistance (AMR). The Scorecard presents a phase-space plot with resistance levels on the x-axis and the rate of change on the y-axis. Countries in the bottom-left quadrant display favorable AMR profiles, characterized by low initial resistance and a slow increase over time. The remaining quadrants identify countries where targeted interventions are needed due to rising resistance, high baseline resistance, or both."
           link="/scorecards"
         />
         <ExploreTab
