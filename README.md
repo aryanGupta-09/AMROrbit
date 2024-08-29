@@ -1,6 +1,6 @@
 # AMROrbit
 
-AMROrbit Scorecard is a pivotal tool designed to empower governments globally in the rigorous monitoring and management of antimicrobial resistance (AMR). It provides visual insights that identify areas requiring immediate intervention and evaluates the effectiveness of stewardship and surveillance strategies, aiming to significantly curb the spread of AMR.
+AMROrbit is a pivotal tool designed to empower governments globally in the rigorous monitoring and management of antimicrobial resistance (AMR). It provides visual insights that identify areas requiring immediate intervention and evaluates the effectiveness of stewardship and surveillance strategies, aiming to significantly curb the spread of AMR.
 
 
 ## Demo
