@@ -15,7 +15,7 @@ https://amrorbit.tavlab.iiitd.edu.in:3002/
 <a href="https://nodejs.org/en/" target="_blank" rel="noreferrer"><img src="https://github.com/aryanGupta-09/GitHub-Profile-Icons/blob/main/Web%20Development/Nodejs.svg" width="45" height="45" alt="Node.js" /></a>
 <a href="https://expressjs.com/" target="_blank" rel="noreferrer"><img src="https://github.com/aryanGupta-09/GitHub-Profile-Icons/blob/main/Web%20Development/Expressjs.svg" width="45" height="45" alt="Express.js" /></a>
 <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"><img src="https://github.com/aryanGupta-09/GitHub-Profile-Icons/blob/main/Web%20Development/Tailwind.svg" width="45" height="45" alt="Tailwind CSS" /></a>
-<a href="https://mui.com/" target="_blank" rel="noreferrer"><img src="https://github.com/aryanGupta-09/GitHub-Profile-Icons/blob/main/Web%20Development/MaterialUI.svg" width="45" height="45" alt="Material UI" /></a>
+<a href="https://mui.com/" target="_blank" rel="noreferrer"><img src="https://github.com/aryanGupta-09/GitHub-Profile-Icons/blob/main/Web%20Development/MaterialUI.svg" width="45" height="45" alt="Material UI" /></a>&nbsp;
 <a href="https://www.framer.com/motion/" target="_blank" rel="noreferrer"><img src="https://github.com/aryanGupta-09/GitHub-Profile-Icons/blob/main/Web%20Development/FramerMotion.svg" width="38" height="50" alt="Framer Motion" /></a>
 
 ## Installation
