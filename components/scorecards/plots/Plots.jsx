@@ -18,6 +18,9 @@ import ReactDOM from 'react-dom';
 import { Tabs, Tab, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import Image from "next/image";
+import infoIcon from '@/public/images/info.svg';
+
 export default function Plots() {
     const dispatch = useDispatch();
 
@@ -243,105 +246,111 @@ export default function Plots() {
                                 ));
 
                                 return (
-                                    <div style={{ width: "90%", height: "70vh" }} className="flex flex-row gap-3">
-                                        <div className="bg-[#f1f2f7] rounded-xl shadow-lg flex-grow" style={{ height: "70vh" }}>
-                                            {ReactDOM.createPortal(<RefTipComponent />, document.body)}
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <ScatterChart
-                                                    margin={{
-                                                        top: 20,
-                                                        right: 30,
-                                                        bottom: 25,
-                                                        left: 10,
-                                                    }}
-                                                >
-                                                    <CartesianGrid />
-                                                    <XAxis
-                                                        type="number"
-                                                        dataKey="x"
-                                                        name="Intercept"
-                                                        domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 1]}
-                                                        allowDecimals={false}
-                                                        tickFormatter={(tick) => Math.round(tick)}
+                                    <div style={{ width: "90%" }} className="flex flex-col">
+                                        <div style={{ height: "70vh" }} className="flex flex-row gap-3">
+                                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg flex-grow" style={{ height: "70vh" }}>
+                                                {ReactDOM.createPortal(<RefTipComponent />, document.body)}
+                                                <ResponsiveContainer width="100%" height="100%">
+                                                    <ScatterChart
+                                                        margin={{
+                                                            top: 20,
+                                                            right: 30,
+                                                            bottom: 25,
+                                                            left: 10,
+                                                        }}
                                                     >
-                                                        <Label value="Intercept" offset={-5} position="bottom" />
-                                                    </XAxis>
-                                                    <YAxis
-                                                        type="number"
-                                                        dataKey="y"
-                                                        name="Slope"
-                                                        domain={[Math.round(minY), Math.round(maxY) + 1]}
-                                                        allowDecimals={false}
-                                                        tickFormatter={(tick) => Math.round(tick)}
-                                                    >
-                                                        <Label value="Slope" offset={-17} angle={-90} position="left" />
-                                                    </YAxis>
-                                                    {isYearSet && <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />}
-                                                    <ReferenceLine
-                                                        x={parseFloat(year.median_intercept.toFixed(2))}
-                                                        stroke="green"
-                                                        strokeDasharray="7 7"
-                                                        strokeWidth={1.5}
-                                                        ifOverflow="extendDomain"
-                                                    />
-                                                    {isYearSet &&
+                                                        <CartesianGrid />
+                                                        <XAxis
+                                                            type="number"
+                                                            dataKey="x"
+                                                            name="Intercept"
+                                                            domain={[Math.max(0, Math.round(minX)), Math.round(maxX) + 1]}
+                                                            allowDecimals={false}
+                                                            tickFormatter={(tick) => Math.round(tick)}
+                                                        >
+                                                            <Label value="Intercept" offset={-5} position="bottom" />
+                                                        </XAxis>
+                                                        <YAxis
+                                                            type="number"
+                                                            dataKey="y"
+                                                            name="Slope"
+                                                            domain={[Math.round(minY), Math.round(maxY) + 1]}
+                                                            allowDecimals={false}
+                                                            tickFormatter={(tick) => Math.round(tick)}
+                                                        >
+                                                            <Label value="Slope" offset={-17} angle={-90} position="left" />
+                                                        </YAxis>
+                                                        {isYearSet && <Tooltip content={<CustomTooltip data={data} />} cursor={{ strokeDasharray: '5 5', strokeWidth: '1.5' }} isAnimationActive="true" />}
                                                         <ReferenceLine
                                                             x={parseFloat(year.median_intercept.toFixed(2))}
-                                                            stroke="transparent"
-                                                            strokeWidth={10}
-                                                            strokeOpacity={0}
+                                                            stroke="green"
+                                                            strokeDasharray="7 7"
+                                                            strokeWidth={1.5}
                                                             ifOverflow="extendDomain"
-                                                            onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept.toFixed(2)}`, 'green')}
-                                                            onMouseLeave={handleHideRefTip}
                                                         />
-                                                    }
-                                                    <ReferenceLine
-                                                        y={parseFloat(year.median_slope.toFixed(2))}
-                                                        stroke="red"
-                                                        strokeDasharray="7 7"
-                                                        strokeWidth={1.5}
-                                                        ifOverflow="extendDomain"
-                                                    />
-                                                    {isYearSet &&
+                                                        {isYearSet &&
+                                                            <ReferenceLine
+                                                                x={parseFloat(year.median_intercept.toFixed(2))}
+                                                                stroke="transparent"
+                                                                strokeWidth={10}
+                                                                strokeOpacity={0}
+                                                                ifOverflow="extendDomain"
+                                                                onMouseEnter={(e) => handleShowRefTip(e, `Median Intercept: ${year.median_intercept.toFixed(2)}`, 'green')}
+                                                                onMouseLeave={handleHideRefTip}
+                                                            />
+                                                        }
                                                         <ReferenceLine
                                                             y={parseFloat(year.median_slope.toFixed(2))}
-                                                            stroke="transparent"
-                                                            strokeWidth={10}
-                                                            strokeOpacity={0}
+                                                            stroke="red"
+                                                            strokeDasharray="7 7"
+                                                            strokeWidth={1.5}
                                                             ifOverflow="extendDomain"
-                                                            onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope.toFixed(2)}`, 'red')}
-                                                            onMouseLeave={handleHideRefTip}
                                                         />
-                                                    }
-                                                    <Scatter data={data} fill="#8884d8">
-                                                        {data.map((entry, index) => {
-                                                            const modifiedEntry = { ...entry, x: entry.x < 0 ? 0 : entry.x };
-                                                            return (
-                                                                <Cell
-                                                                    key={`cell-${index}`}
-                                                                    fill={colors[index % colors.length]}
-                                                                    className={`cell-${index}`}
-                                                                    stroke={colors[index % colors.length]}
-                                                                    strokeWidth={getStrokeWidth()}
-                                                                    style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.2 : 1 }}
-                                                                    onClick={() => handleCountryClick(modifiedEntry.label)}
-                                                                />
-                                                            );
-                                                        })}
-                                                    </Scatter>
-                                                </ScatterChart>
-                                            </ResponsiveContainer>
-                                        </div>
-                                        <div style={{ width: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl">
-                                            <div className="bg-[#f1f2f7] rounded-xl shadow-lg py-1 pl-[0.1rem] sm:p-2">
-                                                <div className="flex pt-1" style={{ color: 'green' }}>
-                                                    --&nbsp;Median Intercept
-                                                </div>
-                                                <div className="flex pt-1" style={{ color: 'red' }}>
-                                                    --&nbsp;Median Slope
-                                                </div>
+                                                        {isYearSet &&
+                                                            <ReferenceLine
+                                                                y={parseFloat(year.median_slope.toFixed(2))}
+                                                                stroke="transparent"
+                                                                strokeWidth={10}
+                                                                strokeOpacity={0}
+                                                                ifOverflow="extendDomain"
+                                                                onMouseEnter={(e) => handleShowRefTip(e, `Median Slope: ${year.median_slope.toFixed(2)}`, 'red')}
+                                                                onMouseLeave={handleHideRefTip}
+                                                            />
+                                                        }
+                                                        <Scatter data={data} fill="#8884d8">
+                                                            {data.map((entry, index) => {
+                                                                const modifiedEntry = { ...entry, x: entry.x < 0 ? 0 : entry.x };
+                                                                return (
+                                                                    <Cell
+                                                                        key={`cell-${index}`}
+                                                                        fill={colors[index % colors.length]}
+                                                                        className={`cell-${index}`}
+                                                                        stroke={colors[index % colors.length]}
+                                                                        strokeWidth={getStrokeWidth()}
+                                                                        style={{ opacity: hoveredEntry && hoveredEntry.label !== modifiedEntry.label ? 0.2 : 1 }}
+                                                                        onClick={() => handleCountryClick(modifiedEntry.label)}
+                                                                    />
+                                                                );
+                                                            })}
+                                                        </Scatter>
+                                                    </ScatterChart>
+                                                </ResponsiveContainer>
                                             </div>
-                                            <Legend data={data} onHover={setHoveredEntry} onClick={handleCountryClick} />
+                                            <div style={{ width: "15%" }} className="flex flex-col gap-y-3 text-xs sm:text-sm lg:text-base xl:text-lg 2xl:text-xl 3xl:text-2xl">
+                                                <div className="bg-[#f1f2f7] rounded-xl shadow-lg py-1 pl-[0.1rem] sm:p-2">
+                                                    <div className="flex pt-1" style={{ color: 'green' }}>
+                                                        --&nbsp;Median Intercept
+                                                    </div>
+                                                    <div className="flex pt-1" style={{ color: 'red' }}>
+                                                        --&nbsp;Median Slope
+                                                    </div>
+                                                </div>
+                                                <Legend data={data} onHover={setHoveredEntry} onClick={handleCountryClick} />
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center pl-3 mt-3">
+                                            <Image src={infoIcon} alt="Info Icon" className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10 filter invert-[100%]" />
+                                            <span className="ml-2 text-white text-sm sm:text-base lg:text-lg 2xl:text-xl 3xl:text-3xl">Hover over a country from the legend to focus on it, or click to view its specific trends.</span>
                                         </div>
                                     </div>
                                 );
