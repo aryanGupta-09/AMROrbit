@@ -11,7 +11,7 @@ export async function GET(req) {
         return new Response(JSON.stringify({ error: 'Missing query parameters' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    const publicFolderPath = path.join(process.cwd(), 'public', 'scorecards', sampleType, `${antibiotic}_${organism}`);
+    const publicFolderPath = path.join(process.cwd(), 'public', 'scorecards', organism, sampleType);
 
     try {
         if (!fs.existsSync(publicFolderPath)) {
@@ -19,8 +19,8 @@ export async function GET(req) {
             return new Response(JSON.stringify({ error: 'Folder not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
         }
 
-        const yearsFilePath = path.join(publicFolderPath, 'years.json');
-        const countriesFilePath = path.join(publicFolderPath, 'countries.json');
+        const yearsFilePath = path.join(publicFolderPath, `${antibiotic}_${organism}_year.json`);
+        const countriesFilePath = path.join(publicFolderPath, `${antibiotic}_${organism}_countries.json`);
 
         let years = [];
         let countries = [];
