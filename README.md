@@ -4,10 +4,7 @@ AMROrbit is a pivotal tool designed to empower governments globally in the rigor
 
 The solution won an Innovation Award in the Vivli AMR Surveillance Data Challenge, 2024.
 
-
-## Demo
-
-https://amrorbit.tavlab.iiitd.edu.in:3002/
+* Live: https://amrorbit.tavlab.iiitd.edu.in:3002/
 
 ## Tech Stack
 
