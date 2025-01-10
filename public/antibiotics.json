@@ -1,0 +1,293 @@
+{
+  "Enterococcus faecium": {
+    "Blood": [
+      "Ampicillin",
+      "Levofloxacin",
+      "Linezolid",
+      "Minocycline",
+      "Penicillin",
+      "Vancomycin"
+    ],
+    "Urine": [
+      "Ampicillin",
+      "Levofloxacin",
+      "Linezolid",
+      "Minocycline",
+      "Vancomycin"
+    ],
+    "Wound": [
+      "Ampicillin",
+      "Levofloxacin",
+      "Linezolid",
+      "Minocycline",
+      "Vancomycin"
+    ],
+    "Sputum": []
+  },
+  "Staphylococcus aureus": {
+    "Blood": ["Levofloxacin"],
+    "Urine": [
+      "Clindamycin",
+      "Erythromycin",
+      "Levofloxacin",
+      "Minocycline",
+      "Oxacillin"
+    ],
+    "Wound": [
+      "Ceftaroline",
+      "Clindamycin",
+      "Erythromycin",
+      "Levofloxacin",
+      "Linezolid",
+      "Minocycline",
+      "Oxacillin"
+    ],
+    "Sputum": [
+      "Ceftaroline",
+      "Clindamycin",
+      "Erythromycin",
+      "Levofloxacin",
+      "Linezolid",
+      "Minocycline",
+      "Oxacillin"
+    ]
+  },
+  "Klebsiella pneumoniae": {
+    "Blood": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Urine": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Wound": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Aztreonam",
+      "Cefepime",
+      "Ceftaroline",
+      "Ceftazidime",
+      "Ceftazidime.avibactam",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Sputum": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Aztreonam",
+      "Cefepime",
+      "Ceftaroline",
+      "Ceftazidime",
+      "Ceftazidime.avibactam",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ]
+  },
+  "Acinetobacter baumannii": {
+    "Blood": [
+      "Amikacin",
+      "Cefepime",
+      "Ceftazidime",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ],
+    "Urine": [
+      "Amikacin",
+      "Cefepime",
+      "Ceftazidime",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ],
+    "Wound": [
+      "Amikacin",
+      "Cefepime",
+      "Ceftazidime",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ],
+    "Sputum": [
+      "Amikacin",
+      "Cefepime",
+      "Ceftazidime",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ]
+  },
+  "Pseudomonas aeruginosa": {
+    "Blood": [
+      "Amikacin",
+      "Cefepime",
+      "Ceftazidime",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ],
+    "Urine": [
+      "Amikacin",
+      "Aztreonam",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftazidime.avibactam",
+      "Colistin",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ],
+    "Wound": [
+      "Amikacin",
+      "Aztreonam",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftazidime.avibactam",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ],
+    "Sputum": [
+      "Amikacin",
+      "Aztreonam",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftazidime.avibactam",
+      "Colistin",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam"
+    ]
+  },
+  "Enterobacter species": {
+    "Blood": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftriaxone",
+      "Levofloxacin",
+      "Meropenem",
+      "Minocycline",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Urine": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftriaxone",
+      "Levofloxacin",
+      "Meropenem",
+      "Minocycline",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Wound": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftriaxone",
+      "Levofloxacin",
+      "Meropenem",
+      "Minocycline",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Sputum": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftriaxone",
+      "Levofloxacin",
+      "Meropenem",
+      "Minocycline",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ]
+  },
+  "Escherichia coli": {
+    "Blood": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Ceftriaxone",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Urine": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Wound": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ],
+    "Sputum": [
+      "Amikacin",
+      "Amoxycillin.clavulanate",
+      "Ampicillin",
+      "Cefepime",
+      "Ceftazidime",
+      "Imipenem",
+      "Levofloxacin",
+      "Meropenem",
+      "Piperacillin.tazobactam",
+      "Tigecycline"
+    ]
+  }
+}

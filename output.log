@@ -1,0 +1,10 @@
+nohup: ignoring input
+
+> amrorbit@0.1.0 start
+> next start --port 3004
+
+  ▲ Next.js 14.2.18
+  - Local:        http://localhost:3004
+
+ ✓ Starting...
+ ✓ Ready in 488ms
