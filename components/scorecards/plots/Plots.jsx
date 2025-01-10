@@ -31,10 +31,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Image from "next/image";
 import infoIcon from "@/public/images/info.svg";
-
+import { useReset } from "@/app/resetscorecardcontext.js/ResetContext";
 export default function Plots() {
   const dispatch = useDispatch();
-
+  const { triggerReset } = useReset();
   const [hoveredEntry, setHoveredEntry] = useState(null);
 
   const handleCountryClick = (newValue) => {
@@ -43,11 +43,14 @@ export default function Plots() {
   };
 
   const handleContinueClick = () => {
-    dispatch(actions.setAntibiotic("Amikacin"));
+    console.log("Resetting state to default values...");
     dispatch(actions.setOrganism("Klebsiella pneumoniae"));
+    dispatch(actions.setAntibiotic("Amikacin"));
     dispatch(actions.setSampleType("Blood"));
     dispatch(actions.setCountry("All"));
+    triggerReset();
   };
+
 
   const options = useSelector(scorecardOptionsSelector);
 

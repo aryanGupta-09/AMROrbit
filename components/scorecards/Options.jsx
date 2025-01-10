@@ -4,23 +4,32 @@ import Image from "next/image";
 import antibioticLogo from "@/public/images/antibiotic.svg";
 import organismLogo from "@/public/images/organism.svg";
 import sampleTypeLogo from "@/public/images/sample.svg";
+import React, { useEffect } from 'react';  
 
 import { useSelector } from "react-redux";
 import { scorecardOptionsSelector } from "@/redux/reducers/scorecardOptionsReducer";
 import { useDispatch } from "react-redux";
 import { actions } from "@/redux/reducers/scorecardOptionsReducer";
 import CustomSelect from "../common/CustomSelect";
-
+import { useReset } from "@/app/resetscorecardcontext.js/ResetContext";
 import antibioticsData from "@/public/antibiotics.json";
-
 export default function Options() {
+  const { resetCount } = useReset();
   const options = useSelector(scorecardOptionsSelector);
 
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (resetCount > 0) {
+      dispatch(actions.setOrganism("Klebsiella pneumoniae"));
+      dispatch(actions.setAntibiotic("Amikacin"));
+      dispatch(actions.setSampleType("Blood"));
+      dispatch(actions.setCountry("All"));
+      
+    }
+  }, [resetCount, dispatch]);
   // Dispatch updated values when a dropdown value changes
   const handleChange = (newValue, action) => {
-    dispatch(action(newValue));
+      dispatch(action(newValue));
   };
 
   // Get the list of organisms dynamically
@@ -43,6 +52,7 @@ export default function Options() {
       {/* Antibiotic Selection */}
 
       <CustomSelect
+        value={options.organism || ""} 
         placeholder={options.organism || "Organism"}
         icon={
           <Image
@@ -54,11 +64,12 @@ export default function Options() {
         }
         handleChange={handleChange}
         action={actions.setOrganism}
-        items={organisms}
+        items={organisms} // List of organisms
         flex={0.3}
       />
 
       <CustomSelect
+        value={options.antibiotic} 
         placeholder={options.antibiotic || "Antibiotic"}
         icon={
           <Image
@@ -69,11 +80,12 @@ export default function Options() {
         }
         handleChange={handleChange}
         action={actions.setAntibiotic}
-        items={antibiotics} // Dynamically updated antibiotics list
+        items={antibiotics} // List of antibiotics for the selected organism/sampleType
         flex={0.3}
       />
 
       <CustomSelect
+        value={options.sampleType} 
         placeholder={options.sampleType || "Sample Type"}
         icon={
           <Image
@@ -85,7 +97,7 @@ export default function Options() {
         }
         handleChange={handleChange}
         action={actions.setSampleType}
-        items={["Blood", "Urine", "Wound", "Sputum"]}
+        items={["Blood", "Urine", "Wound", "Sputum"]} // List of sample types
         flex={0.3}
       />
     </Box>
