@@ -3,6 +3,7 @@ import "./globals.css";
 import './polyfills.js';
 
 import Navbar from "@/components/layout/Navbar";
+import { ToasterProvider } from "@/helper/ToasterProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/images/tavlab-favicon.webp" type="image/webp" />
       </head>
       <body className={inter.className}>
+        <ToasterProvider />
         <Navbar />
         <main>
           {children}
