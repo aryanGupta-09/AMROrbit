@@ -24,11 +24,11 @@ export default function SyntheticDatasetCreation() {
     const [placeholderText, setPlaceholderText] = useState('Configure parameters and generate your dataset.');
 
     useEffect(() => {
-        const user = parseCookies().user;
-        if (!user) {
+        const u = parseCookies().user;
+        if (!u) {
             router.push('/test-model/login');
         } else {
-            setUser(JSON.parse(user));
+            setUser(JSON.parse(u));
         }
     }, []);
 

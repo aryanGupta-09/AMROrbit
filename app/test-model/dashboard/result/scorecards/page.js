@@ -75,11 +75,11 @@ function ScorecardAnalysis() {
     const autoplayRef = useRef();
 
     useEffect(() => {
-        const user = parseCookies().user;
-        if (!user) {
+        const u = parseCookies().user;
+        if (!u) {
             router.push('/test-model/login');
         } else {
-            setUser(JSON.parse(user));
+            setUser(JSON.parse(u));
         }
     }, []);
 
@@ -164,6 +164,7 @@ function ScorecardAnalysis() {
             formData.append("antibiotic", antibiotic);
             formData.append("source", source);
             formData.append("id", id);
+            formData.append("user", user.id);
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/generate-scorecards`, { method: "POST", body: formData });
             if (!res.ok) throw new Error("Network error");
             const data = await res.json();

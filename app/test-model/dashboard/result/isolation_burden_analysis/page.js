@@ -37,11 +37,11 @@ const IsolationBurdenAnalysis = () => {
     const downloadBtnRef = useRef(null);
 
     useEffect(() => {
-        const user = parseCookies().user;
-        if (!user) {
+        const u = parseCookies().user;
+        if (!u) {
             router.push('/test-model/login');
         } else {
-            setUser(JSON.parse(user));
+            setUser(JSON.parse(u));
         }
     }, []);
 

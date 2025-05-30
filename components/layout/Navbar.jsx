@@ -33,12 +33,12 @@ export default function Navbar() {
         setOpen(newOpen);
     };
 
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const user = parseCookies().user;
-        if (user) {
-            setUser(JSON.parse(user));
+        const u = parseCookies().user;
+        if (u) {
+            setUser(JSON.parse(u));
         }
     }, []);
 

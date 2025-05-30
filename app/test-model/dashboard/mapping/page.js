@@ -91,51 +91,50 @@ export default function DatasetMapping() {
 	const [showTooltip, setShowTooltip] = useState(false);
 
 	useEffect(() => {
-		fetch(`/api/test-model/mapping?id=${id}`)
-			.then((res) => res.json())
-			.then((res) => {
-				if (res.success) {
-					setDataset(res.data.dataset);
-					setColumns(res.data.columns);
-					setAntibioticColumns(res.data.columns);
-
-					setIsolateId(res.data.mapping_data.isolate_id || "");
-					setDatasetFormat(res.data.mapping_data.dataset_format || "Wide");
-					setBacterialInfection(res.data.mapping_data.bacterial_infection || "");
-					setSourceInput(res.data.mapping_data.source_input || "");
-					setAntibioticFormat(res.data.mapping_data.antibiotic_format || "");
-					setAntibioticNameColumn(
-						res.data.mapping_data.antibiotic_name_col || ""
-					);
-					setAntibioticResultColumn(
-						res.data.mapping_data.antibiotic_result_col || ""
-					);
-					setDateColumn(res.data.mapping_data.date_column || "");
-					setDateFormat(res.data.mapping_data.date_format || "");
-					setResistanceGranularity(
-						res.data.mapping_data.resistance_granularity || ""
-					);
-					setClusterAttribute(
-						res.data.mapping_data.cluster_attribute || ""
-					);
-					setTimeStamp(res.data.mapping_data.time_stamp || "");
-					setTimeGapAttribute(
-						res.data.mapping_data.time_gap_attribute || ""
-					);
-					setSelectedAntibioticColumns(
-						res.data.antibiotic_columns || []
-					);
-				} else {
-					toast.error(
-						"Failed to fetch columns. Reason: " + res.message
-					);
-				}
-			})
-			.catch((err) => {
-				console.error("Error fetching columns:", err);
-				toast.error("Error fetching columns. Please try again later.");
-			});
-	}, []);
+		if (id) {
+			fetch(`/api/test-model/mapping?id=${id}`)
+				.then((res) => res.json())
+				.then((res) => {
+					if (res.success) {
+						setDataset(res.data.dataset);
+						setColumns(res.data.columns);
+						setAntibioticColumns(res.data.columns);
+						if (res.data.mapping_data) {
+							setIsolateId(res.data.mapping_data.isolate_id || "");
+							setDatasetFormat(res.data.mapping_data.dataset_format || "Wide");
+							setBacterialInfection(res.data.mapping_data.bacterial_infection || "");
+							setSourceInput(res.data.mapping_data.source_input || "");
+							setAntibioticFormat(res.data.mapping_data.antibiotic_format || "");
+							setAntibioticNameColumn(
+								res.data.mapping_data.antibiotic_name_col || ""
+							);
+							setAntibioticResultColumn(
+								res.data.mapping_data.antibiotic_result_col || ""
+							);
+							setDateColumn(res.data.mapping_data.date_column || "");
+							setDateFormat(res.data.mapping_data.date_format || "");
+							setResistanceGranularity(
+								res.data.mapping_data.resistance_granularity || ""
+							);
+							setClusterAttribute(
+								res.data.mapping_data.cluster_attribute || ""
+							);
+							setTimeStamp(res.data.mapping_data.time_stamp || "");
+							setTimeGapAttribute(
+								res.data.mapping_data.time_gap_attribute || ""
+							);
+							setSelectedAntibioticColumns(
+								res.data.antibiotic_columns || []
+							);
+						}
+					} else {
+						toast.error(
+							"Failed to fetch columns. Reason: " + res.message
+						);
+					}
+				})
+		}
+	}, [id]);
 
 	// // Auto-select columns based on format input
 	useEffect(() => {
