@@ -146,12 +146,10 @@ export default function Landing() {
       </ResponsiveContainer>
       <motion.div initial="hidden" animate="visible" variants={textVariants}>
         <p className="text-gray-300 text-base md:text-lg xl:text-xl 2xl:text-2xl 3xl:text-4xl text-center">
-          The AMROrbit Scorecard is a pivotal tool designed to empower
-          governments globally in the rigorous monitoring and management of
-          antimicrobial resistance (AMR). It provides visual insights that
-          identify areas requiring immediate intervention and evaluates the
-          effectiveness of stewardship and surveillance strategies, aiming to
-          significantly curb the spread of AMR.
+          Antimicrobial resistance is evolving faster than our defenses. AMROrbit redefines our approach by transforming routine antimicrobial susceptibility testing data into dynamic, easy-to-interpret scorecards. Our innovative scorecard tracks resistance trends over time and across geographies, categorizing them into intuitive zones that highlight emerging risks and provide actionable insights.
+        </p>
+        <p className="mt-4 text-gray-300 text-base md:text-lg xl:text-xl 2xl:text-2xl 3xl:text-4xl text-center">
+          By unlocking the untapped potential of everyday diagnostics, the AMROrbit Scorecard empowers governments, healthcare leaders, and policymakers to identify critical areas needing immediate attention and move from reactive responses to proactive, anticipatory strategies.
         </p>
       </motion.div>
     </div>
