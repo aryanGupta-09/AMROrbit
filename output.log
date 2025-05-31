@@ -1,10 +1,36 @@
-nohup: ignoring input
 
 > amrorbit@0.1.0 start
-> next start --port 3004
+> node server.js
 
-  ▲ Next.js 14.2.18
-  - Local:        http://localhost:3004
+node:internal/modules/cjs/loader:1215
+  throw err;
+  ^
 
- ✓ Starting...
- ✓ Ready in 488ms
+Error: Cannot find module 'safe-buffer'
+Require stack:
+- /home/user_amrorbit/AMROrbit/node_modules/express/lib/utils.js
+- /home/user_amrorbit/AMROrbit/node_modules/express/lib/application.js
+- /home/user_amrorbit/AMROrbit/node_modules/express/lib/express.js
+- /home/user_amrorbit/AMROrbit/node_modules/express/index.js
+- /home/user_amrorbit/AMROrbit/server.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)
+    at Module._load (node:internal/modules/cjs/loader:1043:27)
+    at Module.require (node:internal/modules/cjs/loader:1298:19)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (/home/user_amrorbit/AMROrbit/node_modules/express/lib/utils.js:15:14)
+    at Module._compile (node:internal/modules/cjs/loader:1529:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)
+    at Module.load (node:internal/modules/cjs/loader:1275:32)
+    at Module._load (node:internal/modules/cjs/loader:1096:12)
+    at Module.require (node:internal/modules/cjs/loader:1298:19) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/user_amrorbit/AMROrbit/node_modules/express/lib/utils.js',
+    '/home/user_amrorbit/AMROrbit/node_modules/express/lib/application.js',
+    '/home/user_amrorbit/AMROrbit/node_modules/express/lib/express.js',
+    '/home/user_amrorbit/AMROrbit/node_modules/express/index.js',
+    '/home/user_amrorbit/AMROrbit/server.js'
+  ]
+}
+
+Node.js v20.19.2
