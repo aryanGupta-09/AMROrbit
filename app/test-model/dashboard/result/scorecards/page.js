@@ -500,15 +500,15 @@ function ScorecardAnalysis() {
     // Main render
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white flex flex-col">
-            <div className="flex-1 max-w-[1600px] mx-auto p-10">
-                <div className="flex items-center mb-8">
+            <div className="flex-1 max-w-[1600px] mx-auto px-3 py-2">
+                <div className="flex items-center mb-2">
                     <button
-                        className="text-white text-2xl mr-5"
+                        className="bg-none border-none text-white text-2xl cursor-pointer mr-5"
                         onClick={() => window.history.back()}
                     >
                         ←
                     </button>
-                    <h1 className="text-2xl font-bold">Scorecards Analysis</h1>
+                    <h1 className="text-2xl font-semibold">Score Cards Analysis</h1>
                 </div>
                 {/* Form */}
                 <form

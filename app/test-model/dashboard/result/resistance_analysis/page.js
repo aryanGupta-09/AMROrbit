@@ -125,60 +125,60 @@ export default function ResistanceAnalysis() {
           </button>
           <h1 className="text-2xl font-semibold">Resistance Analysis</h1>
         </div>
-        <div className="grid md:grid-cols-[300px_1fr] gap-10">
-          <section className="bg-[#2a2f3b] p-6 rounded-xl">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block mb-2 text-sm text-gray-300">Choose Infection:</label>
-                <div className="relative bg-gray-200 rounded">
-                  <select
-                    className="w-full p-3 rounded bg-gray-200 text-black appearance-none cursor-pointer"
-                    value={infection}
-                    onChange={e => setInfection(e.target.value)}
-                    required
-                  >
-                    <option value="">Choose Infection</option>
-                    {bacteriaSpecies.map(b => (
-                      <option key={b} value={b}>{b}</option>
-                    ))}
-                  </select>
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 pointer-events-none">▼</span>
-                </div>
+        <section className="bg-[#2a2f3b] p-6 rounded-xl">
+          <form onSubmit={handleSubmit} className="flex flex-wrap items-center space-x-2">
+            <div>
+              <label className="block mb-2 text-sm text-gray-300">Choose Infection:</label>
+              <div className="relative bg-gray-200 rounded">
+                <select
+                  className="w-48 p-3 rounded bg-gray-200 text-black appearance-none cursor-pointer"
+                  value={infection}
+                  onChange={e => setInfection(e.target.value)}
+                  required
+                >
+                  <option value="">Choose Infection</option>
+                  {bacteriaSpecies.map(b => (
+                    <option key={b} value={b}>{b}</option>
+                  ))}
+                </select>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 pointer-events-none">▼</span>
               </div>
-              <div>
-                <label className="block mb-2 text-sm text-gray-300">Choose Antibiotic:</label>
-                <div className="relative bg-gray-200 rounded">
-                  <select
-                    className="w-full p-3 rounded bg-gray-200 text-black appearance-none cursor-pointer"
-                    value={antibiotic}
-                    onChange={e => setAntibiotic(e.target.value)}
-                    required
-                  >
-                    <option value="">Choose Antibiotic</option>
-                    {antibioticColumns.map(a => (
-                      <option key={a} value={a}>{a}</option>
-                    ))}
-                  </select>
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 pointer-events-none">▼</span>
-                </div>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm text-gray-300">Choose Antibiotic:</label>
+              <div className="relative bg-gray-200 rounded">
+                <select
+                  className="w-48 p-3 rounded bg-gray-200 text-black appearance-none cursor-pointer"
+                  value={antibiotic}
+                  onChange={e => setAntibiotic(e.target.value)}
+                  required
+                >
+                  <option value="">Choose Antibiotic</option>
+                  {antibioticColumns.map(a => (
+                    <option key={a} value={a}>{a}</option>
+                  ))}
+                </select>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 pointer-events-none">▼</span>
               </div>
-              <div>
-                <label className="block mb-2 text-sm text-gray-300">Choose Source:</label>
-                <div className="relative bg-gray-200 rounded">
-                  <select
-                    className="w-full p-3 rounded bg-gray-200 text-black appearance-none cursor-pointer"
-                    value={source}
-                    onChange={e => setSource(e.target.value)}
-                    required
-                  >
-                    <option value="">Choose Source</option>
-                    {sourceColumns.map(s => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 pointer-events-none">▼</span>
-                </div>
+            </div>
+            <div>
+              <label className="block mb-2 text-sm text-gray-300">Choose Source:</label>
+              <div className="relative bg-gray-200 rounded">
+                <select
+                  className="w-48 p-3 rounded bg-gray-200 text-black appearance-none cursor-pointer"
+                  value={source}
+                  onChange={e => setSource(e.target.value)}
+                  required
+                >
+                  <option value="">Choose Source</option>
+                  {sourceColumns.map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700 pointer-events-none">▼</span>
               </div>
+            </div>
+            <div className="ml-5 mt-5 flex justify-end items-end">
               <button
                 type="submit"
                 className="w-full p-3 bg-[#1a2133] text-white rounded hover:bg-[#2a3143] transition text-base font-medium"
@@ -186,29 +186,29 @@ export default function ResistanceAnalysis() {
               >
                 {loading ? 'Generating...' : 'Generate'}
               </button>
-            </form>
-          </section>
-          <section className="bg-[#2a2f3b] p-6 rounded-xl min-h-[400px] flex items-center justify-center">
-            {!imageUrl && !loading && !error && (
-              <div className="w-full h-[400px] bg-[#1a1a1a] rounded flex items-center justify-center text-gray-500 text-lg">
-                Select attributes and generate to view the graph
-              </div>
-            )}
-            {loading && (
-              <div className="w-full h-[400px] bg-[#1a1a1a] rounded flex items-center justify-center text-gray-400 text-lg">
-                Generating graph...
-              </div>
-            )}
-            {error && (
-              <div className="w-full h-[400px] bg-[#1a1a1a] rounded flex items-center justify-center text-red-400 text-lg">
-                {error}
-              </div>
-            )}
-            {imageUrl && !loading && !error && (
-              <img src={imageUrl} alt="Resistance Analysis Graph" className="max-w-full h-auto rounded" />
-            )}
-          </section>
-        </div>
+            </div>
+          </form>
+        </section>
+        <section className="bg-[#2a2f3b] p-6 rounded-xl min-h-[400px] flex items-center justify-center">
+          {!imageUrl && !loading && !error && (
+            <div className="w-full h-[400px] bg-[#1a1a1a] rounded flex items-center justify-center text-gray-500 text-lg">
+              Select attributes and generate to view the graph
+            </div>
+          )}
+          {loading && (
+            <div className="w-full h-[400px] bg-[#1a1a1a] rounded flex items-center justify-center text-gray-400 text-lg">
+              Generating graph...
+            </div>
+          )}
+          {error && (
+            <div className="w-full h-[400px] bg-[#1a1a1a] rounded flex items-center justify-center text-red-400 text-lg">
+              {error}
+            </div>
+          )}
+          {imageUrl && !loading && !error && (
+            <img src={imageUrl} alt="Resistance Analysis Graph" className="max-w-full h-auto rounded" />
+          )}
+        </section>
       </main>
     </div>
   );
