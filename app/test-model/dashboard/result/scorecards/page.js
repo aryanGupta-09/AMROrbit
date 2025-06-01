@@ -141,18 +141,17 @@ function ScorecardAnalysis() {
     }, [yearsData]);
 
     // Autoplay for year tabs
-    // useEffect(() => {
-    //     if (!yearsData.length) return;
-    //     if (!selectedYear) setSelectedYear(yearsData[0].year);
-    //     if (yearsData.length <= 1) return;
-    //     let years = yearsData.map((y) => y.year).sort((a, b) => a - b);
-    //     let idx = years.indexOf(selectedYear);
-    //     autoplayRef.current = setInterval(() => {
-    //         idx = (idx + 1) % years.length;
-    //         setSelectedYear(years[idx]);
-    //     }, 2000);
-    //     return () => clearInterval(autoplayRef.current);
-    // }, [yearsData, selectedYear]);
+    useEffect(() => {
+        if (!yearsData.length) return;
+        if (yearsData.length <= 1) return;
+        let years = yearsData.map((y) => y.year).sort((a, b) => a - b);
+        let idx = years.indexOf(selectedYear);
+        autoplayRef.current = setInterval(() => {
+            idx = (idx + 1) % years.length;
+            setSelectedYear(years[idx]);
+        }, 2000);
+        return () => clearInterval(autoplayRef.current);
+    }, [yearsData]);
 
     // Fetch data
     const fetchScorecardData = async (infection, antibiotic, source) => {
@@ -427,236 +426,237 @@ function ScorecardAnalysis() {
                             ? "bg-gray-200 font-bold"
                             : ""
                             }`}
-                        onClick={() =>
-                            setClickedCountry(
-                                clickedCountry === name ? null : name
-                            )
-                        }
-                        onMouseEnter={() => setHoveredCountry(name)}
-                        onMouseLeave={() => setHoveredCountry(null)}
+                        onClick={() => {
+                            setClickedCountry(clickedCountry === name ? null : name);
+                            clearInterval(autoplayRef.current);
+                        }}
+                onMouseEnter={() => setHoveredCountry(name)}
+                onMouseLeave={() => setHoveredCountry(null)}
                     >
-                        <span
-                            className="w-4 h-4 rounded-full mr-2 border"
-                            style={{ background: countryColorMap[name] }}
-                        ></span>
-                        <span className="truncate">{name}</span>
-                    </div>
-                ))}
+                <span
+                    className="w-4 h-4 rounded-full mr-2 border"
+                    style={{ background: countryColorMap[name] }}
+                ></span>
+                <span className="truncate">{name}</span>
             </div>
-        );
+        ))
     }
-
-    // Form submit
-    function handleSubmit(e) {
-        e.preventDefault();
-        fetchScorecardData(
-            selectedOrganism,
-            selectedAntibiotic,
-            selectedSampleType
+            </div >
         );
-    }
+}
 
-    // Main render
-    return (
-        <div className="min-h-screen bg-[#1E1E1E] text-white flex flex-col">
-            <div className="flex-1 max-w-[1600px] mx-auto px-3 py-2">
-                <div className="flex items-center mb-2">
-                    <button
-                        className="bg-none border-none text-white text-2xl cursor-pointer mr-5"
-                        onClick={() => window.history.back()}
-                    >
-                        ←
-                    </button>
-                    <h1 className="text-2xl font-semibold">AMROrbit Scorecard</h1>
-                </div>
-                {/* Form */}
-                <form
-                    onSubmit={handleSubmit}
-                    className="bg-[#2a2f3b] p-5 rounded-lg shadow mb-6 flex flex-wrap gap-4 items-end"
+// Form submit
+function handleSubmit(e) {
+    e.preventDefault();
+    fetchScorecardData(
+        selectedOrganism,
+        selectedAntibiotic,
+        selectedSampleType
+    );
+}
+
+// Main render
+return (
+    <div className="min-h-screen bg-[#1E1E1E] text-white flex flex-col">
+        <div className="flex-1 max-w-[1600px] mx-auto px-3 py-2">
+            <div className="flex items-center mb-2">
+                <button
+                    className="bg-none border-none text-white text-2xl cursor-pointer mr-5"
+                    onClick={() => window.history.back()}
                 >
-                    <div>
-                        <label className="block mb-1 text-gray-300 font-medium">
-                            Choose Organism:
-                        </label>
-                        <select
-                            className="w-52 p-2 rounded bg-gray-200 text-black"
-                            value={selectedOrganism}
-                            onChange={(e) =>
-                                setSelectedOrganism(e.target.value)
-                            }
-                            required
-                        >
-                            <option value="">Choose Organism</option>
-                            {infectionColumns.map((i) => (
-                                <option key={i} value={i}>
-                                    {i}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block mb-1 text-gray-300 font-medium">
-                            Choose Antibiotic:
-                        </label>
-                        <select
-                            className="w-52 p-2 rounded bg-gray-200 text-black"
-                            value={selectedAntibiotic}
-                            onChange={(e) =>
-                                setSelectedAntibiotic(e.target.value)
-                            }
-                            required
-                        >
-                            <option value="">Choose Antibiotic</option>
-                            {antibioticColumns.map((i) => (
-                                <option key={i} value={i}>
-                                    {i}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label className="block mb-1 text-gray-300 font-medium">
-                            Choose Sample Type:
-                        </label>
-                        <select
-                            className="w-52 p-2 rounded bg-gray-200 text-black"
-                            value={selectedSampleType}
-                            onChange={(e) =>
-                                setSelectedSampleType(e.target.value)
-                            }
-                            required
-                        >
-                            <option value="">Choose Sample Type</option>
-                            {sourceColumns.map((i) => (
-                                <option key={i} value={i}>
-                                    {i}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <button
-                        type="submit"
-                        className="bg-[#1a2133] text-white px-4 py-2 rounded hover:bg-[#2a3143] font-medium"
+                    ←
+                </button>
+                <h1 className="text-2xl font-semibold">AMROrbit Scorecard</h1>
+            </div>
+            {/* Form */}
+            <form
+                onSubmit={handleSubmit}
+                className="bg-[#2a2f3b] p-5 rounded-lg shadow mb-6 flex flex-wrap gap-4 items-end"
+            >
+                <div>
+                    <label className="block mb-1 text-gray-300 font-medium">
+                        Choose Organism:
+                    </label>
+                    <select
+                        className="w-52 p-2 rounded bg-gray-200 text-black"
+                        value={selectedOrganism}
+                        onChange={(e) =>
+                            setSelectedOrganism(e.target.value)
+                        }
+                        required
                     >
-                        Generate
-                    </button>
-                </form>
-                {/* Main Content */}
-                <div className="bg-[#2a2f3b] p-8 rounded-lg min-h-[70vh] flex flex-col relative shadow">
-                    {/* Year Tabs */}
-                    {yearsData.length > 0 && selectedCountry === "All" && (
-                        <div className="flex justify-center mb-2 gap-2">
-                            {yearsData.map((y) => (
-                                <button
-                                    key={y.year}
-                                    className={`px-4 py-2 rounded-b-none border-b-2 ${selectedYear === y.year
-                                        ? "border-white font-bold"
-                                        : "border-transparent"
-                                        } text-white`}
-                                    onClick={() => {
-                                        setSelectedYear(y.year);
-                                    }}
-                                >
-                                    {y.year}-{Number(y.year) + (mapping["time_gap_attribute"] ? Number(mapping["time_gap_attribute"]) - 1 : 3)}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                    {/* Loading/Empty/Error */}
-                    {loading && (
-                        <div className="flex-1 flex items-center justify-center text-lg">
-                            Loading...
-                        </div>
-                    )}
-                    {error && (
-                        <div className="flex-1 flex items-center justify-center text-red-400">
-                            {error}
-                        </div>
-                    )}
-                    {empty && (
-                        <div className="flex-1 flex flex-col items-center justify-center text-center">
-                            <h3 className="mb-2 text-xl">
-                                Sorry, no data is available for this selection.
-                            </h3>
-                            <p>
-                                Please try a different combination of organism,
-                                antibiotic, and sample type.
-                            </p>
-                        </div>
-                    )}
-                    {/* Old PNGs fallback */}
-                    {oldPngs && (
-                        <div className="flex flex-col items-center">
-                            {oldPngs.map((src, i) => (
-                                <img
-                                    key={i}
-                                    src={src}
-                                    alt={`scorecard-${i}`}
-                                    className="mb-4 max-w-full rounded shadow"
-                                />
-                            ))}
-                        </div>
-                    )}
-                    {/* Main Scatter View */}
-                    {yearsData.length > 0 &&
-                        selectedCountry === "All" &&
-                        !loading &&
-                        !empty &&
-                        !oldPngs && (
-                            <div className="flex flex-row h-full">
-                                <div className="flex-1">
-                                    <div className="bg-white rounded-lg shadow p-2 h-full">
-                                        <svg ref={scatterRef}></svg>
-                                        <div
-                                            ref={tooltipRef}
-                                            className="hidden absolute bg-white text-black p-3 rounded shadow z-50 min-w-[150px] text-sm pointer-events-none"
-                                            style={{ top: 0, left: 0 }}
-                                        ></div>
-                                    </div>
-                                </div>
-                                <div className="w-64 ml-4 flex flex-col">
-                                    <div className="bg-white rounded-lg p-4 mb-4 shadow">
-                                        <div className="font-semibold text-center border-b pb-2 mb-2 text-gray-800">
-                                            Reference Lines
-                                        </div>
-                                        <div className="flex items-center mb-2 text-black">
-                                            <div className="w-6 h-1.5 bg-green-500 mr-2"></div>
-                                            Median Intercept
-                                        </div>
-                                        <div className="flex items-center text-black">
-                                            <div className="w-6 h-1.5 bg-red-500 mr-2"></div>
-                                            Median Slope
-                                        </div>
-                                    </div>
-                                    <CountriesLegend
-                                        data={
-                                            yearsData.find(
-                                                (y) => y.year === selectedYear
-                                            )?.countries || []
-                                        }
-                                        // setSelectedCountry={setSelectedCountry}
-                                    />
-                                </div>
-                            </div>
-                        )}
-                    {/* Info text */}
-                    {yearsData.length > 0 &&
-                        selectedCountry === "All" &&
-                        !loading &&
-                        !empty &&
-                        !oldPngs && (
-                            <div className="flex items-center mt-4 text-gray-300 text-sm">
-                                <span className="material-icons mr-2">
-                                    info
-                                </span>
-                                Hover over a country from the legend to focus on
-                                it, or click to view its specific trends.
-                            </div>
-                        )}
+                        <option value="">Choose Organism</option>
+                        {infectionColumns.map((i) => (
+                            <option key={i} value={i}>
+                                {i}
+                            </option>
+                        ))}
+                    </select>
                 </div>
+                <div>
+                    <label className="block mb-1 text-gray-300 font-medium">
+                        Choose Antibiotic:
+                    </label>
+                    <select
+                        className="w-52 p-2 rounded bg-gray-200 text-black"
+                        value={selectedAntibiotic}
+                        onChange={(e) =>
+                            setSelectedAntibiotic(e.target.value)
+                        }
+                        required
+                    >
+                        <option value="">Choose Antibiotic</option>
+                        {antibioticColumns.map((i) => (
+                            <option key={i} value={i}>
+                                {i}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <label className="block mb-1 text-gray-300 font-medium">
+                        Choose Sample Type:
+                    </label>
+                    <select
+                        className="w-52 p-2 rounded bg-gray-200 text-black"
+                        value={selectedSampleType}
+                        onChange={(e) =>
+                            setSelectedSampleType(e.target.value)
+                        }
+                        required
+                    >
+                        <option value="">Choose Sample Type</option>
+                        {sourceColumns.map((i) => (
+                            <option key={i} value={i}>
+                                {i}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <button
+                    type="submit"
+                    className="bg-[#1a2133] text-white px-4 py-2 rounded hover:bg-[#2a3143] font-medium"
+                >
+                    Generate
+                </button>
+            </form>
+            {/* Main Content */}
+            <div className="bg-[#2a2f3b] p-8 rounded-lg min-h-[70vh] flex flex-col relative shadow">
+                {/* Year Tabs */}
+                {yearsData.length > 0 && selectedCountry === "All" && (
+                    <div className="flex justify-center mb-2 gap-2">
+                        {yearsData.map((y) => (
+                            <button
+                                key={y.year}
+                                className={`px-4 py-2 rounded-b-none border-b-2 ${selectedYear === y.year
+                                    ? "border-white font-bold"
+                                    : "border-transparent"
+                                    } text-white`}
+                                onClick={() => {
+                                    setSelectedYear(y.year);
+                                    clearInterval(autoplayRef.current);
+                                }}
+                            >
+                                {y.year}-{Number(y.year) + (mapping["time_gap_attribute"] ? Number(mapping["time_gap_attribute"]) - 1 : 3)}
+                            </button>
+                        ))}
+                    </div>
+                )}
+                {/* Loading/Empty/Error */}
+                {loading && (
+                    <div className="flex-1 flex items-center justify-center text-lg">
+                        Loading...
+                    </div>
+                )}
+                {error && (
+                    <div className="flex-1 flex items-center justify-center text-red-400">
+                        {error}
+                    </div>
+                )}
+                {empty && (
+                    <div className="flex-1 flex flex-col items-center justify-center text-center">
+                        <h3 className="mb-2 text-xl">
+                            Sorry, no data is available for this selection.
+                        </h3>
+                        <p>
+                            Please try a different combination of organism,
+                            antibiotic, and sample type.
+                        </p>
+                    </div>
+                )}
+                {/* Old PNGs fallback */}
+                {oldPngs && (
+                    <div className="flex flex-col items-center">
+                        {oldPngs.map((src, i) => (
+                            <img
+                                key={i}
+                                src={src}
+                                alt={`scorecard-${i}`}
+                                className="mb-4 max-w-full rounded shadow"
+                            />
+                        ))}
+                    </div>
+                )}
+                {/* Main Scatter View */}
+                {yearsData.length > 0 &&
+                    selectedCountry === "All" &&
+                    !loading &&
+                    !empty &&
+                    !oldPngs && (
+                        <div className="flex flex-row h-full">
+                            <div className="flex-1">
+                                <div className="bg-white rounded-lg shadow p-2 h-full">
+                                    <svg ref={scatterRef}></svg>
+                                    <div
+                                        ref={tooltipRef}
+                                        className="hidden absolute bg-white text-black p-3 rounded shadow z-50 min-w-[150px] text-sm pointer-events-none"
+                                        style={{ top: 0, left: 0 }}
+                                    ></div>
+                                </div>
+                            </div>
+                            <div className="w-64 ml-4 flex flex-col">
+                                <div className="bg-white rounded-lg p-4 mb-4 shadow">
+                                    <div className="font-semibold text-center border-b pb-2 mb-2 text-gray-800">
+                                        Reference Lines
+                                    </div>
+                                    <div className="flex items-center mb-2 text-black">
+                                        <div className="w-6 h-1.5 bg-green-500 mr-2"></div>
+                                        Median Intercept
+                                    </div>
+                                    <div className="flex items-center text-black">
+                                        <div className="w-6 h-1.5 bg-red-500 mr-2"></div>
+                                        Median Slope
+                                    </div>
+                                </div>
+                                <CountriesLegend
+                                    data={
+                                        yearsData.find(
+                                            (y) => y.year === selectedYear
+                                        )?.countries || []
+                                    }
+                                // setSelectedCountry={setSelectedCountry}
+                                />
+                            </div>
+                        </div>
+                    )}
+                {/* Info text */}
+                {yearsData.length > 0 &&
+                    selectedCountry === "All" &&
+                    !loading &&
+                    !empty &&
+                    !oldPngs && (
+                        <div className="flex items-center mt-4 text-gray-300 text-sm">
+                            <span className="material-icons mr-2">
+                                info
+                            </span>
+                            Hover over a country from the legend to focus on
+                            it, or click to view its specific trends.
+                        </div>
+                    )}
             </div>
         </div>
-    );
+    </div>
+);
 }
 
 export default ScorecardAnalysis;
