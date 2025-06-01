@@ -56,10 +56,11 @@ function ScorecardAnalysis() {
     const [selectedOrganism, setSelectedOrganism] = useState("");
     const [selectedAntibiotic, setSelectedAntibiotic] = useState("");
     const [selectedSampleType, setSelectedSampleType] = useState("");
-    const [yearsData, setYearsData] = useState([]); // [{year, countries, median_intercept, median_slope}]
-    const [countriesData, setCountriesData] = useState([]); // [{name, years: [{year, x, y, ...}]}]
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedCountry, setSelectedCountry] = useState("All");
+    const [yearsData, setYearsData] = useState([]); // [{year, countries, median_intercept, median_slope}]
+    const [countriesData, setCountriesData] = useState([]); // [{name, years: [{year, x, y, ...}]}]
+    const [autoplayInterval, setAutoplayInterval] = useState(null);
     const [hoveredCountry, setHoveredCountry] = useState(null);
     const [clickedCountry, setClickedCountry] = useState(null);
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -68,6 +69,7 @@ function ScorecardAnalysis() {
     const [error, setError] = useState("");
     const [empty, setEmpty] = useState(false);
     const [oldPngs, setOldPngs] = useState(null);
+    const [sortedYears, setSortedYears] = useState([]);
 
     // Refs for D3
     const scatterRef = useRef();
@@ -124,21 +126,21 @@ function ScorecardAnalysis() {
         }
     }, [user, dataset, mapping]);
 
-    // // Build color map for countries
-    // useEffect(() => {
-    //     if (!yearsData.length) return;
-    //     const allCountries = new Set();
-    //     yearsData.forEach((y) =>
-    //         y.countries.forEach((c) => c.name && allCountries.add(c.name))
-    //     );
-    //     const map = {};
-    //     Array.from(allCountries).forEach((name, i) => {
-    //         map[name] = COLORS[i % COLORS.length];
-    //     });
-    //     setCountryColorMap(map);
-    // }, [yearsData]);
+    // Build color map for countries
+    useEffect(() => {
+        if (!yearsData.length) return;
+        const allCountries = new Set();
+        yearsData.forEach((y) =>
+            y.countries.forEach((c) => c.name && allCountries.add(c.name))
+        );
+        const map = {};
+        Array.from(allCountries).forEach((name, i) => {
+            map[name] = COLORS[i % COLORS.length];
+        });
+        setCountryColorMap(map);
+    }, [yearsData]);
 
-    // // Autoplay for year tabs
+    // Autoplay for year tabs
     // useEffect(() => {
     //     if (!yearsData.length) return;
     //     if (!selectedYear) setSelectedYear(yearsData[0].year);
@@ -169,10 +171,11 @@ function ScorecardAnalysis() {
             if (!res.ok) throw new Error("Network error");
             const data = await res.json();
             if (data.years && data.countries) {
-                setYearsData(data.years);
+                const sortedYears = data.years.sort((a, b) => a.year - b.year);
+                setYearsData(sortedYears);
                 setCountriesData(data.countries);
                 setSelectedCountry("All");
-                setSelectedYear(null);
+                setSelectedYear(sortedYears[0].year);
                 setHoveredCountry(null);
                 setClickedCountry(null);
                 setCurrentSlide(0);
@@ -189,89 +192,90 @@ function ScorecardAnalysis() {
         }
     };
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setCurrentSlide((s) => (s + 1) % sortedYears.length);
-    //     }, 2000);
-    //     return () => clearInterval(interval);
-    // }, [sortedYears.length]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((s) => (s + 1) % sortedYears.length);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [sortedYears.length]);
 
     // D3 for single point
     const svgRef = useRef();
-    // useEffect(() => {
-    //     const svg = d3.select(svgRef.current);
-    //     svg.selectAll("*").remove();
-    //     const width = 700,
-    //         height = 500;
-    //     svg.attr("width", width).attr("height", height);
-    //     // Axes
-    //     let minX = Infinity,
-    //         maxX = -Infinity,
-    //         minY = Infinity,
-    //         maxY = -Infinity;
-    //     sortedYears.forEach((y) => {
-    //         minX = Math.min(minX, y.x || 0);
-    //         maxX = Math.max(maxX, y.x || 0);
-    //         minY = Math.min(minY, y.y || 0);
-    //         maxY = Math.max(maxY, y.y || 0);
-    //     });
-    //     const xScale = d3
-    //         .scaleLinear()
-    //         .domain([Math.floor(minX), Math.ceil(maxX)])
-    //         .range([50, width - 50]);
-    //     const yScale = d3
-    //         .scaleLinear()
-    //         .domain([Math.floor(minY), Math.ceil(maxY)])
-    //         .range([height - 50, 30]);
-    //     svg.append("g")
-    //         .attr("transform", `translate(0,${height - 50})`)
-    //         .call(d3.axisBottom(xScale));
-    //     svg.append("g")
-    //         .attr("transform", `translate(50,0)`)
-    //         .call(d3.axisLeft(yScale));
-    //     svg.append("text")
-    //         .attr("x", width / 2)
-    //         .attr("y", height - 10)
-    //         .attr("text-anchor", "middle")
-    //         .text("Intercept")
-    //         .attr("fill", "#333");
-    //     svg.append("text")
-    //         .attr("transform", "rotate(-90)")
-    //         .attr("x", -height / 2)
-    //         .attr("y", 15)
-    //         .attr("text-anchor", "middle")
-    //         .text("Slope")
-    //         .attr("fill", "#333");
-    //     svg.append("line")
-    //         .attr("x1", xScale(yearData.median_intercept))
-    //         .attr("y1", 30)
-    //         .attr("x2", xScale(yearData.median_intercept))
-    //         .attr("y2", height - 50)
-    //         .attr("stroke", "green")
-    //         .attr("stroke-dasharray", "5,5");
-    //     svg.append("line")
-    //         .attr("x1", 50)
-    //         .attr("y1", yScale(yearData.median_slope))
-    //         .attr("x2", width - 50)
-    //         .attr("y2", yScale(yearData.median_slope))
-    //         .attr("stroke", "red")
-    //         .attr("stroke-dasharray", "5,5");
-    //     svg.append("circle")
-    //         .attr("cx", xScale(yearData.x))
-    //         .attr("cy", yScale(yearData.y))
-    //         .attr("r", 12)
-    //         .attr("fill", "none")
-    //         .attr("stroke", countryColorMap[country.name])
-    //         .attr("stroke-width", 2)
-    //         .attr("opacity", 0.5);
-    //     svg.append("circle")
-    //         .attr("cx", xScale(yearData.x))
-    //         .attr("cy", yScale(yearData.y))
-    //         .attr("r", 8)
-    //         .attr("fill", countryColorMap[country.name]);
-    // }, [yearData, country, countryColorMap, sortedYears]);
+    useEffect(() => {
+        const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove();
+        const width = 700,
+            height = 500;
+        svg.attr("width", width).attr("height", height);
+        // Axes
+        let minX = Infinity,
+            maxX = -Infinity,
+            minY = Infinity,
+            maxY = -Infinity;
+        sortedYears.forEach((y) => {
+            minX = Math.min(minX, y.x || 0);
+            maxX = Math.max(maxX, y.x || 0);
+            minY = Math.min(minY, y.y || 0);
+            maxY = Math.max(maxY, y.y || 0);
+        });
+        const xScale = d3
+            .scaleLinear()
+            .domain([Math.floor(minX), Math.ceil(maxX)])
+            .range([50, width - 50]);
+        const yScale = d3
+            .scaleLinear()
+            .domain([Math.floor(minY), Math.ceil(maxY)])
+            .range([height - 50, 30]);
+        svg.append("g")
+            .attr("transform", `translate(0,${height - 50})`)
+            .call(d3.axisBottom(xScale));
+        svg.append("g")
+            .attr("transform", `translate(50,0)`)
+            .call(d3.axisLeft(yScale));
+        svg.append("text")
+            .attr("x", width / 2)
+            .attr("y", height - 10)
+            .attr("text-anchor", "middle")
+            .text("Intercept")
+            .attr("fill", "#333");
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", 15)
+            .attr("text-anchor", "middle")
+            .text("Slope")
+            .attr("fill", "#333");
+        svg.append("line")
+            .attr("x1", xScale(yearsData.median_intercept))
+            .attr("y1", 30)
+            .attr("x2", xScale(yearsData.median_intercept))
+            .attr("y2", height - 50)
+            .attr("stroke", "green")
+            .attr("stroke-dasharray", "5,5");
+        svg.append("line")
+            .attr("x1", 50)
+            .attr("y1", yScale(yearsData.median_slope))
+            .attr("x2", width - 50)
+            .attr("y2", yScale(yearsData.median_slope))
+            .attr("stroke", "red")
+            .attr("stroke-dasharray", "5,5");
+        svg.append("circle")
+            .attr("cx", xScale(yearsData.x))
+            .attr("cy", yScale(yearsData.y))
+            .attr("r", 12)
+            .attr("fill", "none")
+            .attr("stroke", countryColorMap[countriesData.name])
+            .attr("stroke-width", 2)
+            .attr("opacity", 0.5);
+        svg.append("circle")
+            .attr("cx", xScale(yearsData.x))
+            .attr("cy", yScale(yearsData.y))
+            .attr("r", 8)
+            .attr("fill", countryColorMap[countriesData.name]);
+    }, [yearsData, countriesData, countryColorMap, sortedYears]);
 
     // D3 scatter plot for all countries
+
     useEffect(() => {
         if (
             !yearsData.length ||
@@ -384,8 +388,12 @@ function ScorecardAnalysis() {
                 )}</b></div><div>Year: <b>${selectedYear}-${(selectedYear + 3)
                     .toString()
                     .slice(-2)}</b></div>`;
-            tooltip.style.left = event.pageX + 10 + "px";
-            tooltip.style.top = event.pageY - 10 + "px";
+            // Position tooltip beside mouse pointer, relative to SVG container
+            const svgRect = scatterRef.current.getBoundingClientRect();
+            const offsetX = 12; // px to the right of cursor
+            const offsetY = 8;  // px below cursor
+            tooltip.style.left = (event.clientX - svgRect.left + offsetX) + "px";
+            tooltip.style.top = (event.clientY - svgRect.top + offsetY) + "px";
             tooltip.classList.remove("hidden");
         }
         function hideTooltip() {
@@ -415,7 +423,7 @@ function ScorecardAnalysis() {
                 {unique.map((name) => (
                     <div
                         key={name}
-                        className={`flex items-center p-2 rounded cursor-pointer mb-1 ${clickedCountry === name
+                        className={`flex items-center p-2 rounded cursor-pointer mb-1 text-black ${clickedCountry === name
                             ? "bg-gray-200 font-bold"
                             : ""
                             }`}
@@ -447,12 +455,12 @@ function ScorecardAnalysis() {
         const yearData = sortedYears[currentSlide];
 
         return (
-            <div className="relative w-full h-[60vh] rounded-xl shadow bg-white flex flex-col items-center justify-center">
+            <div className="relative w-full h-[60vh] rounded-xl shadow bg-white flex flex-col items-center justify-center text-black">
                 <div className="absolute top-4 right-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full font-semibold">
                     {country.name}
                 </div>
                 <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {yearData.year}-{(yearData.year + 3).toString().slice(-2)}
+                    {/* {yearData.year}-{(yearData.year + 3).toString().slice(-2)} */}
                 </div>
                 <svg ref={svgRef}></svg>
                 <button
@@ -591,7 +599,7 @@ function ScorecardAnalysis() {
                                         clearInterval(autoplayRef.current);
                                     }}
                                 >
-                                    {y.year}-{(y.year + 3).toString().slice(-2)}
+                                    {y.year}-{Number(y.year) + (mapping["time_gap_attribute"] ? Number(mapping["time_gap_attribute"]) - 1 : 3)}
                                 </button>
                             ))}
                         </div>
@@ -653,11 +661,11 @@ function ScorecardAnalysis() {
                                         <div className="font-semibold text-center border-b pb-2 mb-2 text-gray-800">
                                             Reference Lines
                                         </div>
-                                        <div className="flex items-center mb-2">
+                                        <div className="flex items-center mb-2 text-black">
                                             <div className="w-6 h-1.5 bg-green-500 mr-2"></div>
                                             Median Intercept
                                         </div>
-                                        <div className="flex items-center">
+                                        <div className="flex items-center text-black">
                                             <div className="w-6 h-1.5 bg-red-500 mr-2"></div>
                                             Median Slope
                                         </div>
@@ -687,11 +695,11 @@ function ScorecardAnalysis() {
                                         <div className="font-semibold text-center border-b pb-2 mb-2 text-gray-800">
                                             Reference Lines
                                         </div>
-                                        <div className="flex items-center mb-2">
+                                        <div className="flex items-center mb-2 text-black">
                                             <div className="w-6 h-1.5 bg-green-500 mr-2"></div>
                                             Median Intercept
                                         </div>
-                                        <div className="flex items-center">
+                                        <div className="flex items-center text-black">
                                             <div className="w-6 h-1.5 bg-red-500 mr-2"></div>
                                             Median Slope
                                         </div>
