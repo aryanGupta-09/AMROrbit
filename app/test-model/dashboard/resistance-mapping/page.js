@@ -18,6 +18,8 @@ export default function ResistanceMapping() {
     const [dataset, setDataset] = useState([]);
     const [antibioticColumns, setAntibioticColumns] = useState([]);
 
+    const [loading, setLoading] = useState(false);
+
     const [uniqueValues, setUniqueValues] = useState([]);
     const [susceptible, setSusceptible] = useState([]);
     const [intermediate, setIntermediate] = useState([]);
@@ -120,6 +122,7 @@ export default function ResistanceMapping() {
     // Form submit handler (demo only)
     async function handleSubmit(e) {
         e.preventDefault();
+        setLoading(true);
         const payload = {
             mapping_data: mapping,
             susceptible_values: susceptible,
@@ -151,6 +154,7 @@ export default function ResistanceMapping() {
         } else {
             toast.error(res.error || "Failed to process mapping.");
         }
+        setLoading(false);
     }
 
     return (
@@ -217,7 +221,7 @@ export default function ResistanceMapping() {
                         type="submit"
                         className="block mx-auto mt-8 px-8 py-3 rounded bg-blue-700 text-white font-semibold text-lg hover:bg-blue-800 transition"
                     >
-                        Next
+                        {loading ? "Processing..." : "Submit Mapping"}
                     </button>
                 </form>
             </div>

@@ -65,6 +65,8 @@ export default function DatasetMapping() {
 	const [columns, setColumns] = useState([]);
 	const [dataset, setDataset] = useState(null);
 
+	const [loading, setLoading] = useState(false);
+
 	// Form state
 	const [isolateId, setIsolateId] = useState("");
 	const [datasetFormat, setDatasetFormat] = useState("Wide");
@@ -154,6 +156,7 @@ export default function DatasetMapping() {
 	// Form submit handler (demo only)
 	async function handleSubmit(e) {
 		e.preventDefault();
+		setLoading(true);
 		const payload = {
 			dataset: dataset,
 			isolate_id: isolateId,
@@ -197,6 +200,7 @@ export default function DatasetMapping() {
 		} else {
 			toast.error(res.error || "Failed to process mapping.");
 		}
+		setLoading(false);
 	}
 
 	return (
@@ -646,7 +650,7 @@ export default function DatasetMapping() {
 						type="submit"
 						className="block mx-auto mt-8 px-8 py-3 rounded bg-blue-700 text-white font-semibold text-lg hover:bg-blue-800 transition"
 					>
-						Process Dataset
+						{loading ? "Processing..." : "Process Dataset"}
 					</button>
 				</form>
 			</div>

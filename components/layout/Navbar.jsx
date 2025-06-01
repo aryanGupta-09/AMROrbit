@@ -23,7 +23,7 @@ export default function Navbar() {
         Scorecards: "/scorecards",
         "Surrogate Indicators": "/surrogate-indicators",
         "Genomic Models": "/genomic-models",
-        "Test Model": "/test-model",
+        "Test Our Model": "/test-model",
     };
     const [hoveredLink, setHoveredLink] = useState(null);
 
@@ -89,6 +89,7 @@ export default function Navbar() {
                                     setUser({});
                                     window.location.href = "/";
                                 }}
+                                className="text-red-500"
                             >
                                 Log Out
                             </button>
@@ -134,6 +135,7 @@ export default function Navbar() {
                                 setUser({});
                                 window.location.href = "/";
                             }}
+                            className="text-red-500"
                         >
                             Log Out
                         </button>

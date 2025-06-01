@@ -8,8 +8,6 @@ import { parseCookies } from 'nookies';
 export default function CreatePage() {
     const [datasetChoice, setDatasetChoice] = useState('upload');
     const [existingDatasets, setExistingDatasets] = useState([
-        'Data Copy 2',
-        'Data Copy',
         'Data',
     ]);
     const [selectedDataset, setSelectedDataset] = useState('');
@@ -17,9 +15,11 @@ export default function CreatePage() {
     const fileInputRef = useRef(null);
     const router = useRouter();
 
+    const [loading, setLoading] = useState(false);
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const user = JSON.parse(parseCookies().user);
 
         if (!user || !user.id) {
@@ -42,7 +42,7 @@ export default function CreatePage() {
         if (datasetChoice === 'upload') {
             formData.append('csv_file', selectedFile);
         } else {
-            formData.append('existing_dataset', selectedDataset);
+            formData.append('existing_dataset', selectedDataset+ '.csv');
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dataset-upload`, {
@@ -68,6 +68,7 @@ export default function CreatePage() {
             console.error('Failed to upload dataset:', res);
             toast.error('Failed to upload dataset: ' + res.message);
         }
+        setLoading(false);
     };
 
     return (
@@ -153,7 +154,7 @@ export default function CreatePage() {
                         type="submit"
                         className="bg-[#1a2133] hover:bg-[#2a3143] text-white py-3 px-6 rounded w-full max-w-xs mx-auto block"
                     >
-                        Upload Dataset
+                        {loading ? 'Uploading...' : 'Upload Dataset'}
                     </button>
                 </form>
             </div>
