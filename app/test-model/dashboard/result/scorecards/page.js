@@ -446,47 +446,6 @@ function ScorecardAnalysis() {
         );
     }
 
-    // Country-specific view (carousel)
-    function CountryCarousel() {
-        const country = countriesData.find((c) => c.name === selectedCountry);
-        if (!country) return null;
-        const sortedYears = [...country.years].sort((a, b) => a.year - b.year);
-
-        const yearData = sortedYears[currentSlide];
-
-        return (
-            <div className="relative w-full h-[60vh] rounded-xl shadow bg-white flex flex-col items-center justify-center text-black">
-                <div className="absolute top-4 right-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full font-semibold">
-                    {country.name}
-                </div>
-                <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {/* {yearData.year}-{(yearData.year + 3).toString().slice(-2)} */}
-                </div>
-                <svg ref={svgRef}></svg>
-                <button
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center text-white text-xl"
-                    onClick={() =>
-                        setCurrentSlide(
-                            (s) =>
-                                (s - 1 + sortedYears.length) %
-                                sortedYears.length
-                        )
-                    }
-                >
-                    ❮
-                </button>
-                <button
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 w-10 h-10 rounded-full flex items-center justify-center text-white text-xl"
-                    onClick={() =>
-                        setCurrentSlide((s) => (s + 1) % sortedYears.length)
-                    }
-                >
-                    ❯
-                </button>
-            </div>
-        );
-    }
-
     // Form submit
     function handleSubmit(e) {
         e.preventDefault();
@@ -508,7 +467,7 @@ function ScorecardAnalysis() {
                     >
                         ←
                     </button>
-                    <h1 className="text-2xl font-semibold">Score Cards Analysis</h1>
+                    <h1 className="text-2xl font-semibold">AMROrbit Scorecard</h1>
                 </div>
                 {/* Form */}
                 <form
@@ -596,7 +555,6 @@ function ScorecardAnalysis() {
                                         } text-white`}
                                     onClick={() => {
                                         setSelectedYear(y.year);
-                                        clearInterval(autoplayRef.current);
                                     }}
                                 >
                                     {y.year}-{Number(y.year) + (mapping["time_gap_attribute"] ? Number(mapping["time_gap_attribute"]) - 1 : 3)}
@@ -676,42 +634,8 @@ function ScorecardAnalysis() {
                                                 (y) => y.year === selectedYear
                                             )?.countries || []
                                         }
+                                        // setSelectedCountry={setSelectedCountry}
                                     />
-                                </div>
-                            </div>
-                        )}
-                    {/* Country-specific view */}
-                    {yearsData.length > 0 &&
-                        selectedCountry !== "All" &&
-                        !loading &&
-                        !empty &&
-                        !oldPngs && (
-                            <div className="flex flex-row h-full">
-                                <div className="flex-1">
-                                    <CountryCarousel />
-                                </div>
-                                <div className="w-64 ml-4 flex flex-col">
-                                    <div className="bg-white rounded-lg p-4 mb-4 shadow">
-                                        <div className="font-semibold text-center border-b pb-2 mb-2 text-gray-800">
-                                            Reference Lines
-                                        </div>
-                                        <div className="flex items-center mb-2 text-black">
-                                            <div className="w-6 h-1.5 bg-green-500 mr-2"></div>
-                                            Median Intercept
-                                        </div>
-                                        <div className="flex items-center text-black">
-                                            <div className="w-6 h-1.5 bg-red-500 mr-2"></div>
-                                            Median Slope
-                                        </div>
-                                    </div>
-                                    <button
-                                        className="bg-blue-700 text-white rounded px-4 py-2 font-medium mt-2"
-                                        onClick={() =>
-                                            setSelectedCountry("All")
-                                        }
-                                    >
-                                        Back to all countries
-                                    </button>
                                 </div>
                             </div>
                         )}

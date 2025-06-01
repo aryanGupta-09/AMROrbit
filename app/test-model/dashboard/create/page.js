@@ -74,7 +74,7 @@ export default function CreatePage() {
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white flex flex-col">
             <div className="flex flex-col items-center justify-center flex-grow w-full max-w-6xl mx-auto p-4">
-                <h1 className="text-2xl mb-10">Uploading your Dataset</h1>
+                <h1 className="text-2xl mb-10">Upload your Dataset</h1>
 
                 <form onSubmit={handleFormSubmit} className="w-full">
                     <div className="flex gap-8 mb-6">

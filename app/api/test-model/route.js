@@ -7,7 +7,7 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     // const id = searchParams.get("id");
     try {
-        const test = await Test.find();
+        const test = await Test.find({}, { _id: 1, created_at: 1 });
         if (!test) {
             return NextResponse.json(
                 { success: false, message: "No mappings found." },
