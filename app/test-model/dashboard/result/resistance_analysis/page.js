@@ -16,7 +16,6 @@ export default function ResistanceAnalysis() {
 
   const router = useRouter();
 
-  const [dataset, setDataset] = useState([]);
   const [mapping, setMapping] = useState({});
 
   const [user, setUser] = useState({});
@@ -47,7 +46,6 @@ export default function ResistanceAnalysis() {
       .then((res) => {
         if (res.success) {
           setMapping(res.data.mapping_data || {});
-          setDataset(res.data.dataset || []);
         } else {
           toast.error(
             "Failed to fetch data. Reason: " + res.message
@@ -61,7 +59,7 @@ export default function ResistanceAnalysis() {
   }, [id]);
 
   useEffect(() => {
-    if (user && dataset.length > 0 && Object.keys(mapping).length > 0) {
+    if (user && Object.keys(mapping).length > 0) {
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/resistance-analysis?user=${user.id}&id=${id}`)
         .then((res) => res.json())
         .then((res) => {
@@ -80,7 +78,7 @@ export default function ResistanceAnalysis() {
           toast.error("Error fetching data. Please try again later.");
         });
     }
-  }, [user, dataset, mapping]);
+  }, [user, mapping]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,7 +116,7 @@ export default function ResistanceAnalysis() {
         <div className="flex items-center mb-10">
           <button
             className="text-white text-2xl mr-5 bg-transparent border-none cursor-pointer"
-            onClick={() => window.history.back()}
+            onClick={() => router.push(`/test-model/dashboard/result?id=${id}&proc=0`)}
             aria-label="Go back"
           >
             ←

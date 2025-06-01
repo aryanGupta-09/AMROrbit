@@ -43,7 +43,6 @@ function ScorecardAnalysis() {
 
     const router = useRouter();
 
-    const [dataset, setDataset] = useState([]);
     const [mapping, setMapping] = useState({});
 
     const [user, setUser] = useState({});
@@ -91,7 +90,6 @@ function ScorecardAnalysis() {
             .then((res) => {
                 if (res.success) {
                     setMapping(res.data.mapping_data || {});
-                    setDataset(res.data.dataset || []);
                 } else {
                     toast.error(
                         "Failed to fetch data. Reason: " + res.message
@@ -105,7 +103,7 @@ function ScorecardAnalysis() {
     }, [id]);
 
     useEffect(() => {
-        if (user && dataset.length > 0 && Object.keys(mapping).length > 0) {
+        if (user && Object.keys(mapping).length > 0) {
             fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/scorecards?id=${id}`)
                 .then((res) => res.json())
                 .then((res) => {
@@ -124,7 +122,7 @@ function ScorecardAnalysis() {
                     toast.error("Error fetching data. Please try again later.");
                 });
         }
-    }, [user, dataset, mapping]);
+    }, [user, mapping]);
 
     // Build color map for countries
     useEffect(() => {
@@ -462,7 +460,7 @@ return (
             <div className="flex items-center mb-2">
                 <button
                     className="bg-none border-none text-white text-2xl cursor-pointer mr-5"
-                    onClick={() => window.history.back()}
+                    onClick={() => router.push(`/test-model/dashboard/result?id=${id}&proc=0`)}
                 >
                     ←
                 </button>

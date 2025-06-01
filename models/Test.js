@@ -7,6 +7,18 @@ const testSchema = new Schema(
             ref: "User",
             required: true,
         },
+        file_name: {
+            type: String,
+            required: false,
+        },
+        date: {
+            type: String,
+            required: false,
+        },
+        time: {
+            type: String,
+            required: false,
+        },
         dataset: {
             type: Schema.Types.Mixed, // Use Mixed for arbitrary JSON
             required: false,
@@ -22,6 +34,10 @@ const testSchema = new Schema(
         antibiotic_columns: {
             type: [String],
             required: false,
+        },
+        consent: {
+            type: String,
+            default: false,
         },
     },
     {

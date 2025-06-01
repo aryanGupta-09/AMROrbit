@@ -34,7 +34,7 @@ export default function LoginPage() {
                 setCookie(null, 'user', JSON.stringify(data.data), {
                     maxAge: 30 * 24 * 60 * 60, // 30 days
                 });
-                router.push("/test-model/dashboard");
+                router.push("/test-model/dashboard/create");
             } else {
                 toast.error(data.message || "Login failed.");
             }
@@ -47,13 +47,13 @@ export default function LoginPage() {
     return (
         <>
             <Head>
-                <title>Welcome to AMRSuite</title>
+                <title>Welcome to AMROrbit</title>
             </Head>
 
             <main className="flex justify-center items-center flex-1 min-h-[calc(100vh-107px)] bg-[#1E1E1E] px-10">
                 <div className="w-full max-w-[450px] bg-[#22252B] p-12 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
                     <section className="w-full">
-                        <div className="text-center text-2xl font-bold text-white mb-10">Welcome to AMRSuite</div>
+                        <div className="text-center text-2xl font-bold text-white mb-10">Welcome to AMROrbit</div>
 
                         <h1 className="text-white text-lg font-semibold mb-6 text-left">Login</h1>
                         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>

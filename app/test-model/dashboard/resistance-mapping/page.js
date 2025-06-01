@@ -53,7 +53,7 @@ export default function ResistanceMapping() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                dataset,
+                id,
                 mapping_data: mapping,
                 antibiotic_columns: antibioticColumns,
             }),
@@ -124,6 +124,7 @@ export default function ResistanceMapping() {
         e.preventDefault();
         setLoading(true);
         const payload = {
+            id: id,
             mapping_data: mapping,
             susceptible_values: susceptible,
             intermediate_values: intermediate,

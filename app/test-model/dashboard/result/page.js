@@ -12,7 +12,6 @@ export default function ResultsPage() {
 
     const router = useRouter();
     
-    const [dataset, setDataset] = useState([]);
     const [mapping, setMapping] = useState({});
     
     const [steps, setSteps] = useState({
@@ -31,7 +30,6 @@ export default function ResultsPage() {
             .then((res) => {
                 if (res.success) {
                     setMapping(res.data.mapping_data || {});
-                    setDataset(res.data.dataset || []);
                 } else {
                     toast.error(
                         "Failed to fetch data. Reason: " + res.message
@@ -46,7 +44,7 @@ export default function ResultsPage() {
 
     useEffect(() => {
         if (proc == "1") {
-            if (dataset.length > 0 && Object.keys(mapping).length > 0) {
+            if (Object.keys(mapping).length > 0) {
                 validateDataset();
             }
         } else {
@@ -60,7 +58,7 @@ export default function ResultsPage() {
             setDuplicates(0);
             setShowDuplicatePrompt(false);
         }
-    }, [dataset, mapping]);
+    }, [mapping]);
 
     async function validateDataset() {
         setAlerts([]);
@@ -79,7 +77,7 @@ export default function ResultsPage() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    dataset,
+                    id: id,
                     mapping_data: mapping,
                 }),
             }).then((res) => res.json());

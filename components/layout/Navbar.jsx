@@ -87,7 +87,7 @@ export default function Navbar() {
                                 onClick={() => {
                                     destroyCookie(null, "user");
                                     setUser({});
-                                    window.location.href = "/";
+                                    window.location.href = "/test-model/dashboard";
                                 }}
                                 className="text-red-500"
                             >
@@ -133,7 +133,7 @@ export default function Navbar() {
                             onClick={() => {
                                 destroyCookie(null, "user");
                                 setUser({});
-                                window.location.href = "/";
+                                window.location.href = "/test-model/dashboard";
                             }}
                             className="text-red-500"
                         >

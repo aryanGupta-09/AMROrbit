@@ -11,7 +11,6 @@ const IsolationBurdenAnalysis = () => {
 
     const router = useRouter();
 
-    const [dataset, setDataset] = useState([]);
     const [mapping, setMapping] = useState({});
 
     const [user, setUser] = useState({});
@@ -51,7 +50,6 @@ const IsolationBurdenAnalysis = () => {
             .then((res) => {
                 if (res.success) {
                     setMapping(res.data.mapping_data || {});
-                    setDataset(res.data.dataset || []);
                 } else {
                     toast.error(
                         "Failed to fetch data. Reason: " + res.message
@@ -65,7 +63,7 @@ const IsolationBurdenAnalysis = () => {
     }, [id]);
 
     useEffect(() => {
-        if (user && dataset.length > 0 && Object.keys(mapping).length > 0) {
+        if (user && Object.keys(mapping).length > 0) {
             fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/isolation-burden-analysis`, {
                 method: "POST",
                 headers: {
@@ -95,7 +93,7 @@ const IsolationBurdenAnalysis = () => {
                     toast.error("Error fetching data. Please try again later.");
                 });
         }
-    }, [user, dataset, mapping]);
+    }, [user, mapping]);
 
     // Handle form submit
     const handleSubmit = async (e) => {
@@ -151,7 +149,7 @@ const IsolationBurdenAnalysis = () => {
                 <div className="flex items-center mb-10">
                     <button
                         className="bg-none border-none text-white text-2xl cursor-pointer mr-5"
-                        onClick={() => window.history.back()}
+                        onClick={() => router.push(`/test-model/dashboard/result?id=${id}&proc=0`)}
                     >
                         ←
                     </button>

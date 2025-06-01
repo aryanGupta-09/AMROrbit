@@ -8,29 +8,29 @@ import toast from "react-hot-toast";
 
 const dataReq = [
     {
-        title: "🗓️ Temporal Data",
-        points: ['Collection date/time', 'Reporting period', 'Year/Month/Quarter']
+        title: "🗓️ Temporal Data (any one)",
+        points: ['Collection date/time', 'Reporting date/time']
     },
     {
-        title: "📍 Spatial Data",
-        points: ['Country/Region', 'Healthcare facility', 'Geographic coordinates (optional)']
+        title: "📍 Spatial Data (any one)",
+        points: ['Country/Region', 'Healthcare facility', 'Department']
     },
     {
-        title: "🦠 Pathogen Information",
+        title: "🦠 Pathogen Information (all)",
         points: ['Organism name/code', 'Specimen type', 'Isolation source']
     },
-    {
-        title: "💊 Antimicrobial Data",
-        points: ['Drug name/code', 'Susceptibility result (S/I/R)', 'MIC values (optional)']
-    },
-    {
-        title: "🏥 Clinical Context",
-        points: ['Patient demographics', 'Hospital ward/department', 'Infection type']
-    },
-    {
-        title: "📊 Quality Metrics",
-        points: ['Total isolates tested', 'QC/QA indicators', 'Data completeness']
-    },
+    // {
+    //     title: "💊 Antimicrobial Data",
+    //     points: ['Drug name/code', 'Susceptibility result (S/I/R)', 'MIC values (optional)']
+    // },
+    // {
+    //     title: "🏥 Clinical Context",
+    //     points: ['Patient demographics', 'Hospital ward/department', 'Infection type']
+    // },
+    // {
+    //     title: "📊 Quality Metrics",
+    //     points: ['Total isolates tested', 'QC/QA indicators', 'Data completeness']
+    // },
 ]
 
 
@@ -101,12 +101,12 @@ const DashboardPage = () => {
                         🧪 Test Our AMR Models
                     </h1>
                     <p className="w-full md:w-2/3 mx-auto">
-                        Upload your antimicrobial resistance data and generate custom scorecards, isolation burden analysis, and resistance pattern insights using our validated models. Perfect for researchers, healthcare institutions, and policy makers.
+                        Upload your antimicrobial resistance data and generate susceptibility testing, isolation rates, resistance trends, scorecards and synthetic data using our validated models.
                     </p>
                 </div>
-                <div className="flex flex-col md:flex-row justify-between items-start space-x-3">
-                    <div className="bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
-                        <div className="bg-indigo-600 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
+                <div className="flex flex-col md:flex-row justify-between items-stretch space-y-3 md:space-y-0 md:space-x-3">
+                    <div className="w-full md:w-1/4 bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
+                        <div className="bg-blue-700 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
                             1
                         </div>
                         <div className="space-y-5">
@@ -114,15 +114,15 @@ const DashboardPage = () => {
                                 📊 Upload Your Data
                             </h1>
                             <p>
-                                Upload your antimicrobial resistance surveillance data in CSV format.
+                                Upload your AMST data in CSV format.
                             </p>
                             <div>
                                 {user ? (
-                                    <Link href="/test-model/dashboard/create" className="bg-indigo-600 text-white py-2 px-7 rounded-xl">
+                                    <Link href="/test-model/dashboard/create" className="bg-blue-700 text-white py-2 px-7 rounded-xl">
                                         Start
                                     </Link>
                                 ) : (
-                                    <Link href="/test-model/login" className="bg-indigo-600 text-white py-2 px-7 rounded-xl">
+                                    <Link href="/test-model/login" className="bg-blue-700 text-white py-2 px-7 rounded-xl">
                                         Get Started Now
                                     </Link>
                                 )}
@@ -133,8 +133,8 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
-                        <div className="bg-indigo-600 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
+                    <div className="w-full md:w-1/4 bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
+                        <div className="bg-blue-700 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
                             2
                         </div>
                         <div className="space-y-5">
@@ -150,8 +150,8 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
-                        <div className="bg-indigo-600 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
+                    <div className="w-full md:w-1/4 bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
+                        <div className="bg-blue-700 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
                             3
                         </div>
                         <div className="space-y-5">
@@ -159,7 +159,7 @@ const DashboardPage = () => {
                                 ⚙️ Configure Analysis
                             </h1>
                             <p>
-                                Set your spatial and temporal granularity preferences for the analysis.
+                                Set your spatio-temporal granularity preferences for the analysis.
                             </p>
                             <div>
                                 {/* upload goes here */}
@@ -167,8 +167,8 @@ const DashboardPage = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
-                        <div className="bg-indigo-600 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
+                    <div className="w-full md:w-1/4 bg-white rounded-xl px-5 py-3 flex flex-col space-y-5">
+                        <div className="bg-blue-700 text-white rounded-full p-2 w-12 h-12 flex justify-center items-center text-xl">
                             4
                         </div>
                         <div className="space-y-5">
@@ -182,7 +182,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
 
-                <div className="bg-white shadow-xl rounded-xl p-5 text-center text-black space-y-5">
+                <div className="bg-white shadow-xl rounded-xl p-5 text-left text-black space-y-5">
                     <h1 className="text-2xl font-bold">
                         📋 Data Requirements & Guidelines
                     </h1>
@@ -191,7 +191,7 @@ const DashboardPage = () => {
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                         {dataReq.map((item, i) => (
-                            <div key={i} className="border rounded-xl shadow-xl p-5 text-left space-y-2 hover:border-indigo-500 duration-500 tranform">
+                            <div key={i} className="border border-blue-700 rounded-xl shadow-xl p-5 text-left space-y-2 hover:border-blue-500 duration-500 tranform">
                                 <h1 className="text-lg font-medium">
                                     {item.title}
                                 </h1>
@@ -205,7 +205,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
 
-                {user && (
+                {/* {user && (
                     <>
                         <div>
                             <Link href="/test-model/dashboard/create" className="bg-blue-500 text-white py-2 px-7 rounded">
@@ -231,7 +231,7 @@ const DashboardPage = () => {
                             )}
                         </div>
                     </>
-                )}
+                )} */}
             </div>
 
             {view && (

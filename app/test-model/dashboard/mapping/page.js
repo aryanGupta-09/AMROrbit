@@ -63,7 +63,6 @@ export default function DatasetMapping() {
 	const router = useRouter();
 
 	const [columns, setColumns] = useState([]);
-	const [dataset, setDataset] = useState(null);
 
 	const [loading, setLoading] = useState(false);
 
@@ -98,7 +97,6 @@ export default function DatasetMapping() {
 				.then((res) => res.json())
 				.then((res) => {
 					if (res.success) {
-						setDataset(res.data.dataset);
 						setColumns(res.data.columns);
 						setAntibioticColumns(res.data.columns);
 						if (res.data.mapping_data) {
@@ -158,7 +156,7 @@ export default function DatasetMapping() {
 		e.preventDefault();
 		setLoading(true);
 		const payload = {
-			dataset: dataset,
+			id: id,
 			isolate_id: isolateId,
 			bacterial_infection: bacterialInfection,
 			source_input: sourceInput,

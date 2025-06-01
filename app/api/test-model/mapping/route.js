@@ -20,7 +20,7 @@ export async function POST(req) {
         }
 
         return NextResponse.json(
-            { success: true, message: "Saved mapping successfully.", data: test },
+            { success: true, message: "Saved mapping successfully.", data: test._id },
             { status: 201 }
         );
     } catch (error) {
@@ -36,7 +36,7 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     try {
-        const test = await Test.findById(id);
+        const test = await Test.findOne({ _id: id }).select('-dataset');
         if (!test) {
             return NextResponse.json(
                 { success: false, message: "No mappings found." },

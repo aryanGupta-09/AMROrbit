@@ -10,12 +10,37 @@ export default function CreatePage() {
     const [existingDatasets, setExistingDatasets] = useState([
         'Data',
     ]);
+    const [previousDatasets, setPreviousDatasets] = useState([]);
     const [selectedDataset, setSelectedDataset] = useState('');
+    const [selectedPreviousDataset, setSelectedPreviousDataset] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const fileInputRef = useRef(null);
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
+
+    const [consent, setConsent] = useState(false);
+
+    useEffect(() => {
+        const fetchPreviousDatasets = async () => {
+            const user = JSON.parse(parseCookies().user);
+            if (!user || !user.id) return;
+            try {
+                const res = await fetch(`/api/test-model/previous?id=${user.id}`);
+                const data = await res.json();
+                if (data.success) {
+                    setPreviousDatasets(data.data);
+                } else {
+                    console.error('Failed to fetch previous datasets:', data.message);
+                }
+            }
+            catch (error) {
+                console.error('Error fetching previous datasets:', error);
+                toast.error('Failed to fetch previous datasets. Please try again later.');
+            }
+        };
+        fetchPreviousDatasets();
+    }, []);
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -39,10 +64,14 @@ export default function CreatePage() {
 
         const formData = new FormData();
         formData.append('dataset_choice', datasetChoice);
+        formData.append('user', user.id);
+        formData.append('consent', consent);
         if (datasetChoice === 'upload') {
             formData.append('csv_file', selectedFile);
+        } else if (datasetChoice === 'previous') {
+            formData.append('id', selectedPreviousDataset);
         } else {
-            formData.append('existing_dataset', selectedDataset+ '.csv');
+            formData.append('existing_dataset', selectedDataset + '.csv');
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dataset-upload`, {
@@ -51,19 +80,19 @@ export default function CreatePage() {
         }).then((res) => res.json());
         if (res.success) {
             toast.success('Dataset uploaded successfully!');
-            const ress = await fetch("/api/test-model/mapping", {
-                method: 'POST',
-                body: JSON.stringify({
-                    id: user.id,
-                    dataset: res.dataset,
-                    columns: res.columns,
-                }),
-            }).then((ress) => ress.json());
-            if (!ress.success) {
-                toast.error(ress.message);
-                return;
-            }
-            router.push('/test-model/dashboard/mapping?id=' + ress.data._id);
+            // const ress = await fetch("/api/test-model/mapping", {
+            //     method: 'POST',
+            //     body: JSON.stringify({
+            //         id: user.id,
+            //         dataset: res.dataset,
+            //         columns: res.columns,
+            //     }),
+            // }).then((ress) => ress.json());
+            // if (!ress.success) {
+            //     toast.error(ress.message);
+            //     return;
+            // }
+            router.push('/test-model/dashboard/mapping?id=' + res.id);
         } else {
             console.error('Failed to upload dataset:', res);
             toast.error('Failed to upload dataset: ' + res.message);
@@ -98,6 +127,16 @@ export default function CreatePage() {
                             />
                             Use existing dataset
                         </label>
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="dataset_choice"
+                                value="previous"
+                                checked={datasetChoice === 'previous'}
+                                onChange={() => setDatasetChoice('previous')}
+                            />
+                            Use previous dataset
+                        </label>
                     </div>
 
                     {datasetChoice === 'existing' && (
@@ -112,6 +151,23 @@ export default function CreatePage() {
                                 <option value="">— choose —</option>
                                 {existingDatasets.map((name, i) => (
                                     <option key={i} value={name}>{name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+
+                    {datasetChoice === 'previous' && (
+                        <div className="mb-6">
+                            <label htmlFor="previous_dataset" className="block mb-2">Select dataset:</label>
+                            <select
+                                id="previous_dataset"
+                                value={selectedPreviousDataset}
+                                onChange={(e) => setSelectedPreviousDataset(e.target.value)}
+                                className="text-black p-2 rounded"
+                            >
+                                <option value="">— choose —</option>
+                                {previousDatasets.map((item, i) => (
+                                    <option key={i} value={item._id}>{item.file_name}</option>
                                 ))}
                             </select>
                         </div>
@@ -149,6 +205,18 @@ export default function CreatePage() {
                             )}
                         </div>
                     )}
+
+                    <div>
+                        <label className="flex items-center gap-2 mb-4">
+                            <input
+                                type="checkbox"
+                                name="consent"
+                                checked={consent}
+                                onChange={(e) => setConsent(e.target.checked)}
+                            />
+                            I consent to store my data to update the models.
+                        </label>
+                    </div>
 
                     <button
                         type="submit"
