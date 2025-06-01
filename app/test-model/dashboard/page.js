@@ -65,7 +65,7 @@ const DashboardPage = () => {
                                 <li key={test.id} className="border p-4 rounded">
                                     <h3 className="text-xl font-semibold">{readableDate(test.created_at)}</h3>
                                     
-                                    <Link href={`/test-model/dashboard/result?id=${test._id}`} className="text-blue-500 hover:underline">
+                                    <Link href={`/test-model/dashboard/result?id=${test._id}&proc=0`} className="text-blue-500 hover:underline">
                                         View
                                     </Link>
                                 </li>

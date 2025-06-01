@@ -147,7 +147,7 @@ export default function ResistanceMapping() {
                 toast.error(ress.message);
                 return;
             }
-            router.push('/test-model/dashboard/result?id=' + ress.data._id);
+            router.push(`/test-model/dashboard/result?id=${ress.data._id}&proc=1`);
         } else {
             toast.error(res.error || "Failed to process mapping.");
         }

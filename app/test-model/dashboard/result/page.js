@@ -7,7 +7,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ResultsPage() {
     const searchParams = useSearchParams();
-	const id = searchParams.get("id");
+    const id = searchParams.get("id");
+    const proc = searchParams.get("proc");
 
     const router = useRouter();
     
@@ -44,8 +45,20 @@ export default function ResultsPage() {
     }, [id]);
 
     useEffect(() => {
-        if (dataset.length > 0 && Object.keys(mapping).length > 0) {
-            validateDataset();
+        if (proc == "1") {
+            if (dataset.length > 0 && Object.keys(mapping).length > 0) {
+                validateDataset();
+            }
+        } else {
+            setSteps({
+                format: true,
+                structure: true,
+                missing_data: true,
+                duplicates: true,
+            });
+            setAlerts([]);
+            setDuplicates(0);
+            setShowDuplicatePrompt(false);
         }
     }, [dataset, mapping]);
 
