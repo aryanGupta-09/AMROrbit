@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
     await dbConnect();
     const { searchParams } = new URL(req.url);
-    // const id = searchParams.get("id");
+    const id = searchParams.get("id");
     try {
-        const test = await Test.find({}, { _id: 1, created_at: 1 });
+        const test = await Test.find({user: id}, { _id: 1, created_at: 1 });
         if (!test) {
             return NextResponse.json(
                 { success: false, message: "No mappings found." },

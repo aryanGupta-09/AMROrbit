@@ -9,12 +9,13 @@ const TestModelPage = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const user = parseCookies().user;
-        if (!user) {
-            router.push('/test-model/login');
-        } else {
-            router.push('/test-model/dashboard');
-        }
+        router.push('/test-model/dashboard');
+        // const user = parseCookies().user;
+        // if (!user) {
+        //     router.push('/test-model/login');
+        // } else {
+        //     router.push('/test-model/dashboard');
+        // }
     }, []);
 
     return (
